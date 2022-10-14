@@ -1,0 +1,289 @@
+---
+title: "Create an Invoice"
+description: "Creates a new invoice that has a link that the user can be redirected to complete a transaction"
+---
+
+### Method
+
+Make a request to the [/v2/invoice/create](/api#tag/invoices/paths/~1api~1invoice~1create/post) endpoint
+
+### Request
+
+#### Example
+
+<CodeGroup>
+
+```bash cURL
+> curl https://pls.senddotssandbox.com/v2/invoice/create \
+-X POST \
+-H "Authorization: Basic <TOKEN>" \
+-H "Content-Type: application/json" \
+-d '{
+      "amount": 800,
+      "expires_in": 3600,
+      "items": [
+        {
+          "name": "Pikachu Digital Pet",
+          "unit_amount": 250,
+          "quantity": 1,
+          "description": "A little Pikachu for your desktop"
+        },
+        {
+          "name": "Charmander Digital Pet",
+          "unit_amount": 225,
+          "quantity": 2,
+          "description": "A ferocius Charmander for your desktop"
+        }
+      ],
+      "breakdown": {
+        "items_total": 700,
+        "tax": 100,
+        "shipping": 0
+      },
+      "requested_information": ["shipping_address"],
+      "metadata": {
+        "zappy_user_id": "61f8c2f8263e340016f4d4e8"
+      }
+    }'
+
+> response = {
+    "success": true,
+    "invoice": {
+        "id": "8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+         "payer": null,
+        "api_app": {
+            "id": "b7a00ae2-e638-4d66-9d46-adf38d810cde",
+            "name": "Zappy",
+            "user_id": 2
+        },
+        "amount": 800,
+        "expiry": "2020-12-09T00:40:51.107Z",
+        "status": "created",
+        "link": "https://www.senddotssandbox.com/invoice/8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+        "items": [
+            {
+            "name": "Pikachu Digital Pet",
+            "unit_amount": 250,
+            "quantity": 1,
+            "description": "A little Pikachu for your desktop"
+            },
+            {
+            "name": "Charmander Digital Pet",
+            "unit_amount": 225,
+            "quantity": 2,
+            "description": "A ferocius Charmander for your desktop"
+            }
+        ],
+        "breakdown": {
+            "items_total": 700,
+            "tax": 100,
+            "shipping": 0
+        },
+        "requested_information": {
+            "shipping_address": null
+        },
+        "metadata": {
+            "zappy_user_id": "61f8c2f8263e340016f4d4e8"
+        }
+    }
+}
+
+```
+
+```python Python
+items=[
+  {
+    'name': 'Pikachu Digital Pet',
+    'unit_amount': 250,
+    'quantity': 1,
+    'description': 'A little Pikachu for your desktop'
+  },
+  {
+    'name': 'Charmander Digital Pet',
+    'unit_amount': 225,
+    'quantity': 2,
+    'description': 'A ferocius Charmander for your desktop'
+  }
+]
+
+breakdown={ # breakdown of the charge
+  'items_total': 700, # 250 + 2 * 225
+  'tax': 100,
+  'shipping': 0
+}
+
+metadata={ # any metadata you would like to include
+  'zappy_user_id': '61f8c2f8263e340016f4d4e8'
+}
+
+invoice = dots.Invoice.create(amount=800,
+                              expired_in=3600,
+                              items=items,
+                              breakdown=breakdown,
+                              requested_information=['shipping_address'],
+                              metadata=metadata)
+
+assert invoice == {
+  "id": "8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+  "payer": None,
+  "api_app": {
+    "id": "b7a00ae2-e638-4d66-9d46-adf38d810cde",
+    "name": "Zappy",
+    "user_id": 2
+  },
+  "amount": 800,
+  "expiry": "2020-12-09T00:40:51.107Z",
+  "status": "created",
+  "link": "https://www.senddotssandbox.com/invoice/8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+  "items": [
+    {
+      "name": "Pikachu Digital Pet",
+      "unit_amount": 250,
+      "quantity": 1,
+      "description": "A little Pikachu for your desktop"
+    },
+    {
+      "name": "Charmander Digital Pet",
+      "unit_amount": 225,
+      "quantity": 2,
+      "description": "A ferocius Charmander for your desktop"
+    }
+  ],
+  "breakdown": {
+    "items_total": 700,
+    "tax": 100,
+    "shipping": 0
+  },
+  "requested_information": {
+    "shipping_address": None
+  },
+  "metadata": {
+    "zappy_user_id": "61f8c2f8263e340016f4d4e8"
+  }
+}
+
+```
+
+```javascript NodeJS
+const amount = 800;
+
+const expires_in = 3600;
+
+const items = [
+  {
+    name: "Pikachu Digital Pet",
+    unit_amount: 250,
+    quantity: 1,
+    description: "A little Pikachu for your desktop",
+  },
+  {
+    name: "Charmander Digital Pet",
+    unit_amount: 225,
+    quantity: 2,
+    description: "A ferocius Charmander for your desktop",
+  },
+];
+
+const breakdown = {
+  // breakdown of the charge
+  items_total: 700, // 250 + 2 * 225
+  tax: 100,
+  shipping: 0,
+};
+
+const metadata = {
+  // any metadata you would like to include
+  zappy_user_id: "61f8c2f8263e340016f4d4e8",
+};
+
+const invoice = await dots.Invoice.create(
+  amount,
+  expired_in,
+  items,
+  breakdown,
+  ["shipping_address"],
+  metadata
+);
+
+invoice ===
+  {
+    id: "8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+    payer: null,
+    api_app: {
+      id: "b7a00ae2-e638-4d66-9d46-adf38d810cde",
+      name: "Zappy",
+      user_id: 2,
+    },
+    amount: 800,
+    expiry: "2020-12-09T00:40:51.107Z",
+    status: "created",
+    link: "https://www.senddotssandbox.com/invoice/8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+    items: [
+      {
+        name: "Pikachu Digital Pet",
+        unit_amount: 250,
+        quantity: 1,
+        description: "A little Pikachu for your desktop",
+      },
+      {
+        name: "Charmander Digital Pet",
+        unit_amount: 225,
+        quantity: 2,
+        description: "A ferocius Charmander for your desktop",
+      },
+    ],
+    breakdown: {
+      items_total: 700,
+      tax: 100,
+      shipping: 0,
+    },
+    requested_information: {
+      shipping_address: null,
+    },
+    metadata: {
+      zappy_user_id: "61f8c2f8263e340016f4d4e8",
+    },
+  };
+```
+
+</CodeGroup>
+
+#### Parameters
+
+| Name                    | Type           | Required                                                                                                                   | Description                   |
+| ----------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `amount`                | float          | ✔️                                                                                                                         | The amount of money to charge |
+| `expires_in`            | integer        | Length in seconds that an invoice needs to be completed - min: 0, max: 259200 (72 hours)                                   |                               |
+| `items`                 | list\[object\] | List of item objects                                                                                                       |                               |
+| `item.name`             | string         | Name of the item                                                                                                           |                               |
+| `item.unit_amount`      | float          | Cost of 1 unit of the item                                                                                                 |                               |
+| `item.quantity`         | float          | Quantity of this item                                                                                                      |                               |
+| `item.description`      | string         | Description of the item                                                                                                    |                               |
+| `breakdown`             | object         | Breakdown of the total amount                                                                                              |                               |
+| `breakdown.items_total` | float          | Total of the items (unit_amount \* quantity)                                                                               |                               |
+| `breakdown.shipping`    | float          | Cost of shipping                                                                                                           |                               |
+| `breakdown.tax`         | float          | Tax                                                                                                                        |                               |
+| `amount`                | float          | Total amount to charge the                                                                                                 |                               |
+| `metadata`              | object         | Set of key-value pairs in the format of string. This is attached to the invoice object for storing additional information. |                               |
+
+<Warning>
+  Note that the sum of entries in `breakdown` must equal `amount` and the sum of
+  all items must match `breakdown.item_total` if provided
+</Warning>
+
+### Styling
+
+The contents of the link can be styled through URL variables and shown to the user embedded in an iFrame or WebView. The variables can be appended to the end of the link. For example:
+
+```
+https://senddotssandbox.com/invoice/e6d60b12-d513-47f3-971e-038b20d11ad7?iframe=true&bgColor=000000&textColor=ffffff
+```
+
+The available variables are:
+
+| Variable    | Description                                                                   |
+| ----------- | ----------------------------------------------------------------------------- |
+| `iframe`    | If set to true, the link will be rendered for use in an iframe                |
+| `bgColor`   | The background color of the iframe. Set as hex code without the #. eg. 000000 |
+| `textColor` | The text color of the iframe. Set as hex code without the #. eg. ffffff       |
+| `darkMode`  | If set to true of the bgColor is 'dark'.                                      |
