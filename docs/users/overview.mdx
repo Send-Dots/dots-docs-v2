@@ -5,54 +5,57 @@ sidebarTitle: "Users Overview"
 
 A `user` is a representation of a person or entity in the Dots system. A `user` can be created by a platform or by the `user` themselves but can be connected to any platform.
 
-Each `user` is attached to a `wallet` which holds the `user`'s balance, `transactions` and `credits`.
-
 The platform can add additional data to a `user` such as an SSN and address for tax purposes and add bank accounts and other payment methods.
 
 ## The User Object
 
 ```json Example
 {
-  "id": 12341341,
-  "email": "test@senddots.com",
-  "username": "bob-loblaw",
+  "id": "47b40e06-883d-44d1-b96c-8272195907a7",
   "first_name": "Bob",
   "last_name": "Loblaw",
-  "display_name": "Bob Loblaw",
+  "email": "bob@bobloblaw.com",
+  "phone_number": {
+    "country_code": "1",
+    "number": "5555555555"
+  },
   "wallet": {
     "amount": 1000.0,
     "withdrawable_balance": 500.0,
     "credit_balance": 0
   },
-  "ach_accounts": [
-    {
-      "name": "Chase Checking",
-      "id": "acc_32234dfs235",
-      "mask": "2345"
-    }
-  ]
+  "compliance": {
+    "tax_id_collected": false,
+    "address_collected": false,
+    "date_of_birth_collected": false,
+    "1099_collected": false,
+    "w8_ben_collected": false,
+    "flagged": false
+  },
+  "metadata": null
 }
 ```
 
 ### Attributes
 
-| Name                                 | Type          | Description                                                                                                  |
-| ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------ |
-| `id`                                 | string (uuid) | UUID id of the user                                                                                          |
-| `first_name`                         | string        | User's first name                                                                                            |
-| `last_name`                          | string        | User's last name                                                                                             |
-| `email`                              | string        | User's email                                                                                                 |
-| `phone_number`                       | object        | \--                                                                                                          |
-| `phone_number.country_code`          | string        | The phone number country code e.g. `1`                                                                       |
-| `phone_number.phone_number`          | string        | The phone_number e.g. `1234567890`                                                                           |
-| `wallet`                             | object        | \--                                                                                                          |
-| `wallet.amount`                      | integer       | Balance of the user's wallet in cents                                                                        |
-| `wallet.withdrawable_balance`        | integer       | Withdrawable balance of the user's wallet in cents                                                           |
-| `wallet.credit_balance`              | integer       | Amount of credit for your app in the user's wallet                                                           |
-| `compliance`                         | object        | \--                                                                                                          |
-| `compliance.tax_id_collected`        | boolean       | `true` if tax id is collected and valid                                                                      |
-| `compliance.address_collected`       | boolean       | `true` if address is collected                                                                               |
-| `compliance.date_of_birth_collected` | boolean       | `true` if date of birth is collected                                                                         |
-| `compliance.1099_collected`          | boolean       | `true` if 1099 information is collected                                                                      |
-| `compliance.w8_ben_collected`        | boolean       | `true` if W8-BEN information is collected                                                                    |
-| `compliance.flagged`                 | boolean       | `true` if user is flagged for compliance reasons. Manual review will be required before they can be paid out |
+| Name                                 | Type               | Description                                                                                                  |
+| ------------------------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `id`                                 | string (uuid)      | UUID id of the user                                                                                          |
+| `first_name`                         | string             | User's first name                                                                                            |
+| `last_name`                          | string             | User's last name                                                                                             |
+| `email`                              | string             | User's email                                                                                                 |
+| `phone_number`                       | object             | \--                                                                                                          |
+| `phone_number.country_code`          | string             | The phone number country code e.g. `1`                                                                       |
+| `phone_number.phone_number`          | string             | The phone_number e.g. `1234567890`                                                                           |
+| `wallet`                             | object             | \--                                                                                                          |
+| `wallet.amount`                      | integer            | Balance of the user's wallet in cents                                                                        |
+| `wallet.withdrawable_balance`        | integer            | Withdrawable balance of the user's wallet in cents                                                           |
+| `wallet.credit_balance`              | integer            | Amount of credit for your app in the user's wallet                                                           |
+| `compliance`                         | object             | \--                                                                                                          |
+| `compliance.tax_id_collected`        | boolean            | `true` if tax id is collected and valid                                                                      |
+| `compliance.address_collected`       | boolean            | `true` if address is collected                                                                               |
+| `compliance.date_of_birth_collected` | boolean            | `true` if date of birth is collected                                                                         |
+| `compliance.1099_collected`          | boolean            | `true` if 1099 information is collected                                                                      |
+| `compliance.w8_ben_collected`        | boolean            | `true` if W8-BEN information is collected                                                                    |
+| `compliance.flagged`                 | boolean            | `true` if user is flagged for compliance reasons. Manual review will be required before they can be paid out |
+| `metadata`                           | string/object/null | Additional data that can be added to the user                                                                |

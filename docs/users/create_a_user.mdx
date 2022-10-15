@@ -14,16 +14,16 @@ Create and verify a user to your `application`.
 
 ## Creating a Users
 
-Creating users happens through the [/v2/users/create](/api#tag/users/paths/~1api~1users~1create/post) endpoint. Once hit, a dots user will be created if one does not exist based on phone number. This user must then be verified through a one-time code sent over text-message. This code can be requested through the [/v2/users/send_verification_token](/api#tag/users/paths/~1api~1users~1send%5Fverification%5Ftoken/post) endpoint and then verified through the [/v2/users/verify_user](/api#tag/users/paths/~1api~1users~1verify%5Fuser/post) endpoint.
+Creating users happens through the [/v2/users](/api-reference/users/create-user) endpoint. Once hit, a dots user will be created if one does not exist based on phone number. This user must then be verified through a one-time code sent over text-message. This code can be requested through the [/v2/users/send_verification_token](/api#tag/users/paths/~1api~1users~1send%5Fverification%5Ftoken/post) endpoint and then verified through the [/v2/users/verify_user](/api-reference/users/create-user) endpoint.
 
 ### Method
 
-Call the [create](/api#tag/users/paths/~1api~1users~1create/post) endpoint
+Make a `POST` request to the [/v2/users](/api-reference/users/create-user) endpoint
 
 <CodeGroup>
 
 ```bash cURL
-> curl https://pls.senddotssandbox.com/v2/users/create \
+> curl https://pls.senddotssandbox.com/v2/users \
   -X POST \
   -H "Authorization: Basic <TOKEN>" \
   -H "Content-Type: application/json" \
@@ -66,16 +66,23 @@ Call the [create](/api#tag/users/paths/~1api~1users~1create/post) endpoint
 
 ##### Parameters
 
-| Name         | Type   | Required                                                                                                     | Description                                                             |
-| ------------ | ------ | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| email        | string | ✔️                                                                                                           | User's email address                                                    |
-| country_code | string | ✔️                                                                                                           | User's phone number country code without the plus sign ('1' for the US) |
-| phone_number | string | ✔️                                                                                                           | User's phone number as a string containing only digits                  |
-| first_name   | string | ✔️                                                                                                           | User's first name as a string                                           |
-| last_name    | string | ✔️                                                                                                           | User's last name as a string                                            |
-| username     | string | User's username on your platform. If the username is taken or left blank a random username will be generated |                                                                         |
+| Name         | Type               | Required | Description                                                                                                  |
+| ------------ | ------------------ | -------- | ------------------------------------------------------------------------------------------------------------ |
+| email        | string             | ✔️       | User's email address                                                                                         |
+| country_code | string             | ✔️       | User's phone number country code without the plus sign ('1' for the US)                                      |
+| phone_number | string             | ✔️       | User's phone number as a string containing only digits                                                       |
+| first_name   | string             | ✔️       | User's first name as a string                                                                                |
+| last_name    | string             | ✔️       | User's last name as a string                                                                                 |
+| username     | string             |          | User's username on your platform. If the username is taken or left blank a random username will be generated |
+| metadata     | string/object/null |          | Optional metadata to be stored with the user                                                                 |
 
-#### 2. Request a verification token by calling the [send_verification_token](/api#tag/users/paths/~1api~1users~1send%5Fverification%5Ftoken/post) endpoint
+## Verifying the created User
+
+### Verify using a Flow
+
+### Verify through the API
+
+#### 1. Send a verification token by making a `POST` request to the [/v2/users/{user_id}/send-verification-token](/api-reference/users/send-verification-token) endpoint
 
 <CodeGroup>
 
@@ -87,12 +94,12 @@ Call the [create](/api#tag/users/paths/~1api~1users~1create/post) endpoint
 
 </CodeGroup>
 
-#### 3\. Submit the verification token by calling the [verify_user](/api#tag/users/paths/~1api~1users~1verify%5Fuser/post) endpoint
+#### 3. Submit the verification token by calling the [/v2/users/{user_id}/verify](/api-reference/users/verify) endpoint
 
 <CodeGroup>
 
 ```bash cURL
-curl https://pls.senddotssandbox.com/v2/users/{user_id}/verify_user \
+curl https://pls.senddotssandbox.com/v2/users/{user_id}/verify \
   -X POST \
   -H "Authorization: Basic <TOKEN>" \
   -H "Content-Type: application/json" \
@@ -105,6 +112,6 @@ curl https://pls.senddotssandbox.com/v2/users/{user_id}/verify_user \
 
 ##### Parameters
 
-| Name               | Type   | Required | Description                                        |
-| ------------------ | ------ | -------- | -------------------------------------------------- |
+| Name  | Type   | Required | Description                                        |
+| ----- | ------ | -------- | -------------------------------------------------- |
 | token | string | ✔️       | Verification token sent to the user's phone number |
