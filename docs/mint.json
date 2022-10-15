@@ -47,16 +47,31 @@
   ],
   "navigation": [
     {
-      "group": "Welcome",
-      "pages": ["introduction"]
+      "group": "Overview",
+      "pages": [
+        "overview/introduction",
+        "overview/authentication",
+        "overview/environments",
+        "overview/error_codes",
+        "overview/idempotency",
+        "overview/metadata"
+      ]
     },
     {
       "group": "Quick start",
+      "pages": ["quick_start/introduction"]
+    },
+    {
+      "group": "Core Resources",
       "pages": [
-        "quick_start/authentication",
-        "quick_start/environments",
-        "quick_start/libraries",
-        "quick_start/introduction"
+        {
+          "group": "Flows",
+          "pages": [
+            "flows/overview",
+            "flows/create_flow",
+            "flows/retrieve_a_flow"
+          ]
+        }
       ]
     },
     {

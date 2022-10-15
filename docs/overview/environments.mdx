@@ -1,0 +1,38 @@
+---
+title: "Environments"
+description: "Dots provides two enviromenments: Production and Sandbox."
+---
+
+The Sandbox environment lets you develop and test your integration without touching live funds.
+
+## Sandbox Environment
+
+The Dots sandbox environment is a self-contained environment that simulates the live production environment. The sandbox provides a space where you can initate, experiment and watch transactions without touching live Dots accounts. We highly recommend that you use the sandbox to build out your integration, and only then reach out to upgrade to production keys
+
+The sandbox mirrors all the features of live environment but has some minor differences that make it easy to test flows. For example, duplicate phone numbers are allowed in the sandbox but not in production.
+
+### Setup
+
+The sandbox environment can be enabled on the Dots dashboard ([https://dashboard.dots.dev](https://dashboard.dots.dev)) but clicking the toggle in the upper right corner. You can then create an app and generate API keys. The API URL for the sandbox is similarly `https://pls.senddotssandbox.com/api`. Every new account is funded with a $100 and more funds can always be added in.
+
+### Payouts
+
+<Card title="ACH" icon={regular("money-bill-transfer")}>
+  Live bank accounts can be connected via Plaid but no transactions will go
+  through. Please ensure that the Plaid interface is properly integrated into
+  your application.
+</Card>
+
+<Card title="PayPal" icon={brands("paypal")}>
+  Any email can be connected to PayPal and all transactions return a successful
+  response.
+</Card>
+
+<Card title="Venmo" icon={brands("venmo")}>
+  Any phone number can be connected to Venmo and all transactions return a
+  successful response.
+</Card>
+
+## Production Environment
+
+The Dots production environment is the live environment. You can use this environment to send money to your customers. Access to the production environment can be requested by contacting us at [info@senddots.com](mailto:info@senddots.com) or through the Dashboard.
