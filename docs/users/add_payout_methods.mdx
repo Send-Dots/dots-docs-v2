@@ -8,7 +8,7 @@ title: "Add Payout Methods"
   [Authentication](/docs/quick%5Fstart/authentication) document.
 </Note>
 
-Payout methods can be added by a user's account by the user through the UI components provided by Dots. For a more custom integration, you can use the [/v2/users/wallet/add_payout_method](/api#tag/users/paths/~1api~1users~1wallet~1add%5Fpayout%5Fmethod/post) endpoint to do the same.
+Payout methods can be added by a user's account by the user through the UI components provided by Dots. For a more custom integration, you can use the [/v2/users/{user_id}/payout-methods](/api-reference/users/add-payout-method) endpoint to do the same.
 
 ## Add an ACH Account
 
@@ -21,16 +21,15 @@ Call the add_payout_method endpoint
 <CodeGroup>
 
 ```bash cURL
-curl https://pls.senddotssandbox.com/v2/users/wallet/add_payout_method \
+curl https://pls.senddotssandbox.com/v2/users/{user_id}/payout-methods \
   -X POST \
   -H "Authorization: Basic <TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
-        "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
-        "payout_method": "ach",
-        "ach_routing_number": "123456789",
-        "ach_account_number": "123456789",
-        "ach_account_type": "checking",
+        "platform": "ach",
+        "routing_number": "123456789",
+        "account_number": "123456789",
+        "account_type": "checking",
       }'
 
 response = {
