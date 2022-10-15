@@ -1,0 +1,48 @@
+---
+title: "Retrieve a Flow"
+---
+
+<Note>
+  All requests to the `/v2/flow/*` endpoints must include both the `client_id`
+  and `api_key` as detailed in the
+  [Authentication](/docs/quick%5Fstart/authentication) document.
+</Note>
+
+Get an flow by its ID
+
+### Method
+
+Make a request to [/v2/flow/get/{FLOW_ID}](/api#tag/flows/paths/~1api~1flow~1get~1%7Bflow%5Fid%7D/get)
+
+### Request Example
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddotssandbox.com/v2/flow/get/5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8 \
+-H "Authorization: Basic <TOKEN>" \
+
+response = {
+    "success": "true",
+    "flow": {
+        "id": "5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8",
+        "created": "2020-12-09T00:40:51.107Z",
+        "updated": "2020-12-09T00:40:51.107Z",
+        "user_id": "12345678-f8f8-f8f8-f8f8-f8f8f8f8f8f8",
+        "steps": ["compliance", "manage-payouts", "payout"],
+        "completed_steps": ["compliance", "manage-payouts"],
+        "payout_link_id": null,
+        "link": "https://my.senddotssandbox.com/flow/5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8"
+    }
+}
+```
+
+```python Python SDK
+# not implemented yet
+```
+
+```javascript NodeJS
+//  not implemented yet
+```
+
+</CodeGroup>

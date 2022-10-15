@@ -1,0 +1,74 @@
+---
+title: "Retrieve a Transaction"
+---
+
+<Note>
+  All requests to the `/v2/transactions/*` endpoints must include both the
+  `client_id` and `api_key` as detailed in the
+  [Authentication](/docs/quick%5Fstart/authentication) document.
+</Note>
+
+Get a `transaction` object by its `id`.
+
+## Retrieve a Transaction
+
+### Method
+
+Make a request to [/v2/transactions/get/transaction/{TRANSACTION_ID}](/api#tag/transactions/paths/~1api~1transactions~1get~1transaction~1%7Btransaction%5Fid%7D/get)
+
+<CodeGroup>
+
+```bash cURL
+> curl https://pls.senddotssandbox.com/v2/transactions/get/transation/5cfabe15-d452-4558-8e46-56d90ebe48f7 \
+  -H "Authorization: Basic <TOKEN>"
+
+> response = {
+    "success": true,
+    "transaction": {
+      "id": "5cfabe15-d452-4558-8e46-56d90ebe48f7",
+      "date": "Mon, 21 Feb 2022 21:08:49 GMT",
+      "source_username": "sha",
+      "destination_username": "kartikye",
+      "amount": 700,
+      "completed": true,
+      "type": "wallet",
+      "receipt": {
+        "items": [
+          {
+              "name": "Pikachu Digital Pet",
+              "unit_amount": 250,
+              "quantity": 1,
+              "description": "A little Pikachu for your desktop"
+          },
+          {
+              "name": "Charmander Digital Pet",
+              "unit_amount": 225,
+              "quantity": 2,
+              "description": "A ferocius Charmander for your desktop"
+          }
+        ],
+        "breakdown": {
+            "items_total": 700,
+            "tax": 100,
+            "shipping": 0
+        },
+      },
+      "notes": {
+        "internal_id": "tr_213124"
+      }
+    }
+  }
+```
+
+```python Python
+transaction_id = '5cfabe15-d452-4558-8e46-56d90ebe48f7'
+transaction = dots.Transaction.get(transaction_id)
+```
+
+```javascript NodeJS
+const transaction_id = "5cfabe15-d452-4558-8e46-56d90ebe48f7";
+
+const transaction = await dots.Transaction.get(transaction_id);
+```
+
+</CodeGroup>

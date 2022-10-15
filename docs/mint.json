@@ -1,0 +1,179 @@
+{
+  "name": "Dots",
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "api": {
+    "baseUrl": ["https://api.senddotssandbox.com", "https://api.senddots.com"],
+    "auth": {
+      "method": "basic",
+      "name": "client_id:api_key"
+    }
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#F4BC24",
+    "light": "#ffebac",
+    "dark": "#c39500",
+    "ultraLight": "#fff1c4",
+    "ultraDark": "#9c7700",
+    "background": {
+      "light": "#FEFDFB",
+      "dark": "#18181B"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Log in",
+      "url": "https://dashboard.dots.dev/login"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Started",
+    "url": "https://dashboard.dots.dev/signup"
+  },
+  "anchors": [
+    {
+      "name": "API Reference",
+      "icon": "rectangle-terminal",
+      "url": "api-reference"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/Send-Dots"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Welcome",
+      "pages": ["introduction"]
+    },
+    {
+      "group": "Quick start",
+      "pages": [
+        "quick_start/authentication",
+        "quick_start/environments",
+        "quick_start/libraries",
+        "quick_start/introduction"
+      ]
+    },
+    {
+      "group": "Flows",
+      "pages": [
+        "flows/overview",
+        "flows/create_a_flow",
+        "flows/retrieve_a_flow"
+      ]
+    },
+    {
+      "group": "Users",
+      "pages": [
+        "users/overview",
+        "users/create_a_user",
+        "users/add_1099_information",
+        "users/add_payout_methods"
+      ]
+    },
+    {
+      "group": "Transactions",
+      "pages": [
+        "transactions/overview",
+        "transactions/create_a_transaction",
+        "transactions/retrieve_a_transaction"
+      ]
+    },
+    {
+      "group": "Payouts",
+      "pages": [
+        "payouts/overview",
+        "payouts/iframe_payout",
+        "payouts/api_payout",
+        "payouts/payout_link"
+      ]
+    },
+    {
+      "group": "Invoices",
+      "pages": [
+        "invoices/overview",
+        "invoices/create_an_invoice",
+        "invoices/retrieve_an_invoice"
+      ]
+    },
+    {
+      "group": "Errors",
+      "pages": ["errors/error_codes"]
+    },
+    {
+      "group": "Guides",
+      "pages": ["country_support/introduction", "guides/unverified_users"]
+    },
+    {
+      "group": "Dots Endpoint (2.0.0)",
+      "pages": [
+        "api-reference/introduction",
+        {
+          "group": "User Routes",
+          "pages": [
+            "api-reference/users/get-users",
+            "api-reference/users/create-user",
+            "api-reference/users/get-user-by-id",
+            "api-reference/users/delete-user-by-id",
+            "api-reference/users/send-verification-token",
+            "api-reference/users/verify-user",
+            "api-reference/users/get-payout-methods",
+            "api-reference/users/add-payout-method"
+          ]
+        },
+        {
+          "group": "Transfer Routes",
+          "pages": [
+            "api-reference/transfers/get-transfers",
+            "api-reference/transfers/create-transfer",
+            "api-reference/transfers/get-transfer-by-id"
+          ]
+        },
+        {
+          "group": "Flow Routes",
+          "pages": [
+            "api-reference/flows/get-flows",
+            "api-reference/flows/create-flow",
+            "api-reference/flows/get-flow-by-id"
+          ]
+        },
+        {
+          "group": "Payout Link Routes",
+          "pages": [
+            "api-reference/payout-links/get-payout-links",
+            "api-reference/payout-links/create-payout-link",
+            "api-reference/payout-links/get-payout-link-by-id",
+            "api-reference/payout-links/delete-payout-link-by-id"
+          ]
+        },
+        {
+          "group": "Payouts",
+          "pages": [
+            "api-reference/payouts/create-payout",
+            "api-reference/payouts/send-payout"
+          ]
+        },
+        {
+          "group": "Transaction Routes",
+          "pages": [
+            "api-reference/transactions/get-transactions",
+            "api-reference/transactions/get-transaction-by-id"
+          ]
+        }
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/Send-Dots",
+    "twitter": "https://twitter.com/Dots_dev",
+    "linkedin": "https://www.linkedin.com/company/senddots/"
+  },
+  "classes": {
+    "topbarCtaButton": "items-center space-x-1 px-4 py-1.5 shadow-sm text-sm font-medium rounded-full text-white bg-primary hover:bg-primary-dark"
+  }
+}

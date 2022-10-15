@@ -1,0 +1,1079 @@
+openapi: 3.1.0
+x-stoplight:
+  id: o2py3ybt8pfmf
+info:
+  title: dots api
+  version: "1.0"
+  summary: Dots Payout API
+  description: Scalable and Flexible Payouts Infrastructure
+  contact:
+    name: Kartikye Mittal
+    url: "https://dots.dev"
+    email: info@dots.dev
+servers:
+  - url: "https://api.dots.dev/api"
+    description: Production
+tags:
+  - name: users
+    description: User routes
+  - name: transfers
+    description: Transfer routes
+  - name: flows
+    description: Flow routes
+  - name: payout-links
+    description: Payout Link Routes
+  - name: transactions
+    description: Transaction Routes
+paths:
+  /v2/users:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - users
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/user"
+                  has_more:
+                    type: boolean
+      operationId: get-users
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+      description: Get connected users
+    post:
+      summary: ""
+      operationId: post-users
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                country_code:
+                  type: string
+                phone_number:
+                  type: string
+                username:
+                  type:
+                    - string
+                    - "null"
+                  minLength: 1
+                  maxLength: 50
+                metadata:
+                  type:
+                    - string
+                    - object
+                    - "null"
+              required:
+                - first_name
+                - last_name
+                - email
+                - country_code
+                - phone_number
+        description: ""
+      description: Create a user
+    parameters: []
+  "/v2/users/{user_id}":
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: user_id
+        in: path
+        required: true
+        description: Id of the user to fetch
+    get:
+      summary: Your GET endpoint
+      tags:
+        - users
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+      operationId: get-users-user_id
+      description: Get a user by their id
+    delete:
+      summary: ""
+      operationId: delete-users-user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+      description: Delete a user
+  "/v2/users/{user_id}/send_verification_token":
+    parameters:
+      - schema:
+          type: string
+        name: user_id
+        in: path
+        required: true
+        description: Id of the user to fetch
+    post:
+      summary: ""
+      operationId: post-users-user_id-send_verification_token
+      responses:
+        "202":
+          description: Accepted
+      description: Send a user a verification token
+  "/v2/users/{user_id}/verify":
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: user_id
+        in: path
+        required: true
+        description: Id of the user to fetch
+    post:
+      summary: ""
+      operationId: post-users-user_id-verify
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Incorrect token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  minLength: 6
+              required:
+                - token
+      description: Verify a user with a token
+  "/v2/users/{user_id}/payout-methods":
+    parameters:
+      - schema:
+          type: string
+        name: user_id
+        in: path
+        required: true
+        description: Id of the user to fetch
+    get:
+      summary: Your GET endpoint
+      tags:
+        - users
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/payment-method"
+      operationId: get-users-user_id-payout-methods
+      description: Get a user's connected payout methods
+    put:
+      summary: ""
+      operationId: put-users-user_id-payout-methods
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/payment-method"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                platform:
+                  type: string
+                  enum:
+                    - paypal
+                    - venmo
+                    - cash_app
+                    - ach
+                account_number:
+                  type: string
+                routing_number:
+                  type: string
+                email:
+                  type: string
+                phone_number:
+                  type: string
+                cash_tag:
+                  type: string
+              anyOf:
+                - required:
+                    - platform
+                    - account_number
+                    - routing_number
+                - required:
+                    - platform
+                    - email
+                - required:
+                    - platform
+                    - phone_number
+                - required:
+                    - platform
+                    - account_number
+                    - routing_number
+                    - cash_tag
+      description: Add a payout method to the user
+  /v2/transfers:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - transfers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/transfer"
+      operationId: get-transfers
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+      description: Get transfers
+    post:
+      summary: ""
+      operationId: post-transfers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/transfer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  description: The amount in cents to transfer. Negative amount transfers money from the `app` to the `user`.
+                user_id:
+                  type: string
+                  format: uuid
+                tax_exempt:
+                  type:
+                    - boolean
+                    - "null"
+                  description: Transfers marked as `tax_exempt` will not be counted towards the 1099 threshold.
+                idempotency_key:
+                  type:
+                    - string
+                    - "null"
+                  format: uuid
+                metadata:
+                  type:
+                    - string
+                    - object
+                    - "null"
+              required:
+                - amount
+                - user_id
+      description: Create a transfer
+    parameters: []
+  "/v2/transfers/{transfer_id}":
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: transfer_id
+        in: path
+        required: true
+        description: Id of the transfer to fetch
+    get:
+      summary: Your GET endpoint
+      tags:
+        - transfers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/transfer"
+      operationId: get-transfers-transfer_id
+      description: Get a transfer by its Id
+  /v2/flows:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - flows
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/flow"
+      operationId: get-v2-flows
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+      description: Get flows
+    post:
+      summary: ""
+      operationId: post-v2-flows
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/flow"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                steps:
+                  type: array
+                  uniqueItems: true
+                  items:
+                    type: string
+                    enum:
+                      - compliance
+                      - manage-payouts
+                      - manage-payments
+                      - payout
+                user_id:
+                  type:
+                    - string
+                    - "null"
+                  format: uuid
+                metadata:
+                  type:
+                    - string
+                    - object
+                    - "null"
+              required:
+                - steps
+      description: Create a flow
+  "/v2/flows/{flow_id}":
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: flow_id
+        in: path
+        required: true
+        description: Id of the flow to fetch
+    get:
+      summary: Your GET endpoint
+      tags:
+        - flows
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/flow"
+      operationId: get-v2-flows-flow_id
+      description: Get a flow by its id
+  /v2/payout-links:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - payout-links
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/payout-link"
+      operationId: get-v2-payout-links
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+      description: Get payout links
+    post:
+      summary: ""
+      operationId: post-v2-payout-links
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payout-link"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                amount:
+                  type: integer
+                delivery:
+                  type:
+                    - object
+                    - "null"
+                  properties:
+                    message:
+                      type:
+                        - string
+                        - "null"
+                    method:
+                      type:
+                        - string
+                        - "null"
+                      enum:
+                        - sms
+                        - link
+                        - email
+                      description: "`sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`"
+                force_collect_compliance_information:
+                  type: boolean
+                  default: false
+                  description: Force the collection of 1099 or W-8 information. Defaults to `false`.
+                notes:
+                  type:
+                    - string
+                    - object
+                    - "null"
+              oneOf:
+                - properties:
+                    user_id: null
+                    type:
+                      - string
+                      - "null"
+                    format: uuid
+                - properties: null
+                  payee:
+                    type:
+                      - object
+                      - "null"
+                    properties:
+                      first_name:
+                        type:
+                          - string
+                          - "null"
+                      last_name:
+                        type:
+                          - string
+                          - "null"
+                      country_code:
+                        type:
+                          - string
+                          - "null"
+                      phone_number:
+                        type:
+                          - string
+                          - "null"
+                      email:
+                        type:
+                          - string
+                          - "null"
+              required:
+                - amount
+      description: Create a payout link
+  "/v2/payout-links/{payout_link_id}":
+    parameters:
+      - schema:
+          type: string
+        name: payout_link_id
+        in: path
+        required: true
+        description: Id of the payout link
+    get:
+      summary: Your GET endpoint
+      tags:
+        - payout-links
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payout-link"
+      operationId: get-v2-payout-links-payout_link_id
+      description: Get a payout link by its Id
+    delete:
+      summary: ""
+      operationId: delete-v2-payout-links-payout_link_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payout-link"
+      description: Cancel a payout link
+  /v2/payouts:
+    post:
+      summary: ""
+      operationId: post-v2-payouts
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/transfer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: integer
+                  exclusiveMinimum: 0
+                platform:
+                  type: string
+                  enum:
+                    - paypal
+                    - venmo
+                    - ach
+                    - bank_transfer
+                    - cash_app
+                    - default
+                account_id:
+                  type:
+                    - string
+                    - "null"
+                  description: Required for `ach` and `intl_bank`
+                fund:
+                  type:
+                    - boolean
+                    - "null"
+                metadata:
+                  type:
+                    - string
+                    - object
+                    - "null"
+              required:
+                - user_id
+                - amount
+                - platform
+        description: ""
+      description: Create a payout
+  /v2/payouts/send-payout:
+    parameters: []
+    post:
+      summary: ""
+      operationId: post-v2-payouts-send-payout
+      responses:
+        "201":
+          description: Created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                amount:
+                  type: integer
+                delivery:
+                  type:
+                    - object
+                    - "null"
+                  properties:
+                    message:
+                      type:
+                        - string
+                        - "null"
+                force_collect_compliance_information:
+                  type:
+                    - boolean
+                    - "null"
+                  default: false
+                metadata:
+                  type:
+                    - string
+                    - object
+                    - "null"
+              oneOf:
+                - properties: null
+                  user_id:
+                    type:
+                      - string
+                      - "null"
+                    format: uuid
+                - properties: null
+                  payee:
+                    type:
+                      - object
+                      - "null"
+                    properties:
+                      country_code:
+                        type:
+                          - string
+                          - "null"
+                      phone_number:
+                        type:
+                          - string
+                          - "null"
+              required:
+                - amount
+      description: Send a payout
+  /v2/transactions:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - transactions
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/transaction"
+      operationId: get-v2-transactions
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+      description: Get transactions
+  "/v2/transactions/{transaction_id}":
+    parameters:
+      - schema:
+          type: string
+        name: transaction_id
+        in: path
+        required: true
+        description: Id of the transaction
+    get:
+      summary: Your GET endpoint
+      tags:
+        - transactions
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/transaction"
+      operationId: get-v2-transactions-transaction_id
+      description: Get a transaction by its Id
+components:
+  schemas:
+    flow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created:
+          type: string
+          format: date-time
+        user_id:
+          type:
+            - string
+            - "null"
+          format: uuid
+        steps:
+          type: array
+          items:
+            type: string
+            enum:
+              - compliance
+              - manage-payments
+              - manage-payouts
+              - payout
+        completed_steps:
+          type: array
+          items:
+            type: string
+            enum:
+              - compliance
+              - manage-payments
+              - manage-payouts
+              - payout
+        link:
+          type: string
+          format: uri
+        metadata:
+          type:
+            - string
+            - object
+            - "null"
+    payment-method:
+      type: object
+      description: ""
+      anyOf:
+        - properties: null
+          id:
+            type: string
+          platform:
+            type: string
+            enum:
+              - ach
+          description:
+            type: string
+          mask:
+            type: string
+        - properties: null
+          platform:
+            type: string
+            enum:
+              - paypal
+            email:
+              type: string
+        - properties: null
+          platform:
+            type: string
+            enum:
+              - venmo
+          phone_number:
+            type: string
+        - properties: null
+          platform:
+            type: string
+            enum:
+              - cash_app
+          cash_tag:
+            type: string
+        - properties: null
+          platform:
+            type: string
+            enum:
+              - intl_transfer
+          id:
+            type: string
+            format: uuid
+          mask:
+            type: string
+          country:
+            type: string
+            format: iso3166
+          currency:
+            type: string
+            format: iso4217
+      required:
+        - platform
+    payout-link:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created:
+          type: string
+          format: date-time
+        link:
+          type: string
+          format: uri
+        amount:
+          type: number
+        status:
+          type: string
+          enum:
+            - claimed
+            - delivery_pending
+            - delivery_failed
+            - delivered
+            - canceled
+        payee:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            email:
+              type: string
+              format: email
+            country_code:
+              type: string
+            phone_number:
+              type: string
+        delivery:
+          type: object
+          properties:
+            method:
+              type: string
+              enum:
+                - link
+                - sms
+                - email
+            email:
+              type: string
+              format: email
+            country_code:
+              type: string
+            phone_number:
+              type: string
+        tax_exempt:
+          type: boolean
+        claimed_user_id:
+          type: string
+          format: uuid
+        metadata:
+          type:
+            - string
+            - object
+            - "null"
+    transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+        created:
+          type: string
+          format: date-time
+        source_name:
+          type: string
+        destination_name:
+          type: string
+        metadata:
+          type:
+            - string
+            - object
+            - "null"
+    transfer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created:
+          type: string
+          format: date-time
+        user_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - created
+            - pending
+            - failed
+            - completed
+            - flagged
+        type:
+          type: string
+        amount:
+          type: number
+        external_data:
+          type: object
+          properties:
+            account_id:
+              type: string
+            external_id:
+              type: string
+            platform:
+              type: string
+              enum:
+                - ach
+                - paypal
+                - venmo
+                - visa
+                - amazon
+                - cash_app
+                - intl_bank
+                - intl_transfer
+                - bank_transfer
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/transaction"
+        metadata:
+          type:
+            - string
+            - object
+            - "null"
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone_number:
+          type: object
+          properties:
+            country_code:
+              type: string
+            phone_number:
+              type: string
+        wallet:
+          $ref: "#/components/schemas/wallet"
+        compliance:
+          type: object
+          properties:
+            tax_id_collected:
+              type: boolean
+            address_collected:
+              type: boolean
+            date_of_birth_collected:
+              type: boolean
+            1099_collected:
+              type: boolean
+            w8_ben_collected:
+              type: boolean
+            flagged:
+              type: boolean
+        metadata:
+          type:
+            - string
+            - object
+            - "null"
+    wallet:
+      type: object
+      properties:
+        amount:
+          type: integer
+        withdrawable_amount:
+          type: integer
+        credit_balance:
+          type: integer
+  securitySchemes:
+    api_key:
+      type: http
+      scheme: basic
+security:
+  - api_key: []
