@@ -36,18 +36,23 @@ The platform can add additional data to a `user` such as an SSN and address for 
 
 ### Attributes
 
-| Name                          | Type          | Description                                             |
-| ----------------------------- | ------------- | ------------------------------------------------------- |
-| `id`                          | string (uuid) | UUID id of the user                                     |
-| `first_name`                  | string        | User's first name                                       |
-| `last_name`                   | string        | User's last name                                        |
-| `username`                    | string        | User's username                                         |
-| `display_name`                | string        | User's display name                                     |
-| `wallet`                      | object        | \--                                                     |
-| `wallet.amount`               | float         | Amount of dots in the user's wallet                     |
-| `wallet.credit_balance`       | float         | Amount of credit for your app in the user's wallet      |
-| `wallet.withdrawable_balance` | float         | Amount of dots that user can withdraw from their wallet |
-| `ach_accounts`                | array         | Array of ACH accounts                                   |
-| `ach_accounts.name`           | string        | Name of the ACH account                                 |
-| `ach_accounts.id`             | string        | ID of the ACH account                                   |
-| `ach_accounts.mask`           | string        | Last 4 digits of the ach account                        |
+| Name                                 | Type          | Description                                                                                                  |
+| ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------ |
+| `id`                                 | string (uuid) | UUID id of the user                                                                                          |
+| `first_name`                         | string        | User's first name                                                                                            |
+| `last_name`                          | string        | User's last name                                                                                             |
+| `email`                              | string        | User's email                                                                                                 |
+| `phone_number`                       | object        | \--                                                                                                          |
+| `phone_number.country_code`          | string        | The phone number country code e.g. `1`                                                                       |
+| `phone_number.phone_number`          | string        | The phone_number e.g. `1234567890`                                                                           |
+| `wallet`                             | object        | \--                                                                                                          |
+| `wallet.amount`                      | integer       | Balance of the user's wallet in cents                                                                        |
+| `wallet.withdrawable_balance`        | integer       | Withdrawable balance of the user's wallet in cents                                                           |
+| `wallet.credit_balance`              | integer       | Amount of credit for your app in the user's wallet                                                           |
+| `compliance`                         | object        | \--                                                                                                          |
+| `compliance.tax_id_collected`        | boolean       | `true` if tax id is collected and valid                                                                      |
+| `compliance.address_collected`       | boolean       | `true` if address is collected                                                                               |
+| `compliance.date_of_birth_collected` | boolean       | `true` if date of birth is collected                                                                         |
+| `compliance.1099_collected`          | boolean       | `true` if 1099 information is collected                                                                      |
+| `compliance.w8_ben_collected`        | boolean       | `true` if W8-BEN information is collected                                                                    |
+| `compliance.flagged`                 | boolean       | `true` if user is flagged for compliance reasons. Manual review will be required before they can be paid out |
