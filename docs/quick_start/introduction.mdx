@@ -14,24 +14,24 @@ A `Payout Link` is a link that allows a user to onboard onto Dots and withdraw t
 
 ## 1. Create an App
 
-If you haven't already, create an account at [https://senddotssandbox.com](https://senddotssandbox.com) and head over to the `Developer` tab to create an App.
+If you haven't already, create an account at [https://dashboard.dots.dev](https://dashboard.dots.dev) and switch over to Sandbox mode. Head over to the `API Management` tab to generate keys.
 
-## 2. Create a Payout Link
+## 2. Send the Payout
 
-We will create a `Payout Link` for a user whose phone number is known with US $10.
+We will create and send a `Payout Link` to a user whose phone number is known with US $10.
 
 ### Request
 
 Please replace the phone number with your own.
 
 ```bash cURL
-https://pls.senddotssandbox.com/payouts/create_payout_link \
+https://pls.senddotssandbox.com/api/v2/payouts/send-payout \
 -X POST \
 -H "Authorization: Basic <TOKEN>" \
 -H "Content-Type: application/json" \
 -d "{
       "delivery": {
-        "method": "link"
+        "message": "My first payout"
       },
       "amount": 1000,
       "payee": {
@@ -41,29 +41,3 @@ https://pls.senddotssandbox.com/payouts/create_payout_link \
     }"
 
 ```
-
-### Response
-
-```json
-{
-  "success": true,
-  "payout_link": {
-    "id": "844ebf2b-b968-47ce-99cd-9daeeaa2adbb",
-    "link": "https://senddotssandbox.com/payout_link/dsfijw324dqwexfnuishgsdfs",
-    "amount": 1000,
-    "original_amount": 1000,
-    "status": "delivered",
-    "payee": {
-      "country_code": "1",
-      "phone_number": "2025550139",
-      "first_name": null,
-      "last_name": null,
-      "email": null
-    }
-  }
-}
-```
-
-## 3. Send the user to the `Payout Link`
-
-The link can now be sent to any user in any method and can only be claimed through a text message code sent to the phone number. Please navigate to the link and claim it!
