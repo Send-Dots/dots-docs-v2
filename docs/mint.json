@@ -59,7 +59,7 @@
     },
     {
       "group": "Quick start",
-      "pages": ["quick_start/first_payout"]
+      "pages": ["quick_start/first_payout", "quick_start/dots_flows"]
     },
     {
       "group": "Core Resources",
