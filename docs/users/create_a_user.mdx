@@ -1,5 +1,5 @@
 ---
-title: "Create/Connect a User"
+title: "Create a User"
 ---
 
 <Note>
@@ -12,9 +12,7 @@ Create and verify a user to your `application`.
 
 ---
 
-## Creating/Connecting Users
-
-The process of creating a user or connecting an existing user to your application is the same and requires the same steps as listed below.
+## Creating a Users
 
 Creating users happens through the [/v2/users/create](/api#tag/users/paths/~1api~1users~1create/post) endpoint. Once hit, a dots user will be created if one does not exist based on phone number. This user must then be verified through a one-time code sent over text-message. This code can be requested through the [/v2/users/send_verification_token](/api#tag/users/paths/~1api~1users~1send%5Fverification%5Ftoken/post) endpoint and then verified through the [/v2/users/verify_user](/api#tag/users/paths/~1api~1users~1verify%5Fuser/post) endpoint.
 
@@ -39,33 +37,29 @@ Call the [create](/api#tag/users/paths/~1api~1users~1create/post) endpoint
       }'
 
 > response = {
-    "success": true,
-    "action": "verify",
-    "verification_id": "143c7e1c-2295-42c0-9fc9-23756ac26250"
+    "id": "143c7e1c-2295-42c0-9fc9-23756ac26250",
+    "first_name": "Bob",
+    "last_name": "Loblaw",
+    "email": "test@senddots.com",
+    "phone_number": {
+      "country_code": "1",
+      "phone_number": "1234567890"
+    },
+    "wallet": {
+      "amount": 0,
+      "withdrawable_balance": 0,
+      "credit_balance": 0
+    },
+    "compliance": {
+      "tax_id_collected": false,
+      "address_collected": false,
+      "date_of_birth_collected": false,
+      "1099_collected": false,
+      "w8_ben_collected": false,
+      "flagged": false
+    }
   }
 
-```
-
-```python Python
-verification_id = dots.User.create(
-          email="test@senddots.com",
-          country_code="1",
-          phone_number="1234567890",
-          first_name="Bob",
-          last_name="Loblaw"
-        )
-assert verification_id == '143c7e1c-2295-42c0-9fc9-23756ac26250'
-```
-
-```javascript NodeJS
-const verificationId = await dots.User.create(
-  "test@senddots.com",
-  "1",
-  "1234567890",
-  "Bob",
-  "Loblaw"
-);
-verificationId === "143c7e1c-2295-42c0-9fc9-23756ac26250";
 ```
 
 </CodeGroup>
@@ -86,64 +80,25 @@ verificationId === "143c7e1c-2295-42c0-9fc9-23756ac26250";
 <CodeGroup>
 
 ```bash cURL
-> curl https://pls.senddotssandbox.com/v2/users/send_verification_token \
+> curl https://pls.senddotssandbox.com/v2/users/{user_id}/send_verification_token \
   -X POST \
   -H "Authorization: Basic <TOKEN>" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "verification_id": "143c7e1c-2295-42c0-9fc9-23756ac26250"
-      }'
-
-> response = {
-    "success": true
-  }
-
-```
-
-```python Python
-success = dots.User.send_verification_token(verification_id)
-```
-
-```javascript NodeJS
-const success = await dots.User.send_verification_token(verificationId);
 ```
 
 </CodeGroup>
-
-##### Parameters
-
-| Name            | Type   | Required | Description                                   |
-| --------------- | ------ | -------- | --------------------------------------------- |
-| verification_id | string | ✔️       | User's verification id from the previous call |
 
 #### 3\. Submit the verification token by calling the [verify_user](/api#tag/users/paths/~1api~1users~1verify%5Fuser/post) endpoint
 
 <CodeGroup>
 
 ```bash cURL
-curl https://pls.senddotssandbox.com/v2/users/verify_user \
+curl https://pls.senddotssandbox.com/v2/users/{user_id}/verify_user \
   -X POST \
   -H "Authorization: Basic <TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
-        "verification_id": "143c7e1c-2295-42c0-9fc9-23756ac26250",
-        "verification_token": "123456"
+        "token": "123456"
       }'
-
-response = {
-    "success": true,
-    "user": {
-      "id": "ee5498cb-a126-495c-8933-d46918c55593"
-    }
-  }
-```
-
-```python Python
-user_id = dots.User.verify_user(verification_id, verification_token)
-```
-
-```javascript NodeJS
-const userId = await dots.User.verify_user(verificationId, verificationToken);
 ```
 
 </CodeGroup>
@@ -152,5 +107,4 @@ const userId = await dots.User.verify_user(verificationId, verificationToken);
 
 | Name               | Type   | Required | Description                                        |
 | ------------------ | ------ | -------- | -------------------------------------------------- |
-| verification_id    | string | ✔️       | User's dots id from the previous call              |
-| verification_token | string | ✔️       | Verification token sent to the user's phone number |
+| token | string | ✔️       | Verification token sent to the user's phone number |
