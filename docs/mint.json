@@ -106,6 +106,8 @@
           "pages": [
             "users/overview",
             "users/create_a_user",
+            "users/retrieve_a_user",
+            "users/list_all_users",
             "users/add_1099_information",
             "users/add_payout_methods"
           ]

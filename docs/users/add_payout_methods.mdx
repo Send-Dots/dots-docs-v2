@@ -48,6 +48,15 @@ response = {
 
 </CodeGroup>
 
+##### Parameters
+
+| Name           | Type   | Required | Description                                               |
+| -------------- | ------ | -------- | --------------------------------------------------------- |
+| platform       | string | ✔️       | `ach`                                                     |
+| routing_number | string | ✔️       | The routing number of the bank account                    |
+| account_number | string | ✔️       | The account number of the bank account                    |
+| account_type   | string | ✔️       | The type of bank account. Must be `checking` or `savings` |
+
 ## Add PayPal
 
 Add a user's PayPal email address to their account to enable PayPal payouts.
@@ -59,14 +68,13 @@ Call the add_payout_method endpoint
 <CodeGroup>
 
 ```bash cURL
-curl https://pls.senddotssandbox.com/v2/users/wallet/add_payout_method \
+curl https://pls.senddotssandbox.com/v2/users/{user_id}/payout-methods \
   -X POST \
   -H "Authorization: Basic <TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
-        "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
-        "payout_method": "paypal",
-        "payout_id": "bob.loblaw@gmail.com"
+        "platform": "paypal",
+        "email": "bob.loblaw@gmail.com"
       }'
 
 response = {
@@ -85,6 +93,13 @@ response = {
 
 </CodeGroup>
 
+##### Parameters
+
+| Name     | Type   | Required | Description                             |
+| -------- | ------ | -------- | --------------------------------------- |
+| platform | string | ✔️       | `paypal`                                |
+| email    | string | ✔️       | The email address of the PayPal account |
+
 ## Add Venmo
 
 Add a user's Venmo phone number address to their account to enable Venmo payouts.
@@ -96,14 +111,13 @@ Call the [add_payout_method](/api#tag/users/paths/~1api~1users~1wallet~1add%5Fpa
 <CodeGroup>
 
 ```bash cURL
-> curl https://pls.senddotssandbox.com/v2/users/wallet/add_payout_method \
+> curl https://pls.senddotssandbox.com/v2/users/{user_id}/payout-methods \
   -X POST \
   -H "Authorization: Basic <TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
-        "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
-        "payout_method": "venmo",
-        "payout_id": "4158934432"
+        "platform": "venmo",
+        "phone_number": "4158934432"
       }'
 
 > response = {
@@ -120,3 +134,8 @@ Call the [add_payout_method](/api#tag/users/paths/~1api~1users~1wallet~1add%5Fpa
 ```
 
 </CodeGroup>
+
+| Name     | Type   | Required | Description                           |
+| -------- | ------ | -------- | ------------------------------------- |
+| platform | string | ✔️       | `venmo`                               |
+| email    | string | ✔️       | The phone number of the Venmo account |
