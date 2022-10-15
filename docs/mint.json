@@ -59,7 +59,7 @@
     },
     {
       "group": "Quick start",
-      "pages": ["quick_start/introduction"]
+      "pages": ["quick_start/first_payout"]
     },
     {
       "group": "Core Resources",
@@ -113,10 +113,6 @@
           ]
         }
       ]
-    },
-    {
-      "group": "Errors",
-      "pages": ["errors/error_codes"]
     },
     {
       "group": "Guides",
