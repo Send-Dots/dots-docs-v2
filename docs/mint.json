@@ -65,55 +65,51 @@
       "group": "Core Resources",
       "pages": [
         {
+          "group": "Invoices",
+          "pages": [
+            "invoices/overview",
+            "invoices/create_an_invoice",
+            "invoices/retrieve_an_invoice"
+          ]
+        },
+        {
           "group": "Flows",
           "pages": [
             "flows/overview",
             "flows/create_flow",
             "flows/retrieve_a_flow"
           ]
+        },
+        {
+          "group": "Payouts",
+          "pages": [
+            "payouts/overview",
+            "payouts/iframe_payout",
+            "payouts/api_payout",
+            "payouts/payout_link"
+          ]
+        },
+        {
+          "group": "Transfers",
+          "pages": []
+        },
+        {
+          "group": "Transactions",
+          "pages": [
+            "transactions/overview",
+            "transactions/create_a_transaction",
+            "transactions/retrieve_a_transaction"
+          ]
+        },
+        {
+          "group": "Users",
+          "pages": [
+            "users/overview",
+            "users/create_a_user",
+            "users/add_1099_information",
+            "users/add_payout_methods"
+          ]
         }
-      ]
-    },
-    {
-      "group": "Flows",
-      "pages": [
-        "flows/overview",
-        "flows/create_a_flow",
-        "flows/retrieve_a_flow"
-      ]
-    },
-    {
-      "group": "Users",
-      "pages": [
-        "users/overview",
-        "users/create_a_user",
-        "users/add_1099_information",
-        "users/add_payout_methods"
-      ]
-    },
-    {
-      "group": "Transactions",
-      "pages": [
-        "transactions/overview",
-        "transactions/create_a_transaction",
-        "transactions/retrieve_a_transaction"
-      ]
-    },
-    {
-      "group": "Payouts",
-      "pages": [
-        "payouts/overview",
-        "payouts/iframe_payout",
-        "payouts/api_payout",
-        "payouts/payout_link"
-      ]
-    },
-    {
-      "group": "Invoices",
-      "pages": [
-        "invoices/overview",
-        "invoices/create_an_invoice",
-        "invoices/retrieve_an_invoice"
       ]
     },
     {
