@@ -2,6 +2,8 @@
 title: "Dots Drop-in Components"
 ---
 
+![Dots Flows](../images/flows.png)
+
 Dots Flows provides a set of drop-in components that can be used to easily integrate Dots payouts into your mobile or web application.
 
 Flows can be used to onoboard users, collect compliance information, save payout methods and initiate payouts. When a user interacts with a flow, Dots can notify you application through webhook.
@@ -22,7 +24,10 @@ Lets create the first flow to onboard users. This flow will create a Dots user, 
 
 ### Request
 
-<Note>The `onboarding` step is automatically added to the start of all flows if a `user_id` is not provided.
+<Note>
+  The `onboarding` step is automatically added to the start of all flows if a
+  `user_id` is not provided.
+</Note>
 
 ```bash cURL
 https://pls.senddotssandbox.com/api/v2/flows/ \
