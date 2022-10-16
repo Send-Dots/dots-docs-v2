@@ -76,7 +76,7 @@
           "group": "Flows",
           "pages": [
             "flows/overview",
-            "flows/create_flow",
+            "flows/create_a_flow",
             "flows/retrieve_a_flow"
           ]
         },
