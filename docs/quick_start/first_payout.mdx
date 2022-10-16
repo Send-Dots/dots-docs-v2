@@ -2,15 +2,9 @@
 title: "Your First Payout"
 ---
 
-A payout is a transfer of funds from your account to a user. The easiest way to send a payout is through a `Payout Link`.
+A payout is a transfer of funds from your account to a user's external account. The easiest way to send a payout is through the `send-payout` route. If the user exists within the Dots system, the funds are sent to them based on their saved preferences, otherwise, they are sent a link to onboard.
 
-A `Payout Link` is a link that allows a user to onboard onto Dots and withdraw their funds through their method of choice.
-
-## Method
-
-1. Create an App
-2. Create a `Payout Link`
-3. Send the user to the `Payout Link`
+![title](../images/send-payout-flowchart.png)
 
 ## 1. Create an App
 
@@ -41,3 +35,5 @@ https://pls.senddotssandbox.com/api/v2/payouts/send-payout \
     }"
 
 ```
+
+Dots will then text the user with either a link to claim their funds or notify them that the funds have been transfered to their default payout method.

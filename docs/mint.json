@@ -59,7 +59,7 @@
     },
     {
       "group": "Quick start",
-      "pages": ["quick_start/introduction"]
+      "pages": ["quick_start/first_payout", "quick_start/dots_flows"]
     },
     {
       "group": "Core Resources",
@@ -76,7 +76,7 @@
           "group": "Flows",
           "pages": [
             "flows/overview",
-            "flows/create_flow",
+            "flows/create_a_flow",
             "flows/retrieve_a_flow"
           ]
         },
@@ -113,10 +113,6 @@
           ]
         }
       ]
-    },
-    {
-      "group": "Errors",
-      "pages": ["errors/error_codes"]
     },
     {
       "group": "Guides",
