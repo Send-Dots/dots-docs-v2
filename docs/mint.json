@@ -81,6 +81,16 @@
           ]
         },
         {
+          "group": "Payout Links",
+          "pages": [
+            "payout-links/overview",
+            "payout-links/create-a-payout-link",
+            "payout-links/retrieve-a-payout-link",
+            "payout-links/list-all-payout-links",
+            "payout-links/cancel-a-payout-link"
+          ]
+        },
+        {
           "group": "Transfers",
           "pages": [
             "transfers/overview",
@@ -111,8 +121,8 @@
       ]
     },
     {
-      "group": "Guides",
-      "pages": ["country_support/introduction", "guides/unverified_users"]
+      "group": "Other Information",
+      "pages": ["country_support/introduction"]
     },
     {
       "group": "Dots Endpoint (2.0.0)",
@@ -153,7 +163,7 @@
             "api-reference/payout-links/get-payout-links",
             "api-reference/payout-links/create-payout-link",
             "api-reference/payout-links/get-payout-link-by-id",
-            "api-reference/payout-links/delete-payout-link-by-id"
+            "api-reference/payout-links/cancel-a-payout-link-by-id"
           ]
         },
         {

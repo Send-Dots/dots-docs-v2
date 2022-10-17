@@ -1,0 +1,32 @@
+---
+title: "Payout Links Overview"
+---
+
+A Payout Link lets you easily pay anyone through Dots provided UI. Create a link with an amount and send it to the recipient.
+
+## The Payout Link Object
+
+### Example:
+
+```json
+{
+  "id": "69345581-8d8c-4315-b554-bad04d6d6fad",
+  "created": "2019-01-01T00:00:00.000Z",
+  "amount": 10000,
+  "link": "https://my.dots.dev/flow/69345581-8d8c-4315-b554-bad04d6d6fad",
+  "status": "delivered",
+  "payee": {
+    "firt_name": "John",
+    "last_name": "Doe",
+    "email": "john@doe.com",
+    "country_code": null,
+    "phone_number": null
+  },
+  "delivery": {
+    "method": "link"
+  },
+  "tax_exempt": false,
+  "claimed_user_id": null,
+  "metadata": {}
+}
+```
