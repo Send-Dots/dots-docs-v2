@@ -91,7 +91,12 @@
         },
         {
           "group": "Transfers",
-          "pages": []
+          "pages": [
+            "transfers/overview",
+            "transfers/create_a_transfer",
+            "transfers/retrieve_a_transfer",
+            "transfers/list_all_transfers"
+          ]
         },
         {
           "group": "Transactions",
