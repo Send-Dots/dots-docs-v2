@@ -52,14 +52,14 @@
         "overview/introduction",
         "overview/authentication",
         "overview/environments",
-        "overview/error_codes",
+        "overview/error-codes",
         "overview/idempotency",
         "overview/metadata"
       ]
     },
     {
       "group": "Guides",
-      "pages": ["guides/first_payout", "guides/dots_flows"]
+      "pages": ["guides/your-first-payout", "guides/dots-flows"]
     },
     {
       "group": "Core Resources",
@@ -68,44 +68,44 @@
           "group": "Flows",
           "pages": [
             "flows/overview",
-            "flows/create_a_flow",
-            "flows/retrieve_a_flow"
+            "flows/create-a-flow",
+            "flows/retrieve-a-flow"
           ]
         },
         {
           "group": "Payouts",
           "pages": [
             "payouts/overview",
-            "payouts/send_payout",
-            "payouts/create_a_payout"
+            "payouts/send-payout",
+            "payouts/create-a-payout"
           ]
         },
         {
           "group": "Transfers",
           "pages": [
             "transfers/overview",
-            "transfers/create_a_transfer",
-            "transfers/retrieve_a_transfer",
-            "transfers/list_all_transfers"
+            "transfers/create-a-transfer",
+            "transfers/retrieve-a-transfer",
+            "transfers/list-all-transfers"
           ]
         },
         {
           "group": "Transactions",
           "pages": [
             "transactions/overview",
-            "transactions/retrieve_a_transaction",
-            "transactions/list_all_transactions"
+            "transactions/retrieve-a-transaction",
+            "transactions/list-all-transactions"
           ]
         },
         {
           "group": "Users",
           "pages": [
             "users/overview",
-            "users/create_a_user",
-            "users/retrieve_a_user",
-            "users/list_all_users",
-            "users/add_1099_information",
-            "users/add_payout_methods"
+            "users/create-a-user",
+            "users/retrieve-a-user",
+            "users/list-all-users",
+            "users/add-1099-information",
+            "users/add-payout-methods"
           ]
         }
       ]
