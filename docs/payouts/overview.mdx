@@ -2,16 +2,18 @@
 title: "Payouts"
 ---
 
-A `payout` is a transfer of funds from a `user`'s Dots wallet to an external account (such as a bank account). A payout can be initiated by a `user` through iFrames provided by Dots or though API calls made by the platform.
+A `payout` is a type of transfer of funds from a `user`'s Dots wallet to an external account (such as a bank account). A payout can be initiated by a `user` through Flows, Payout Links or through API calls.
 
-## iFrame Payout
+## Flow Payouts
 
-A platform can request a link from Dots through an API call and shown to the user embedded in an iFrame or WebView. The link is tied to a specific `user` and is valid for 15 minutes. The link's appreance is customizable.
+Read more about creating a payout through a Flow [here](/flows/overview).
 
-## API Payout
+## Payout Links
 
-A platform can request a payout through an API call as long as they have provided information about the payout method using the [add_payout_method](/api#tag/users/paths/~1api~1users~1wallet~1add%5Fpayout%5Fmethod/post) endpoint. The platform can then initiate the payout through the API.
+Payouts links can be created through the [`/v2/payouts/send-payout`]() endpoint or if more customization is needed, the [`/v2/payout-links`]() endpoint.
 
-## Payout Link
+The `send-payout` endpoint is a convenience endpoint that sends a Payout Link to new users and delivers the payout to the user's default method if they already exist.
 
-A Payout Link is the easiest way to initiate a payout. The link does not need to be tied to a user and can be delivered via email or SMS. Once the link is claimed, the user will be able to pay themselves out in any method they choose.
+## White-labeled Payouts
+
+For a more white-labeled experience, you can first add a payout method to a user using the [`/v2/users/{user_id}/payout-methods`](https://dots.mintlify.com/users/add_payout_methods) endpoint and then calling the [`/v2/payouts`]() endpoint.

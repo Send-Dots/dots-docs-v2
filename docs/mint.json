@@ -76,9 +76,8 @@
           "group": "Payouts",
           "pages": [
             "payouts/overview",
-            "payouts/iframe_payout",
-            "payouts/api_payout",
-            "payouts/payout_link"
+            "payouts/send_payout",
+            "payouts/create_a_payout"
           ]
         },
         {
