@@ -845,6 +845,65 @@ paths:
                 $ref: "#/components/schemas/transaction"
       operationId: get-v2-transactions-transaction_id
       description: Get a transaction by its id.
+  "/v2/users/{user_id}/kyc":
+    parameters:
+      - schema:
+          type: string
+        name: user_id
+        in: path
+        required: true
+        description: Id of the user to fetch
+    put:
+      summary: ""
+      operationId: put-v2-users-user_id-kyc
+      responses:
+        "200":
+          description: OK
+      description: Add KYC information to a user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity_type:
+                  type: string
+                  enum:
+                    - individual
+                    - business
+                business_name:
+                  type: string
+                  description: Legal bussiness name. Required if `entity_type` is business.
+                tin:
+                  type: string
+                  minLength: 9
+                  maxLength: 9
+                  description: SSN if `entity_type` is `individual`. EIN if `entity_type` is `business`.
+                address:
+                  type: object
+                  required:
+                    - line_1
+                    - city
+                    - state
+                    - country
+                    - postcode
+                  properties:
+                    line_1:
+                      type: string
+                    line_2:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    country:
+                      type: string
+                    postcode:
+                      type: string
+              required:
+                - entity_type
+                - tin
+                - address
 components:
   schemas:
     flow:
