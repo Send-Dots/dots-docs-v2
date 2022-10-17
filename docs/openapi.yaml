@@ -360,6 +360,7 @@ paths:
                 user_id:
                   type: string
                   format: uuid
+                  description: The user's id.
                 tax_exempt:
                   type:
                     - boolean
@@ -375,6 +376,7 @@ paths:
                     - string
                     - object
                     - "null"
+                  description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - amount
                 - user_id
@@ -470,6 +472,7 @@ paths:
                 steps:
                   type: array
                   uniqueItems: true
+                  description: A list of steps.
                   items:
                     type: string
                     enum:
@@ -482,11 +485,13 @@ paths:
                     - string
                     - "null"
                   format: uuid
+                  description: The user's id.
                 metadata:
                   type:
                     - string
                     - object
                     - "null"
+                  description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - steps
       description: Create a flow
@@ -568,6 +573,38 @@ paths:
               type: object
               additionalProperties: false
               properties:
+                user_id:
+                  type:
+                    - string
+                    - "null"
+                  format: uuid
+                  description: The user's id.
+                payee:
+                  type:
+                    - object
+                    - "null"
+                  description: The payee. This is optional.
+                  properties:
+                    first_name:
+                      type:
+                        - string
+                        - "null"
+                    last_name:
+                      type:
+                        - string
+                        - "null"
+                    country_code:
+                      type:
+                        - string
+                        - "null"
+                    phone_number:
+                      type:
+                        - string
+                        - "null"
+                    email:
+                      type:
+                        - string
+                        - "null"
                 amount:
                   type: integer
                 delivery:
@@ -587,49 +624,16 @@ paths:
                         - sms
                         - link
                         - email
-                      description: "`sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`"
+                      description: "Delivery method. `sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`"
                 force_collect_compliance_information:
                   type: boolean
                   default: false
                   description: Force the collection of 1099 or W-8 information. Defaults to `false`.
-                notes:
+                metadata:
                   type:
                     - string
                     - object
                     - "null"
-              oneOf:
-                - properties:
-                    user_id: null
-                    type:
-                      - string
-                      - "null"
-                    format: uuid
-                - properties: null
-                  payee:
-                    type:
-                      - object
-                      - "null"
-                    properties:
-                      first_name:
-                        type:
-                          - string
-                          - "null"
-                      last_name:
-                        type:
-                          - string
-                          - "null"
-                      country_code:
-                        type:
-                          - string
-                          - "null"
-                      phone_number:
-                        type:
-                          - string
-                          - "null"
-                      email:
-                        type:
-                          - string
-                          - "null"
               required:
                 - amount
       description: Create a payout link
@@ -730,9 +734,32 @@ paths:
           application/json:
             schema:
               additionalProperties: false
+              type: object
               properties:
                 amount:
                   type: integer
+                  description: The amount in cents to pay the user.
+                  exclusiveMinimum: 0
+                user_id:
+                  type:
+                    - string
+                    - "null"
+                  format: uuid
+                  description: The user's id. `user_id` or `payee` is required.
+                payee:
+                  type:
+                    - object
+                    - "null"
+                  description: The payee's phone number. `user_id` or `payee` is required.
+                  properties:
+                    country_code:
+                      type:
+                        - string
+                        - "null"
+                    phone_number:
+                      type:
+                        - string
+                        - "null"
                 delivery:
                   type:
                     - object
@@ -742,42 +769,21 @@ paths:
                       type:
                         - string
                         - "null"
+                      description: Message to send with the payout.
                 force_collect_compliance_information:
                   type:
                     - boolean
                     - "null"
                   default: false
+                  description: Collect 1099 or w8-ben information.
                 metadata:
                   type:
                     - string
                     - object
                     - "null"
-              oneOf:
-                - user_id:
-                    type:
-                      - string
-                      - "null"
-                    format: uuid
-                  properties:
-                    "":
-                      type: string
-                - payee:
-                    type:
-                      - object
-                      - "null"
-                    properties:
-                      country_code:
-                        type:
-                          - string
-                          - "null"
-                      phone_number:
-                        type:
-                          - string
-                          - "null"
-                  properties:
-                    "":
-                      type: string
-              type: object
+                  description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+              required:
+                - amount
       description: Send a payout
   /v2/transactions:
     get:
@@ -1038,6 +1044,10 @@ components:
             - flagged
         type:
           type: string
+          enum:
+            - refill
+            - payout
+            - balance
         amount:
           type: number
         external_data:
