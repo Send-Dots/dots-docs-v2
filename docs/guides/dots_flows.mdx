@@ -83,9 +83,26 @@ https://pls.senddotssandbox.com/api/v2/flows/19f4e351-2228-493e-b36f-90c6ecdab9f
 }
 ```
 
-## Step 3: Create a flow for the user to withdraw funds
+## Step 3. Transfer funds to the user
 
-Now that we have the user's `id`, we can create a flow for the user to withdraw funds.
+Now that we have the user's `id`, we can transfer funds to the user's Dots account.
+
+### Request
+
+```bash cURL
+https://pls.senddotssandbox.com/api/v2/transfers/ \
+-X POST \
+-H "Authorization: Basic <TOKEN>" \
+-H "Content-Type: application/json" \
+-d "{
+      "amount": -1000,
+      "user_id": "a1b2c3d4-e5f6-7g8h-9i0j-1k2l3m4n5o6p"
+    }"
+```
+
+## Step 4: Create a flow for the user to withdraw funds
+
+With the user's `id`, we can create a pre-authorized flow for the user to withdraw funds.
 
 ### Request
 
@@ -98,7 +115,6 @@ https://pls.senddotssandbox.com/api/v2/flows/ \
       "user_id": "a1b2c3d4-e5f6-7g8h-9i0j-1k2l3m4n5o6p",
       "steps": ['payout']
     }"
-
 ```
 
-The link will stay autneticated for 15 minutes. If the user takes longer than 15 minutes to complete the flow, they will need to authenticte through an sms token.
+The link will stay authenticated for 15 minutes. If the user takes longer than 15 minutes to complete the flow, they will need to re-authenticte through an sms token.
