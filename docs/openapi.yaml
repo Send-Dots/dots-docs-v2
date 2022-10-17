@@ -63,7 +63,7 @@ paths:
           in: query
           name: ending_before
           description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
-      description: Get connected users
+      description: List all users connected to your application.
     post:
       summary: ""
       operationId: post-users
@@ -126,7 +126,7 @@ paths:
                   metadata:
                     internal_id: user_121344
         description: ""
-      description: Create a user
+      description: Create a user.
     parameters: []
   "/v2/users/{user_id}":
     parameters:
@@ -149,7 +149,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/user"
       operationId: get-users-user_id
-      description: Get a user by their id
+      description: Get a user by their id.
     delete:
       summary: ""
       operationId: delete-users-user_id
@@ -160,7 +160,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/user"
-      description: Delete a user
+      description: Delete a user.
   "/v2/users/{user_id}/send_verification_token":
     parameters:
       - schema:
@@ -175,7 +175,7 @@ paths:
       responses:
         "202":
           description: Accepted
-      description: Send a user a verification token
+      description: Send a user a verification token.
   "/v2/users/{user_id}/verify":
     parameters:
       - schema:
@@ -205,7 +205,7 @@ paths:
                   description: The token sent to the user.
               required:
                 - token
-      description: Verify a user with a token
+      description: Verify a user with a token.
   "/v2/users/{user_id}/payout-methods":
     parameters:
       - schema:
@@ -229,7 +229,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/payment-method"
       operationId: get-users-user_id-payout-methods
-      description: Get a user's connected payout methods
+      description: Get a user's connected payout methods.
     put:
       summary: ""
       operationId: put-users-user_id-payout-methods
@@ -298,7 +298,7 @@ paths:
                   routing_number: "123456789"
                   account_number: "123456789"
                   cash_tag: $cash_tag
-      description: Add a payout method to the user
+      description: "Add a payout method to the user. Payout method can be one of `paypal`, `venmo`, `ach`, or `cash_app`. Each method has different required parameters."
   /v2/transfers:
     get:
       summary: Your GET endpoint
@@ -337,7 +337,7 @@ paths:
           in: query
           name: ending_before
           description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
-      description: Get transfers
+      description: Lsit all transfers.
     post:
       summary: ""
       operationId: post-transfers
@@ -390,7 +390,7 @@ paths:
                   amount: -1000
                   user_id: a169451c-8525-4352-b8ca-070dd449a1a5
         description: ""
-      description: Create a transfer
+      description: Create a transfer.
     parameters: []
   "/v2/transfers/{transfer_id}":
     parameters:
@@ -413,7 +413,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/transfer"
       operationId: get-transfers-transfer_id
-      description: Get a transfer by its Id
+      description: Get a transfer by its id.
   /v2/flows:
     get:
       summary: Your GET endpoint
@@ -452,7 +452,7 @@ paths:
           in: query
           name: ending_before
           description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
-      description: Get flows
+      description: List all Flows.
     post:
       summary: ""
       operationId: post-v2-flows
@@ -494,7 +494,7 @@ paths:
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - steps
-      description: Create a flow
+      description: Create a new Flow.
   "/v2/flows/{flow_id}":
     parameters:
       - schema:
@@ -516,7 +516,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/flow"
       operationId: get-v2-flows-flow_id
-      description: Get a flow by its id
+      description: Get a Flow by its id.
   /v2/payout-links:
     get:
       summary: Your GET endpoint
@@ -555,7 +555,7 @@ paths:
           in: query
           name: ending_before
           description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
-      description: Get payout links
+      description: List all created Payout Links.
     post:
       summary: ""
       operationId: post-v2-payout-links
@@ -624,7 +624,7 @@ paths:
                         - sms
                         - link
                         - email
-                      description: "Delivery method. `sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`"
+                      description: "Delivery method. `sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`."
                 force_collect_compliance_information:
                   type: boolean
                   default: false
@@ -636,7 +636,7 @@ paths:
                     - "null"
               required:
                 - amount
-      description: Create a payout link
+      description: Create a Payout Link.
   "/v2/payout-links/{payout_link_id}":
     parameters:
       - schema:
@@ -657,7 +657,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/payout-link"
       operationId: get-v2-payout-links-payout_link_id
-      description: Get a payout link by its Id
+      description: Get a payout link by its id.
     delete:
       summary: ""
       operationId: delete-v2-payout-links-payout_link_id
@@ -720,7 +720,7 @@ paths:
                 - amount
                 - platform
         description: ""
-      description: Create a payout
+      description: Create a payout for an existing user that has a payout method saved to their account.
   /v2/payouts/send-payout:
     parameters: []
     post:
@@ -784,7 +784,7 @@ paths:
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - amount
-      description: Send a payout
+      description: "Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds."
   /v2/transactions:
     get:
       summary: Your GET endpoint
@@ -823,7 +823,7 @@ paths:
           in: query
           name: ending_before
           description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
-      description: Get transactions
+      description: List all transactions.
   "/v2/transactions/{transaction_id}":
     parameters:
       - schema:
@@ -844,7 +844,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/transaction"
       operationId: get-v2-transactions-transaction_id
-      description: Get a transaction by its Id
+      description: Get a transaction by its id.
 components:
   schemas:
     flow:
