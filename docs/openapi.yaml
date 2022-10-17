@@ -82,32 +82,49 @@ paths:
               properties:
                 first_name:
                   type: string
+                  description: The user's first name.
                 last_name:
                   type: string
+                  description: The user's last name.
                 email:
                   type: string
                   format: email
+                  description: The user's email address.
                 country_code:
                   type: string
+                  description: The user's phone number country code. e.g. "1"
                 phone_number:
                   type: string
+                  description: The user's phone number. e.g. "4157223331"
                 username:
                   type:
                     - string
                     - "null"
                   minLength: 1
                   maxLength: 50
+                  description: Username to assign the user.
                 metadata:
                   type:
                     - string
                     - object
                     - "null"
+                  description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - first_name
                 - last_name
                 - email
                 - country_code
                 - phone_number
+            examples:
+              Example:
+                value:
+                  first_name: Bob
+                  last_name: Loblaw
+                  email: bob@bobloblaw.com
+                  country_code: "1"
+                  phone_number: "4154332334"
+                  metadata:
+                    internal_id: user_121344
         description: ""
       description: Create a user
     parameters: []
@@ -185,6 +202,7 @@ paths:
                 token:
                   type: string
                   minLength: 6
+                  description: The token sent to the user.
               required:
                 - token
       description: Verify a user with a token
@@ -220,9 +238,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/payment-method"
+                $ref: "#/components/schemas/payment-method"
       requestBody:
         content:
           application/json:
@@ -236,32 +252,51 @@ paths:
                     - venmo
                     - cash_app
                     - ach
-                account_number:
-                  type: string
+                  description: Payout platform to add.
                 routing_number:
                   type: string
+                  description: Bank account or Cash App routing number. Required if `platform` = `ach` or `cash_app`.
+                account_number:
+                  type: string
+                  description: Bank account or Cash App account number. Required if `platform` = `ach` or `cash_app`.
+                account_type:
+                  type: string
+                  enum:
+                    - checking
+                    - savings
+                  description: Bank account type. Required if `platform` = `ach`.
                 email:
                   type: string
+                  description: PayPal email address. Required if `platform` = `paypal`.
                 phone_number:
                   type: string
+                  description: Venmo phone number. Required if `platform` = `venmo`.
                 cash_tag:
                   type: string
-              anyOf:
-                - required:
-                    - platform
-                    - account_number
-                    - routing_number
-                - required:
-                    - platform
-                    - email
-                - required:
-                    - platform
-                    - phone_number
-                - required:
-                    - platform
-                    - account_number
-                    - routing_number
-                    - cash_tag
+                  description: Cash App Cash Tag. Required if `platform` = `cash_app`.
+              required:
+                - platform
+            examples:
+              Bank Account:
+                value:
+                  platform: ach
+                  routing_number: "123456789"
+                  account_number: "123456789"
+                  account_type: checking
+              PayPal:
+                value:
+                  platform: paypal
+                  email: bob.loblaw@gmail.com
+              Venmo:
+                value:
+                  platform: venmo
+                  phone_number: "4158934432"
+              Cash App:
+                value:
+                  platform: cash_app
+                  routing_number: "123456789"
+                  account_number: "123456789"
+                  cash_tag: $cash_tag
       description: Add a payout method to the user
   /v2/transfers:
     get:
@@ -342,6 +377,16 @@ paths:
               required:
                 - amount
                 - user_id
+            examples:
+              Send Funds to User:
+                value:
+                  amount: -1000
+                  user_id: a169451c-8525-4352-b8ca-070dd449a1a5
+              Debi Funds from User:
+                value:
+                  amount: -1000
+                  user_id: a169451c-8525-4352-b8ca-070dd449a1a5
+        description: ""
       description: Create a transfer
     parameters: []
   "/v2/transfers/{transfer_id}":
@@ -683,7 +728,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               additionalProperties: false
               properties:
                 amount:
@@ -708,14 +752,15 @@ paths:
                     - object
                     - "null"
               oneOf:
-                - properties: null
-                  user_id:
+                - user_id:
                     type:
                       - string
                       - "null"
                     format: uuid
-                - properties: null
-                  payee:
+                  properties:
+                    "":
+                      type: string
+                - payee:
                     type:
                       - object
                       - "null"
@@ -728,8 +773,10 @@ paths:
                         type:
                           - string
                           - "null"
-              required:
-                - amount
+                  properties:
+                    "":
+                      type: string
+              type: object
       description: Send a payout
   /v2/transactions:
     get:
