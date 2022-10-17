@@ -76,12 +76,6 @@ Make a `POST` request to the [/v2/users](/api-reference/users/create-user) endpo
 | username     | string             |          | User's username on your platform. If the username is taken or left blank a random username will be generated |
 | metadata     | string/object/null |          | Optional metadata to be stored with the user                                                                 |
 
----
-
-> openapi: "POST /v2/users"
-
----
-
 ## Verifying the created User
 
 Once a user is created, they must be verified through a one-time code sent over text-message. This process can be done using Flows or through the API.
