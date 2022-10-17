@@ -58,8 +58,8 @@
       ]
     },
     {
-      "group": "Quick start",
-      "pages": ["quick_start/first_payout", "quick_start/dots_flows"]
+      "group": "Guides",
+      "pages": ["guides/first_payout", "guides/dots_flows"]
     },
     {
       "group": "Core Resources",
@@ -94,8 +94,8 @@
           "group": "Transactions",
           "pages": [
             "transactions/overview",
-            "transactions/create_a_transaction",
-            "transactions/retrieve_a_transaction"
+            "transactions/retrieve_a_transaction",
+            "transactions/list_all_transactions"
           ]
         },
         {

@@ -3,9 +3,7 @@ title: "Transactions"
 sidebarTitle: "Transactions Overview"
 ---
 
-A `transaction` represents a movement of funds on the Dots platform. There are two main types of transactions: `wallet` and `credit`. A `wallet` transaction is a movement of fiat funds and a `credit` transaction is a movement of credit balance that can be issued by the app but is not backed by money.
-
-A `transaction` can only be created between a user's wallet and your app's wallet in both directions. User to User transactions aren't directly allowed.
+A `transaction` represents a movement of funds on the Dots platform. To create a `transaction` you must create a transfer.
 
 ## The Transaction Object
 
@@ -13,59 +11,11 @@ A `transaction` can only be created between a user's wallet and your app's walle
 
 ```json
 {
-  "id": "5cfabe15-d452-4558-8e46-56d90ebe48f7",
-  "date": "1997-06-05",
-  "source_username": "sha",
-  "destination_username": "kartikye",
-  "amount": 700,
-  "completed": true,
-  "type": "wallet",
-  "receipt": {
-    "items": [
-      {
-        "name": "Pikachu Digital Pet",
-        "unit_amount": 250,
-        "quantity": 1,
-        "description": "A little Pikachu for your desktop"
-      },
-      {
-        "name": "Charmander Digital Pet",
-        "unit_amount": 225,
-        "quantity": 2,
-        "description": "A ferocius Charmander for your desktop"
-      }
-    ],
-    "breakdown": {
-      "items_total": 700,
-      "tax": 100,
-      "shipping": 0
-    }
-  },
-  "notes": {
-    "internal_id": "tr_213124"
-  }
+  "id": 12341,
+  "amount": 10000,
+  "created": "2019-01-01T00:00:00.000Z",
+  "source_name": "App",
+  "destination_name": "User",
+  "metadata": {}
 }
 ```
-
-### Attributes
-
-| Name                            | Type          | Description                                                                              |
-| ------------------------------- | ------------- | ---------------------------------------------------------------------------------------- |
-| `id`                            | string (uuid) | UUID id of the transaction                                                               |
-| `date`                          | string        | Date of the transaction                                                                  |
-| `source_username`               | string        | Username of the user the transaction came from                                           |
-| `destination_username`          | string        | Username of the user the transaction went to                                             |
-| `amount`                        | float         | Amount in cents of the transaction                                                       |
-| `type`                          | string        | wallet for regular transactions, credit for transactions made with user's credit balance |
-| `completed`                     | boolean       | Status of the transaction                                                                |
-| `reciept`                       | object        | Object representing the items in the transaction                                         |
-| `reciept.items`                 | array         | Array of objects representing the items in the transaction                               |
-| `reciept.items.name`            | string        | Name of the item                                                                         |
-| `reciept.items.unit_amount`     | integer       | Unit amount of the item in cents                                                         |
-| `reciept.items.quantity`        | integer       | Quantity of the item                                                                     |
-| `reciept.items.description`     | string        | Description of the item                                                                  |
-| `reciept.breakdown`             | object        | Object representing the breakdown of the transaction                                     |
-| `reciept.breakdown.items_total` | integer       | Total amount of the items in the transaction in cents                                    |
-| `reciept.breakdown.tax`         | integer       | Tax amount of the transaction in cents                                                   |
-| `reciept.breakdown.shipping`    | integer       | Shipping amount of the transaction in cents                                              |
-| `notes`                         | object        | Object representing notes that can be customized                                         |
