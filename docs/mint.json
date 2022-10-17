@@ -65,14 +65,6 @@
       "group": "Core Resources",
       "pages": [
         {
-          "group": "Invoices",
-          "pages": [
-            "invoices/overview",
-            "invoices/create_an_invoice",
-            "invoices/retrieve_an_invoice"
-          ]
-        },
-        {
           "group": "Flows",
           "pages": [
             "flows/overview",

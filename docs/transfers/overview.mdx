@@ -1,3 +1,31 @@
 ---
 title: "Transfers"
 ---
+
+A transfer is a collection of transactions on the Dots platform representing a movement of funds. There are three types of transfers: balance, payout and refill. A balance transfer is a transfer of funds between an app's wallet and a user's wallet. A payout transfer is a transfer of funds from a user's account to thier external account. A refill transfer is a transfer of funds from a bank account to a user's wallet.
+
+A transfer can only be created between a user's wallet and your app's wallet in both directions. User to User transfers aren't directly allowed. To create a payout, you must call the `/payouts` endpoint.
+
+## The Transfer Object
+
+```json Example
+{
+  "id": "47b40e06-883d-44d1-b96c-8272195907a7",
+  "created": "2019-01-01T00:00:00.000Z",
+  "user_id": "76b40e06-883d-44d1-a96c-827219591231",
+  "status": "created",
+  "type": "balance",
+  "amount": 10000,
+  "transactions": [
+    {
+      "id": 12341,
+      "amount": 10000,
+      "created": "2019-01-01T00:00:00.000Z",
+      "source_name": "App",
+      "destination_name": "User",
+      "metadata": {}
+    }
+  ],
+  "metadata": {}
+}
+```
