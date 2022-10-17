@@ -112,8 +112,8 @@
       ]
     },
     {
-      "group": "Guides",
-      "pages": ["country_support/introduction", "guides/unverified_users"]
+      "group": "Other Information",
+      "pages": ["country_support/introduction"]
     },
     {
       "group": "Dots Endpoint (2.0.0)",
