@@ -1,0 +1,37 @@
+---
+Title: Webhooks
+---
+
+Dots provides webhook events to track Payout Links, Flows, and Transfers. Webhook endpoints can be configred through Svix in the Api Managment tab.
+
+## Payout Link Events
+
+### `payout_link.updated`
+
+This webhook event is fired when there is a change to the Payout Link's status with the following body:
+
+```json
+{
+  "payout_link_id": "618a48cb-9ffb-4916-8b63-896a92d59443"
+}
+```
+
+## Flow Events
+
+This webhook event is fired when a user completed Flow steps. A Payout Link is a kind of Flow so it will also trigger this event.
+
+Flow event body:
+
+```json
+{
+    "flow_id": "dfff6b89-6437-43be-b835-29fb4c04347c"
+}
+
+## Transfer Events
+
+This webhook is fired when there is a change to the Transfer status with the following body.
+
+{
+    "transfer_id": "ed0e9b81-de07-41b6-ad99-e0b51b412df1"
+}
+```

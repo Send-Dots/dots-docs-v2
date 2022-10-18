@@ -122,7 +122,7 @@
     },
     {
       "group": "Other Information",
-      "pages": ["country_support/introduction"]
+      "pages": ["country_support/introduction", "webhooks/webhooks"]
     },
     {
       "group": "Dots Endpoint (2.0.0)",
