@@ -772,7 +772,7 @@ paths:
                       type:
                         - string
                         - 'null'
-                      description: Message to send with the payout.
+                      description: Message to send with the payout through sms.
                 force_collect_compliance_information:
                   type:
                     - boolean
