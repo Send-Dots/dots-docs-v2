@@ -785,6 +785,9 @@ paths:
                     - object
                     - 'null'
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+                memo:
+                  type: string
+                  description: Add a memo to the top of the Payout Link
               required:
                 - amount
       description: 'Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds.'
