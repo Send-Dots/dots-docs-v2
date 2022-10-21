@@ -949,55 +949,32 @@ components:
     payment-method:
       type: object
       description: ""
-      anyOf:
-        - properties: null
-          id:
-            type: string
-          platform:
-            type: string
-            enum:
-              - ach
-          description:
-            type: string
-          mask:
-            type: string
-        - properties: null
-          platform:
-            type: string
-            enum:
-              - paypal
-            email:
-              type: string
-        - properties: null
-          platform:
-            type: string
-            enum:
-              - venmo
-          phone_number:
-            type: string
-        - properties: null
-          platform:
-            type: string
-            enum:
-              - cash_app
-          cash_tag:
-            type: string
-        - properties: null
-          platform:
-            type: string
-            enum:
-              - intl_transfer
-          id:
-            type: string
-            format: uuid
-          mask:
-            type: string
-          country:
-            type: string
-            format: iso3166
-          currency:
-            type: string
-            format: iso4217
+      properties:
+        id:
+          type: string
+        platform:
+          enum:
+            - ach
+            - paypal
+            - venmo
+            - cash_app
+            - intl_transfer
+        description:
+          type: string
+        mask:
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+        cash_tag:
+          type: string
+        country:
+          type: string
+          format: iso3166
+        currency:
+          type: string
+          format: iso4217
       required:
         - platform
     payout-link:
