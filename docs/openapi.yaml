@@ -851,7 +851,7 @@ paths:
                 $ref: '#/components/schemas/transaction'
       operationId: get-v2-transactions-transaction_id
       description: Get a transaction by its id.
-  '/v2/users/{user_id}/kyc':
+  '/v2/users/{user_id}/compliance':
     parameters:
       - schema:
           type: string
@@ -861,55 +861,161 @@ paths:
         description: Id of the user to fetch
     put:
       summary: ''
-      operationId: put-v2-users-user_id-kyc
+      operationId: put-v2-users-user_id-compliance
       responses:
         '200':
           description: OK
-      description: Add KYC information to a user.
+      description: Add Compliance information to a user.
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                entity_type:
-                  type: string
-                  enum:
-                    - individual
-                    - business
-                business_name:
-                  type: string
-                  description: Legal bussiness name. Required if `entity_type` is business.
-                tin:
-                  type: string
-                  minLength: 9
-                  maxLength: 9
-                  description: SSN if `entity_type` is `individual`. EIN if `entity_type` is `business`.
-                address:
-                  type: object
-                  required:
-                    - line_1
-                    - city
-                    - state
-                    - country
-                    - postcode
+              w9:
+                type: object
                   properties:
-                    line_1:
+                    entity_type:
                       type: string
-                    line_2:
+                      enum:
+                        - individual
+                        - business
+                    business_name:
                       type: string
-                    city:
+                      description: Legal bussiness name. Required if `entity_type` is business.
+                    date_of_birth:
                       type: string
-                    state:
+                      format: date
+                      description: Required if `entity_type` is individual.
+                    tin:
                       type: string
-                    country:
+                      minLength: 9
+                      maxLength: 9
+                      description: SSN if `entity_type` is `individual`. EIN if `entity_type` is `business`.
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postcode
+                      properties:
+                        line_1:
+                          type: string
+                        line_2:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        country:
+                          type: string
+                        postcode:
+                          type: string
+                  required:
+                    - entity_type
+                    - tin
+                    - address
+                    - date_of_birth
+              w8ben:
+                type: object
+                  properties:
+                    name:
                       type: string
-                    postcode:
+                      description: Full name of the person.
+                    citizenship_country:
                       type: string
-              required:
-                - entity_type
-                - tin
-                - address
+                      description: The two-letter ISO country code associated with the beneficial owner's citizenship.
+                    date_of_birth:
+                      type: string
+                      format: date
+                    tin:
+                      type: string
+                      minLength: 9
+                      maxLength: 9
+                      description: SSN 
+                    foreign_tax_id: 
+                      type: string
+                      description: The tax identification number associated with the beneficial owner's country of residence.
+                    tax_treaty_country:
+                      type: string
+                      description: The two-letter ISO country code of the country for tax treaty purposes.
+                    tax_treaty_citation:
+                      type: string
+                      description: The article and paragraph of the citation claimed for tax treaty purposes.
+                    tax_treaty_rate:
+                      type: number
+                      description: The withholding rate claimed for tax treaty purposes. For example, a 15% rate would be represented as 0.15.
+                    tax_treaty_income_type:
+                      type: string
+                      enum:
+                        - interest1
+                        - dividend6
+                        - dividend7
+                        - pension15
+                        - socialSecurity
+                        - equipment10
+                        - knowhow10
+                        - patent10
+                        - film11
+                        - copyright12
+                      description: The type of income for tax treaty purposes. Valid values are
+                          - interest1 (Interest Paid by U.S. Obligors)
+                          - dividend6 (Dividends Paid by U.S. Corporations)
+                          - dividend7 (Dividends Qualifying for Direct Dividend Rate)
+                          - pension15 (Pensions and Annuities)
+                          - socialSecurity (Social Security)
+                          - equipment10 (Industrial Equipment)
+                          - knowhow10 (Know-How/Other Industrial Royalties)
+                          - patent10 (Patents)
+                          - film11 (Film & TV)
+                          - copyright12 (Copyrights)
+                    tax_treaty_explanation: 
+                      type: string
+                      description: An optional explanation for the tax treaty claimed.
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postcode
+                      properties:
+                        line_1:
+                          type: string
+                        line_2:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        country:
+                          type: string
+                        postcode:
+                          type: string
+                    signature:
+                      type: object
+                      properties: 
+                        consent: 
+                          type: boolean
+                          description: The consent of the beneficial owner to the disclosure of their information to the IRS.
+                        name: 
+                          type: string
+                          description: The name of the person signing the form.
+                        email: 
+                          type: string
+                          description: The email address of the person signing the form.
+                      required:
+                        - consent
+                        - name
+                        - email
+                  required:
+                    - name
+                    - citizenship_country
+                    - date_of_birth
+                    - signature
+                    - tin
+                    - address
 components:
   schemas:
     flow:
