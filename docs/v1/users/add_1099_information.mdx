@@ -1,0 +1,52 @@
+---
+title: "Add 1099 Information"
+---
+
+<Note>
+  All requests to the `/v2/users/*` endpoints must include both the `client_id`
+  and `api_key` as detailed in the
+  [Authentication](/docs/quick%5Fstart/authentication) document.
+</Note>
+
+Dots requires the collection of 1099 information for all users located in the United States if they move USD $600 or more within a calendar year. This information is collected automatically by Dots if they use any UI components provided by dots. Otherwise, this information will need to be provided through the API.
+
+## Adding the 1099 Information
+
+Adding 1099 information through the [/v2/users/add_kyc_information](/api-reference/users/add-kyc-kyb) endpoint.
+
+### Method
+
+Call the [add_kyc_information](/api-reference/users/add-kyc-kyb) endpoint
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddotssandbox.com/v2/users/add_kyc_information \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+        "line1": "1 Main St",
+        "line2": "Apt 1",
+        "city": "San Francisco",
+        "state": "CA",
+        "postcode": "94101",
+        "country": "US",
+        "ssn": "809-45-2341"
+      }'
+
+response = {
+    "success": true,
+  }
+```
+
+```python Python
+# TO DO: Write Python Example
+```
+
+```javascript NodeJS
+// TO DO: Write NodeJS Example
+```
+
+</CodeGroup>
