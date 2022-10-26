@@ -1,0 +1,61 @@
+---
+title: "Client Libraries"
+---
+
+## Python
+
+The Python library is available as a [pip](https://pip.pypa.io/en/stable/) package.
+
+<Card
+  title="Python package"
+  icon={brands("python")}
+  href="https://pypi.org/project/dots-python"
+>
+  Download Dots SDK for Python
+</Card>
+
+### Installation
+
+```bash Terminal
+pip install dots-python
+```
+
+### Configuration
+
+```javascript
+import dots
+
+dots.api_base = 'https://pls.senddotssandbox.com/v2/' # defaults to production
+dots.client_id = 'pk_dev_...'
+dots.api_key = 'sk_dev_...'
+```
+
+## Node.js
+
+The Node.js library is available as a [npm](https://www.npmjs.com/) package.
+
+<Card
+  title="NPM package"
+  icon={brands("npm")}
+  href="https://www.npmjs.com/package/dots-node"
+>
+  Download the Dots SDK for NodeJS
+</Card>
+
+### Installation
+
+```bash Terminal
+npm install dots-node
+```
+
+### Configuration
+
+```javascript
+const Dots = require("dots-node");
+const apiURL = "https://pls.senddotssandbox.com/api"; // defaults to production
+const dots = new Dots(
+  process.env.DOTS_CLIENT_ID,
+  process.env.DOTS_API_KEY,
+  apiURL
+);
+```

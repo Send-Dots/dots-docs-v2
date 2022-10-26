@@ -1,0 +1,161 @@
+---
+title: "Create a Transaction"
+---
+
+<Note>
+  All requests to the `/v2/transactions/*` endpoints must include both the
+  `client_id` and `api_key` as detailed in the
+  [Authentication](/docs/quick%5Fstart/authentication) document.
+</Note>
+
+## Send Money to a User
+
+### Method
+
+Make a request to [/v2/transactions/create](/api#tag/transactions/paths/~1api~1transactions~1create/post)
+
+<Note>To send money to a user, `amount` must be negative</Note>
+
+<CodeGroup>
+
+```bash cURL
+> curl https://pls.senddots.com/v2/transactions/create \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "8732b0e5-8d47-4be7-839f-5cdecbe2df99",
+        "amount": -1000,
+        "notes": {
+          "internal_id": "tr_213124"
+        }
+      }'
+
+> response = {
+  "success": true,
+  "transaction": {
+    'id': "5cfabe15-d452-4558-8e46-56d90ebe48f7",
+    'date': "Mon, 21 Feb 2022 21:08:49 GMT",
+    'source_username': "test_app",
+    'destination_username': "bobloblaw",
+    'amount': 1000,
+    'completed': true,
+    "receipt": {},
+    "notes": {
+      "internal_id": "tr_213124"
+    }
+  }
+}
+```
+
+```python Python
+user_id = "8732b0e5-8d47-4be7-839f-5cdecbe2df99"
+amount = -1000
+receipt = {}
+
+breakdown =  {}
+
+notes = {
+  "internal_id": "tr_213124"
+}
+
+transaction = dots.Transaction.create(user_id, amount, reciept, breakdown, notes)
+```
+
+```javascript NodeJS
+const user_id = "8732b0e5-8d47-4be7-839f-5cdecbe2df99";
+const amount = -1000;
+const receipt = {};
+
+const breakdown = {};
+
+const notes = {
+  internal_id: "tr_213124",
+};
+
+const transaction = await dots.Transaction.create(
+  user_id,
+  amount,
+  receipt,
+  breakdown,
+  notes
+);
+```
+
+</CodeGroup>
+
+## Debit Money from a User
+
+### Method
+
+Make a request to [/v2/transactions/create](/api#tag/transactions/paths/~1api~1transactions~1create/post)
+
+<Note>To debit money from a user, `amount` must be positive</Note>
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddots.com/v2/transactions/create \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "8732b0e5-8d47-4be7-839f-5cdecbe2df99",
+        "amount": 1000,
+        "notes": {
+          "internal_id": "tr_213124"
+        }
+      }'
+
+response = {
+    "success": true,
+    "transaction": {
+      'id': "5cfabe15-d452-4558-8e46-56d90ebe48f7",
+      'date': "Mon, 21 Feb 2022 21:08:49 GMT",
+      'source_username': "bobloblaw",
+      'destination_username': "test_app",
+      'amount': 1000,
+      'completed': true,
+      "receipt": {},
+      "notes": {
+        "internal_id": "tr_213124"
+      }
+    }
+  }
+```
+
+```python Python
+user_id = "8732b0e5-8d47-4be7-839f-5cdecbe2df99"
+amount = 1000
+receipt = {}
+
+breakdown =  {}
+
+notes = {
+  "internal_id": "tr_213124"
+}
+
+transaction = dots.Transaction.create(user_id, amount, reciept, breakdown, notes)
+```
+
+```javascript NodeJS
+const user_id = "8732b0e5-8d47-4be7-839f-5cdecbe2df99";
+const amount = 1000;
+const receipt = {};
+
+const breakdown = {};
+
+const notes = {
+  internal_id: "tr_213124",
+};
+
+const transaction = await dots.Transaction.create(
+  user_id,
+  amount,
+  receipt,
+  breakdown,
+  notes
+);
+```
+
+</CodeGroup>

@@ -1,0 +1,41 @@
+---
+title: "Authentication"
+---
+
+Requests are authorized with a Basic token which requires a `client_id` and an `api_key`.
+
+The Basic token is the URL-safe Base64 encoding of a string which contains your `client_id` followed by a `:` for client side requests and your `client_id` and your `api_key` separated by a colon for server side requests.
+
+Header format:
+
+```javascript
+Authorization: Basic {token}
+```
+
+### Client Side Requests
+
+Token format:
+
+```javascript
+BASE64_ENCODE({client_id}):
+```
+
+Example:
+
+```javascript
+ABC123 -> QUJDMTIzOg==
+```
+
+### Server Side Requests
+
+Token format:
+
+```javascript
+BASE64_ENCODE({client_id}:{api_key})
+```
+
+Example:
+
+```javascript
+ABC123:DEF456 -> QUJDMTIzOkRFRjQ1Ng==
+```

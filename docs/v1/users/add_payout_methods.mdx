@@ -1,0 +1,123 @@
+---
+title: "Add Payout Methods"
+---
+
+<Note>
+  All requests to the `/v2/users/*` endpoints must include both the `client_id`
+  and `api_key` as detailed in the
+  [Authentication](/docs/quick%5Fstart/authentication) document.
+</Note>
+
+Payout methods can be added by a user's account by the user through the UI components provided by Dots. For a more custom integration, you can use the [/v2/users/wallet/add_payout_method](/api#tag/users/paths/~1api~1users~1wallet~1add%5Fpayout%5Fmethod/post) endpoint to do the same.
+
+## Add an ACH Account
+
+Add a user's bank account information to enable ACH payouts.
+
+### Method
+
+Call the add_payout_method endpoint
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddotssandbox.com/v2/users/wallet/add_payout_method \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+        "payout_method": "ach",
+        "ach_routing_number": "123456789",
+        "ach_account_number": "123456789",
+        "ach_account_type": "checking",
+      }'
+
+response = {
+    "success": true,
+    "ach_account_id": "acc_dfsf983kkjdsf",
+  }
+```
+
+```python Python
+# TO DO: Write Python Example
+```
+
+```javascript NodeJS
+// TO DO: Write NodeJS Example
+```
+
+</CodeGroup>
+
+## Add PayPal
+
+Add a user's PayPal email address to their account to enable PayPal payouts.
+
+### Method
+
+Call the add_payout_method endpoint
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddotssandbox.com/v2/users/wallet/add_payout_method \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+        "payout_method": "paypal",
+        "payout_id": "bob.loblaw@gmail.com"
+      }'
+
+response = {
+    "success": true,
+  }
+
+```
+
+```python Python
+# TO DO: Write Python Example
+```
+
+```javascript NodeJS
+// TO DO: Write NodeJS Example
+```
+
+</CodeGroup>
+
+## Add Venmo
+
+Add a user's Venmo phone number address to their account to enable Venmo payouts.
+
+### Method
+
+Call the [add_payout_method](/api#tag/users/paths/~1api~1users~1wallet~1add%5Fpayout%5Fmethod/post) endpoint
+
+<CodeGroup>
+
+```bash cURL
+> curl https://pls.senddotssandbox.com/v2/users/wallet/add_payout_method \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+        "payout_method": "venmo",
+        "payout_id": "4158934432"
+      }'
+
+> response = {
+    "success": true,
+  }
+```
+
+```python Python
+# TO DO: Write Python Example
+```
+
+```javascript NodeJS
+// TO DO: Write NodeJS Example
+```
+
+</CodeGroup>

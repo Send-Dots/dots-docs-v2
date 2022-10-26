@@ -45,8 +45,10 @@
       "url": "https://github.com/Send-Dots"
     }
   ],
+  "versions": ["v2", "v1"],
   "navigation": [
     {
+      "version": "v2",
       "group": "Overview",
       "pages": [
         "overview/introduction",
@@ -58,10 +60,12 @@
       ]
     },
     {
+      "version": "v2",
       "group": "Guides",
       "pages": ["guides/your-first-payout", "guides/dots-flows"]
     },
     {
+      "version": "v2",
       "group": "Core Resources",
       "pages": [
         {
@@ -125,8 +129,81 @@
       ]
     },
     {
+      "version": "v2",
       "group": "Other Information",
       "pages": ["country_support/introduction", "webhooks/webhooks"]
+    },
+    {
+      "version": "v1",
+      "group": "Welcome",
+      "pages": ["v1/introduction"]
+    },
+    {
+      "version": "v1",
+      "group": "Quick start",
+      "pages": [
+        "v1/quick_start/authentication",
+        "v1/quick_start/environments",
+        "v1/quick_start/libraries",
+        "v1/quick_start/introduction"
+      ]
+    },
+    {
+      "version": "v1",
+      "group": "Flows",
+      "pages": [
+        "v1/flows/overview",
+        "v1/flows/create_a_flow",
+        "v1/flows/retrieve_a_flow"
+      ]
+    },
+    {
+      "version": "v1",
+      "group": "Users",
+      "pages": [
+        "v1/users/overview",
+        "v1/users/create_a_user",
+        "v1/users/add_1099_information",
+        "v1/users/add_payout_methods"
+      ]
+    },
+    {
+      "version": "v1",
+      "group": "Transactions",
+      "pages": [
+        "v1/transactions/overview",
+        "v1/transactions/create_a_transaction",
+        "v1/transactions/retrieve_a_transaction"
+      ]
+    },
+    {
+      "version": "v1",
+      "group": "Payouts",
+      "pages": [
+        "v1/payouts/overview",
+        "v1/payouts/iframe_payout",
+        "v1/payouts/api_payout",
+        "v1/payouts/payout_link"
+      ]
+    },
+    {
+      "version": "v1",
+      "group": "Invoices",
+      "pages": [
+        "v1/invoices/overview",
+        "v1/invoices/create_an_invoice",
+        "v1/invoices/retrieve_an_invoice"
+      ]
+    },
+    {
+      "version": "v1",
+      "group": "Errors",
+      "pages": ["v1/errors/error_codes"]
+    },
+    {
+      "version": "v1",
+      "group": "Guides",
+      "pages": ["v1/country_support/introduction", "v1/guides/unverified_users"]
     },
     {
       "group": "Dots Endpoint (2.0.0)",

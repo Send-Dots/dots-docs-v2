@@ -1,0 +1,57 @@
+---
+title: "Dots Flows"
+sidebarTitle: "Flows Overview"
+description: "Flows provide a simple yet customizable way to integrate payouts into your application."
+---
+
+Onboard your users, let them manage their payout accounts and preferences, and then pay them out when needed.
+
+## Flow Steps
+
+### Authentication and Onboarding
+
+The `authentication` and `onboarding` step are automatically added to the start of your flow when a `user_id` is not provided in the API call. When this step is complete, a `user_id` is added to the `flow` object.
+
+### Compliance
+
+Adding the `compliance` step to your flow will force the collection of a user's SSN, date of birth, and address if based in the US. Otherwise, the `compliance` step will be added automatically based on local tax laws.
+
+### Payment Method Management
+
+The `manage-payments` lets a user connect their US bank account for payments to your app.
+
+### Payout Method Management
+
+The `manage-payouts` lets a user connect their desired payout methods to Dots and choose a default method.
+
+### Payout
+
+The `payout` step lets the user withdraw their funds to their preferred payout method.
+
+## Example Flow
+
+This example flow onboards a user, collects compliance information, and then lets them manage their payment methods.
+
+```bash
+> curl https://pls.senddotssandbox.com/v2/flow/create \
+-X POST \
+-H "Authorization: Basic <TOKEN>" \
+-H "Content-Type: application/json" \
+-d '{
+      "steps": ["compliance", "manage-payouts"],
+    }'
+
+> response = {
+    "id": "5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8",
+    "created": "2020-12-09T00:40:51.107Z",
+    "updated": "2020-12-09T00:40:51.107Z",
+    "user_id": null,
+    "steps": ["compliance", "manage-payouts"],
+    "completed_steps": [],
+    "payout_link_id": null,
+    "link": "https://my.senddotssandbox.com/flow/5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8",
+}
+
+```
+
+A webhook is sent to your app on completion of every step of the flow.

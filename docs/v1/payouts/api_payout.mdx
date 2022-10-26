@@ -1,0 +1,116 @@
+---
+title: "Create an API Payout"
+description: "All requests to the /v2/payouts/* endpoints must include both the clientid and apikey as detailed in the Authentication document."
+---
+
+info
+
+All requests to the `/v2/payouts/*` endpoints must include both the `client_id` and `api_key` as detailed in the [Authentication](/docs/quick%5Fstart/authentication) document.
+
+First, follow the guide [here](/docs/users/add%5Fpayout%5Fmethods) to add a payout method to a user.
+
+## Create an ACH Payout
+
+### Method
+
+Make a request to the [/v2/payouts/create](/api#tag/payouts/paths/~1api~1payouts~1create/post) endpoint
+
+<CodeGroup>
+
+```bash cURL
+> curl https://pls.senddotssandbox.com/v2/payouts/create \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "8732b0e5-8d47-4be7-839f-5cdecbe2df99",
+        "amount": 1000,
+        "payout_method": "ach",
+        "ach_account_id": "acc_dfsf983kkjdsf",
+      }'
+
+> response = {
+    "success": true,
+  }
+
+```
+
+```python Python
+# TO DO: Write Python Example
+```
+
+```javascript NodeJS
+// TO DO: Write NodeJS Example
+```
+
+</CodeGroup>
+
+## Create a PayPal Payout
+
+### Method
+
+Make a request to the [/v2/payouts/create](/api#tag/payouts/paths/~1api~1payouts~1create/post) endpoint
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddotssandbox.com/v2/payouts/create \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "8732b0e5-8d47-4be7-839f-5cdecbe2df99",
+        "amount": 1000,
+        "payout_method": "paypal"
+      }'
+
+response = {
+    "success": true,
+  }
+
+```
+
+```python Python
+# TO DO: Write Python Example
+```
+
+```javascript NodeJS
+// TO DO: Write NodeJS Example
+```
+
+</CodeGroup>
+
+## Create a Venmo Payout
+
+### Method
+
+Make a request to the [/v2/payouts/create](/api#tag/payouts/paths/~1api~1payouts~1create/post) endpoint
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddotssandbox.com/v2/payouts/create \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "8732b0e5-8d47-4be7-839f-5cdecbe2df99",
+        "amount": 1000,
+        "payout_method": "venmo"
+      }'
+
+response = {
+    "success": true,
+  }
+
+```
+
+```python Python
+# TO DO: Write Python Example
+```
+
+```javascript NodeJS
+// TO DO: Write NodeJS Example
+```
+
+</CodeGroup>

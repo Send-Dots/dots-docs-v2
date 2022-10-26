@@ -1,0 +1,64 @@
+---
+title: "Create an iFrame Payout"
+---
+
+<Note>
+
+All requests to the `/v2/users/*` endpoints must include both the `client_id` and `api_key` as detailed in the [Authentication](/docs/quick%5Fstart/authentication) document.
+
+</Note>
+
+To create an iFrame payout, a link must be generated and shown to the user via iframe or webview. The link will be valid for 15 minutes after API response.
+
+## Generate a Link
+
+### Method
+
+Make a request to the [/v2/users/wallet/payout](/api#tag/users/paths/~1api~1users~1wallet~1payout/post) endpoint
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddotssandbox.com/v2/users/wallet/payout \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "user_id": "8732b0e5-8d47-4be7-839f-5cdecbe2df99"
+      }'
+
+response = {
+    "success": true,
+    "link": "https://senddotssandbox.com/payout/Bug3toxuH6QCv9au820z5iZPfmQvZohAvMaNrpIASGXzk9asgkldjla"
+  }
+
+```
+
+```python Python
+link = dots.User.generate_payout_link(user_id)
+assert link == 'https://senddotssandbox.com/payout/Bug3toxuH6QCv9au820z5iZPfmQvZohAvMaNrpIASGXzk9asgkldjla'
+
+```
+
+```javascript NodeJS
+const link = await dots.User.generatePayoutLink(userId);
+link ===
+  "https://senddotssandbox.com/payout/Bug3toxuH6QCv9au820z5iZPfmQvZohAvMaNrpIASGXzk9asgkldjla";
+```
+
+</CodeGroup>
+
+### Styling
+
+The contents of the link can be styled through URL variables. The variables can be appended to the end of the link. For example:
+
+`https://senddotssandbox.com/payout/Bug3toxuH6QCv9au820z5iZPfmQvZohAvMaNrpIASGXzk9asgkldjla?iframe=true&bgColor=000000&textColor=ffffff`
+
+The available variables are:
+
+| Variable  | Description                                                                   |
+| --------- | ----------------------------------------------------------------------------- |
+| iframe    | If set to true, the link will be rendered for use in an iframe                |
+| bgColor   | The background color of the iframe. Set as hex code without the #. eg. 000000 |
+| textColor | The text color of the iframe. Set as hex code without the #. eg. ffffff       |
+| darkMode  | If set to true of the bgColor is 'dark'.                                      |

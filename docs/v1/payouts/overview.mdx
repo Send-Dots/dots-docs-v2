@@ -1,0 +1,19 @@
+---
+title: "Payouts"
+sidebarTitle: "Payouts Overview"
+description: "A payout is a transfer of funds from a user's Dots wallet to an external account (such as a bank account). A payout can be initiated by a user through iFrames provided by Dots or though API calls made by the platform."
+---
+
+A `payout` is a transfer of funds from a `user`'s Dots wallet to an external account (such as a bank account). A payout can be initiated by a `user` through iFrames provided by Dots or though API calls made by the platform.
+
+## iFrame Payout
+
+A platform can request a link from Dots through an API call and shown to the user embedded in an iFrame or WebView. The link is tied to a specific `user` and is valid for 15 minutes. The link's appreance is customizable.
+
+## API Payout
+
+A platform can request a payout through an API call as long as they have provided information about the payout method using the [add_payout_method](/api#tag/users/paths/~1api~1users~1wallet~1add%5Fpayout%5Fmethod/post) endpoint. The platform can then initiate the payout through the API.
+
+## Payout Link
+
+A Payout Link is the easiest way to initiate a payout. The link does not need to be tied to a user and can be delivered via email or SMS. Once the link is claimed, the user will be able to pay themselves out in any method they choose.
