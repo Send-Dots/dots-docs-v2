@@ -791,6 +791,121 @@ paths:
               required:
                 - amount
       description: 'Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds.'
+  /v2/payout-requests:
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-v2-payouts-requests
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payout-request'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: false
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  description: The amount in cents to pay the user.
+                  exclusiveMinimum: 0
+                user_id:
+                  type:
+                    - string
+                    - 'null'
+                  format: uuid
+                  description: The user's id. `user_id` or `payee` is required.
+                payee:
+                  type:
+                    - object
+                    - 'null'
+                  description: The payee's phone number. `user_id` or `payee` is required.
+                  properties:
+                    country_code:
+                      type:
+                        - string
+                        - 'null'
+                    phone_number:
+                      type:
+                        - string
+                        - 'null'
+                metadata:
+                  type:
+                    - string
+                    - object
+                    - 'null'
+                  description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+                memo:
+                  type: string
+                  description: Add a memo to payout request
+              required:
+                - amount
+      description: 'Submit a payout request from a person when you know their phone number or user id. Once the payout request is approved, they will be sent a Payout Link to onboard and recieve funds.'
+    get:
+      summary: Your GET endpoint
+      tags:
+        - payout-requests
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/payout-request'
+      operationId: get-v2-payout-requests
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: starting_after
+          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: ending_before
+          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+      description: List all payout requests.
+  '/v2/payout-requests/{payout_request_id}':
+    parameters:
+      - schema:
+          type: string
+        name: payout_request_id
+        in: path
+        required: true
+        description: Id of the payout request
+    get:
+      summary: Your GET endpoint
+      tags:
+        - payout-requests
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payout-request'
+      operationId: get-v2-payout-requests-payout_request_id
+      description: Get a payout request by its id.
+
   /v2/transactions:
     get:
       summary: Your GET endpoint
@@ -1152,6 +1267,42 @@ components:
             - string
             - object
             - 'null'
+    payout-request:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created:
+          type: string
+          format: date-time
+        amount:
+          type: number
+        status:
+          type: string
+          enum:
+            - created
+            - approved
+            - rejected
+        payee:
+          type: object
+          properties:
+            country_code:
+              type: string
+            phone_number:
+              type: string
+        payout-link:
+          $ref: '#/components/schemas/payout-link'
+        user:
+          $ref: '#/components/schemas/user'
+        metadata:
+          type:
+            - string
+            - object
+            - 'null'
+        memo:
+          type:
+            - string
     transaction:
       type: object
       properties:
