@@ -91,6 +91,10 @@
           ]
         },
         {
+          "group": "Payout Requests",
+          "pages": ["payout-requests/create-a-payout-request"]
+        },
+        {
           "group": "Transfers",
           "pages": [
             "transfers/overview",
