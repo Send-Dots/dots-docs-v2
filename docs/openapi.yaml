@@ -70,7 +70,7 @@ paths:
       description: List all users connected to your application.
     post:
       summary: Create a User
-      operationId: post-users
+      operationId: create-user
       responses:
         '200':
           description: OK
@@ -101,9 +101,7 @@ paths:
                   type: string
                   description: The user's phone number. e.g. "4157223331"
                 username:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   minLength: 1
                   maxLength: 50
                   description: Username to assign the user.
@@ -111,7 +109,6 @@ paths:
                   type:
                     - string
                     - object
-                    - 'null'
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - first_name
@@ -154,11 +151,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
-      operationId: get-users-user_id
+      operationId: get-user
       description: Get a user by their id.
     delete:
       summary: Delete a User
-      operationId: delete-users-user_id
+      operationId: delete-user
       responses:
         '200':
           description: OK
@@ -179,7 +176,7 @@ paths:
         description: Id of the user to fetch
     put:
       summary: Submit Compliance Information
-      operationId: put-v2-users-user_id-compliance
+      operationId: submit-compliance
       responses:
         '200':
           description: OK
@@ -188,142 +185,144 @@ paths:
         content:
           application/json:
             schema:
-              w9:
-                type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                      - individual
-                      - business
-                  business_name:
-                    type: string
-                    description: Legal bussiness name. Required if `entity_type` is business.
-                  date_of_birth:
-                    type: string
-                    format: date
-                    description: Required if `entity_type` is individual.
-                  tin:
-                    type: string
-                    minLength: 9
-                    maxLength: 9
-                    description: SSN if `entity_type` is `individual`. EIN if `entity_type` is `business`.
-                  address:
-                    type: object
-                    required:
-                      - line_1
-                      - city
-                      - state
-                      - country
-                      - postcode
-                    properties:
-                      line_1:
-                        type: string
-                      line_2:
-                        type: string
-                      city:
-                        type: string
-                      state:
-                        type: string
-                      country:
-                        type: string
-                      postcode:
-                        type: string
-                required:
-                  - entity_type
-                  - tin
-                  - address
-                  - date_of_birth
-              w8ben:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: Full name of the person.
-                  citizenship_country:
-                    type: string
-                    description: The two-letter ISO country code associated with the beneficial owner's citizenship.
-                  date_of_birth:
-                    type: string
-                    format: date
-                  tin:
-                    type: string
-                    minLength: 9
-                    maxLength: 9
-                    description: SSN
-                  foreign_tax_id:
-                    type: string
-                    description: The tax identification number associated with the beneficial owner's country of residence.
-                  tax_treaty_country:
-                    type: string
-                    description: The two-letter ISO country code of the country for tax treaty purposes.
-                  tax_treaty_citation:
-                    type: string
-                    description: The article and paragraph of the citation claimed for tax treaty purposes.
-                  tax_treaty_rate:
-                    type: number
-                    description: 'The withholding rate claimed for tax treaty purposes. For example, a 15% rate would be represented as 0.15.'
-                  tax_treaty_income_type:
-                    type: string
-                    enum:
-                      - interest1
-                      - dividend6
-                      - dividend7
-                      - pension15
-                      - socialSecurity
-                      - equipment10
-                      - knowhow10
-                      - patent10
-                      - film11
-                      - copyright12
-                    description: The type of income for tax treaty purposes. Valid values are - interest1 (Interest Paid by U.S. Obligors) - dividend6 (Dividends Paid by U.S. Corporations) - dividend7 (Dividends Qualifying for Direct Dividend Rate) - pension15 (Pensions and Annuities) - socialSecurity (Social Security) - equipment10 (Industrial Equipment) - knowhow10 (Know-How/Other Industrial Royalties) - patent10 (Patents) - film11 (Film & TV) - copyright12 (Copyrights)
-                  tax_treaty_explanation:
-                    type: string
-                    description: An optional explanation for the tax treaty claimed.
-                  address:
-                    type: object
-                    required:
-                      - line_1
-                      - city
-                      - state
-                      - country
-                      - postcode
-                    properties:
-                      line_1:
-                        type: string
-                      line_2:
-                        type: string
-                      city:
-                        type: string
-                      state:
-                        type: string
-                      country:
-                        type: string
-                      postcode:
-                        type: string
-                  signature:
-                    type: object
-                    properties:
-                      consent:
-                        type: boolean
-                        description: The consent of the beneficial owner to the disclosure of their information to the IRS.
-                      name:
-                        type: string
-                        description: The name of the person signing the form.
-                      email:
-                        type: string
-                        description: The email address of the person signing the form.
-                    required:
-                      - consent
-                      - name
-                      - email
-                required:
-                  - name
-                  - citizenship_country
-                  - date_of_birth
-                  - signature
-                  - tin
-                  - address
+              type: object
+              properties:
+                w9:
+                  type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                        - individual
+                        - business
+                    business_name:
+                      type: string
+                      description: Legal bussiness name. Required if `entity_type` is business.
+                    date_of_birth:
+                      type: string
+                      format: date
+                      description: Required if `entity_type` is individual.
+                    tin:
+                      type: string
+                      minLength: 9
+                      maxLength: 9
+                      description: SSN if `entity_type` is `individual`. EIN if `entity_type` is `business`.
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postcode
+                      properties:
+                        line_1:
+                          type: string
+                        line_2:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        country:
+                          type: string
+                        postcode:
+                          type: string
+                  required:
+                    - entity_type
+                    - tin
+                    - address
+                    - date_of_birth
+                w8ben:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Full name of the person.
+                    citizenship_country:
+                      type: string
+                      description: The two-letter ISO country code associated with the beneficial owner's citizenship.
+                    date_of_birth:
+                      type: string
+                      format: date
+                    tin:
+                      type: string
+                      minLength: 9
+                      maxLength: 9
+                      description: SSN
+                    foreign_tax_id:
+                      type: string
+                      description: The tax identification number associated with the beneficial owner's country of residence.
+                    tax_treaty_country:
+                      type: string
+                      description: The two-letter ISO country code of the country for tax treaty purposes.
+                    tax_treaty_citation:
+                      type: string
+                      description: The article and paragraph of the citation claimed for tax treaty purposes.
+                    tax_treaty_rate:
+                      type: number
+                      description: 'The withholding rate claimed for tax treaty purposes. For example, a 15% rate would be represented as 0.15.'
+                    tax_treaty_income_type:
+                      type: string
+                      enum:
+                        - interest1
+                        - dividend6
+                        - dividend7
+                        - pension15
+                        - socialSecurity
+                        - equipment10
+                        - knowhow10
+                        - patent10
+                        - film11
+                        - copyright12
+                      description: The type of income for tax treaty purposes. Valid values are - interest1 (Interest Paid by U.S. Obligors) - dividend6 (Dividends Paid by U.S. Corporations) - dividend7 (Dividends Qualifying for Direct Dividend Rate) - pension15 (Pensions and Annuities) - socialSecurity (Social Security) - equipment10 (Industrial Equipment) - knowhow10 (Know-How/Other Industrial Royalties) - patent10 (Patents) - film11 (Film & TV) - copyright12 (Copyrights)
+                    tax_treaty_explanation:
+                      type: string
+                      description: An optional explanation for the tax treaty claimed.
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postcode
+                      properties:
+                        line_1:
+                          type: string
+                        line_2:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        country:
+                          type: string
+                        postcode:
+                          type: string
+                    signature:
+                      type: object
+                      properties:
+                        consent:
+                          type: boolean
+                          description: The consent of the beneficial owner to the disclosure of their information to the IRS.
+                        name:
+                          type: string
+                          description: The name of the person signing the form.
+                        email:
+                          type: string
+                          description: The email address of the person signing the form.
+                      required:
+                        - consent
+                        - name
+                        - email
+                  required:
+                    - name
+                    - citizenship_country
+                    - date_of_birth
+                    - signature
+                    - tin
+                    - address
       tags:
         - users
   '/v2/users/{user_id}/send-verification-token':
@@ -336,7 +335,7 @@ paths:
         description: Id of the user to fetch
     post:
       summary: Send a Verification Token
-      operationId: post-users-user_id-send-verification-token
+      operationId: send-verification-token
       responses:
         '202':
           description: Accepted
@@ -354,7 +353,7 @@ paths:
         description: Id of the user to fetch
     post:
       summary: Verify a User
-      operationId: post-users-user_id-verify
+      operationId: verify
       responses:
         '200':
           description: OK
@@ -397,11 +396,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/payment-method'
-      operationId: get-users-user_id-payout-methods
+      operationId: get-payout-methods
       description: Get a user's connected payout methods.
     put:
       summary: Add a Payout Method
-      operationId: put-users-user_id-payout-methods
+      operationId: add-payout-method
       responses:
         '200':
           description: OK
@@ -511,7 +510,7 @@ paths:
       description: Lsit all transfers.
     post:
       summary: Create a Transfer
-      operationId: post-transfers
+      operationId: create-transfer
       responses:
         '200':
           description: OK
@@ -585,7 +584,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/transfer'
-      operationId: get-transfers-transfer_id
+      operationId: get-transfer
       description: Get a transfer by its id.
   /v2/flows:
     get:
@@ -606,7 +605,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/flow'
-      operationId: get-v2-flows
+      operationId: get-flows
       parameters:
         - schema:
             type: integer
@@ -628,7 +627,7 @@ paths:
       description: List all Flows.
     post:
       summary: Create a Flow
-      operationId: post-v2-flows
+      operationId: create-flow
       responses:
         '200':
           description: OK
@@ -654,16 +653,13 @@ paths:
                       - manage-payments
                       - payout
                 user_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   format: uuid
                   description: The user's id.
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - steps
@@ -690,7 +686,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/flow'
-      operationId: get-v2-flows-flow_id
+      operationId: get-flow
       description: Get a Flow by its id.
   /v2/payout-links:
     get:
@@ -711,7 +707,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/payout-link'
-      operationId: get-v2-payout-links
+      operationId: get-payout-links
       parameters:
         - schema:
             type: integer
@@ -733,7 +729,7 @@ paths:
       description: List all created Payout Links.
     post:
       summary: Create a Payout Link
-      operationId: post-v2-payout-links
+      operationId: create-payout-link
       responses:
         '200':
           description: OK
@@ -749,52 +745,32 @@ paths:
               additionalProperties: false
               properties:
                 user_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   format: uuid
                   description: The user's id.
                 payee:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   description: The payee. This is optional.
                   properties:
                     first_name:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     last_name:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     country_code:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     phone_number:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     email:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                 amount:
                   type: integer
                 delivery:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   properties:
                     message:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     method:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                       enum:
                         - sms
                         - link
@@ -808,7 +784,6 @@ paths:
                   type:
                     - string
                     - object
-                    - 'null'
                 memo:
                   type: string
                   description: Add a memo to the top of the Payout Link
@@ -836,11 +811,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payout-link'
-      operationId: get-v2-payout-links-payout_link_id
+      operationId: get-payout-link
       description: Get a payout link by its id.
     delete:
       summary: Delete a Payout Link
-      operationId: delete-v2-payout-links-payout_link_id
+      operationId: delete-payout-link
       responses:
         '200':
           description: OK
@@ -854,7 +829,7 @@ paths:
   /v2/payouts:
     post:
       summary: Create a Payout
-      operationId: post-v2-payouts
+      operationId: create-payout
       responses:
         '201':
           description: Created
@@ -884,19 +859,14 @@ paths:
                     - cash_app
                     - default
                 account_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   description: Required for `ach` and `intl_bank`
                 fund:
-                  type:
-                    - boolean
-                    - 'null'
+                  type: boolean
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
               required:
                 - user_id
                 - amount
@@ -909,7 +879,7 @@ paths:
     parameters: []
     post:
       summary: Send a Payout
-      operationId: post-v2-payouts-send-payout
+      operationId: send-payout
       responses:
         '201':
           description: Created
@@ -925,46 +895,34 @@ paths:
                   description: The amount in cents to pay the user.
                   exclusiveMinimum: 0
                 user_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   format: uuid
                   description: The user's id. `user_id` or `payee` is required.
                 payee:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   description: The payee's phone number. `user_id` or `payee` is required.
                   properties:
                     country_code:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     phone_number:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
+                  required:
+                    - country_code
+                    - phone_number
                 delivery:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   properties:
                     message:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                       description: Message to send with the payout through sms.
                 force_collect_compliance_information:
-                  type:
-                    - boolean
-                    - 'null'
+                  type: boolean
                   default: false
                   description: Collect 1099 or w8-ben information.
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
                 memo:
                   type: string
@@ -978,7 +936,7 @@ paths:
     parameters: []
     post:
       summary: Create a Payout Request
-      operationId: post-v2-payouts-requests
+      operationId: create-payouts-request
       responses:
         '201':
           description: Created
@@ -998,30 +956,24 @@ paths:
                   description: The amount in cents to pay the user.
                   exclusiveMinimum: 0
                 user_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   format: uuid
                   description: The user's id. `user_id` or `payee` is required.
                 payee:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   description: The payee's phone number. `user_id` or `payee` is required.
                   properties:
                     country_code:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     phone_number:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
+                  required:
+                    - country_code
+                    - phone_number
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
                 memo:
                   type: string
@@ -1049,7 +1001,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/payout-request'
-      operationId: get-v2-payout-requests
+      operationId: get-payout-requests
       parameters:
         - schema:
             type: integer
@@ -1088,7 +1040,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payout-request'
-      operationId: get-v2-payout-requests-payout_request_id
+      operationId: get-payout-request
       description: Get a payout request by its id.
   /v2/transactions:
     get:
@@ -1109,7 +1061,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/transaction'
-      operationId: get-v2-transactions
+      operationId: get-transactions
       parameters:
         - schema:
             type: integer
@@ -1148,7 +1100,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/transaction'
-      operationId: get-v2-transactions-transaction_id
+      operationId: get-transaction
       description: Get a transaction by its id.
 components:
   schemas:
