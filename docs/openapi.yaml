@@ -474,12 +474,25 @@ paths:
                   uniqueItems: true
                   description: A list of steps.
                   items:
-                    type: string
-                    enum:
-                      - compliance
-                      - manage-payouts
-                      - manage-payments
-                      - payout
+                    oneOf:
+                      - type: string
+                        enum:
+                          - compliance
+                          - manage-payouts
+                          - manage-payments
+                          - payout
+                      - type: object
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - compliance
+                              - manage-payouts
+                              - manage-payments
+                              - payout
+                          auto_payout_enabled:
+                            type: boolean
+                        required: [name]
                 user_id:
                   type:
                     - string
