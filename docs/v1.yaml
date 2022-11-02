@@ -1,0 +1,2711 @@
+openapi: 3.0.1
+info:
+  title: Dots Endpoint
+  description: Dots end point descriptions
+  contact:
+    email: kartikye@senddots.com
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Dots
+  url: https://docs.dots.dev
+servers:
+  - url: https://api.senddotssandbox.com/
+  - url: https://api.senddots.com/
+tags:
+  - name: users
+    description: Interact with users
+  - name: payouts
+    description: Create payouts
+  - name: transactions
+    description: Create transactions
+  - name: metrics
+    description: Access Metrics
+  - name: flows
+    description: Dots Flows
+paths:
+  /api/users/create:
+    post:
+      tags:
+        - users
+      summary: Create/Connect a new User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                country_code:
+                  pattern: ^[0-9]{1,3}$
+                  type: string
+                phone_number:
+                  pattern: ^[0-9]{1,3}$
+                  type: string
+                first_name:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                last_name:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                username:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+              required:
+                - email
+                - country_code
+                - phone_number
+                - first_name
+                - last_name
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  action:
+                    type: string
+                    example: verify
+                  verification_id:
+                    type: string
+                    format: uuid
+                    example: 97984720-f763-4d02-87fa-477ea2a2587c
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: integer
+                    example: 21
+                  message:
+                    type: string
+                    example: Phone number is invalid
+        '403':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: This email is associated with a different phone number.
+      x-codegen-request-body-name: body
+  /api/users/send_verification_token:
+    post:
+      tags:
+        - users
+      summary: Send a verification token to the user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verification_id:
+                  type: string
+                  format: uuid
+              required:
+                - verification_id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+      x-codegen-request-body-name: body
+  /api/users/verify_user:
+    post:
+      tags:
+        - users
+      summary: Verify a user with the token sent to them
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verification_id:
+                  type: string
+                  format: uuid
+                verification_token:
+                  pattern: ^[0-9]{6,8}$
+                  type: string
+              required:
+                - verification_id
+                - verification_token
+      responses:
+        '200':
+          description: Request Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                  message:
+                    type: string
+                    description: The error if there is one
+                    example: Error message
+      x-codegen-request-body-name: body
+  /api/users/get:
+    get:
+      tags:
+        - users
+      summary: Retrieve and filter connected app user IDs
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+                description: Array containing the ID of every user of your app
+                example:
+                  - 0e702e6d-5d2b-450b-8ee7-7c92f3d6c984
+                  - b584c66d-a209-4c92-9b5a-ad59f410d631
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/users/get/{user_id}:
+    get:
+      tags:
+        - users
+      summary: Get the user by their id
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  email:
+                    type: string
+                    format: email
+                  username:
+                    type: string
+                    example: john-doe
+                  first_name:
+                    type: string
+                    example: John
+                  last_name:
+                    type: string
+                    example: Doe
+                  display_name:
+                    type: string
+                    example: John Doe
+                  ach_accounts:
+                    deprecated: true
+                    type: array
+                    example:
+                      - id: acc_2345683453
+                        name: Chase
+                        mask: '2341'
+                  payout_methods:
+                    type: object
+                    properties:
+                      ach_accounts:
+                        type: array
+                        example:
+                          - id: acc_2345683453
+                            name: Chase
+                            mask: '2341'
+                      paypal:
+                        type: string
+                      venmo:
+                        type: string
+                  wallet:
+                    type: object
+                    properties:
+                      amount:
+                        type: number
+                        description: User's balance in cents
+                        example: 1000
+                      withdrawable_amount:
+                        type: number
+                        description: User's balance they can withdraw
+                        example: 900
+                      credit_balance:
+                        type: number
+                        description: User's credit balance
+                        example: 250
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: user_id is not a valid uuid
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/users/add_kyc_information:
+    post:
+      tags:
+        - users
+      summary: Add KYC or KYB information for User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                entity_type:
+                  type: string
+                  enum:
+                    - individual
+                    - business
+                business_name:
+                  type: string
+                  description: required if entity_type = business
+                postcode:
+                  type: string
+                city:
+                  type: string
+                country:
+                  type: string
+                  enum:
+                    - AU
+                    - AT
+                    - BE
+                    - BR
+                    - BG
+                    - CA
+                    - CY
+                    - CZ
+                    - DK
+                    - EE
+                    - FI
+                    - FR
+                    - DE
+                    - GR
+                    - HK
+                    - HU
+                    - IE
+                    - IT
+                    - JP
+                    - LV
+                    - LT
+                    - LU
+                    - MT
+                    - NL
+                    - NC
+                    - 'NO'
+                    - PL
+                    - PT
+                    - RO
+                    - SG
+                    - SK
+                    - SI
+                    - ES
+                    - SE
+                    - CH
+                    - AE
+                    - GB
+                    - US
+                state:
+                  type: string
+                  enum:
+                    - AL
+                    - AK
+                    - AS
+                    - AZ
+                    - AR
+                    - CA
+                    - CO
+                    - CT
+                    - DE
+                    - DC
+                    - FM
+                    - FL
+                    - GA
+                    - GU
+                    - HI
+                    - ID
+                    - IL
+                    - IN
+                    - IA
+                    - KS
+                    - KY
+                    - LA
+                    - ME
+                    - MH
+                    - MD
+                    - MA
+                    - MI
+                    - MN
+                    - MS
+                    - MO
+                    - MT
+                    - NE
+                    - NV
+                    - NH
+                    - NJ
+                    - NM
+                    - NY
+                    - NC
+                    - ND
+                    - MP
+                    - OH
+                    - OK
+                    - OR
+                    - PW
+                    - PA
+                    - PR
+                    - RI
+                    - SC
+                    - SD
+                    - TN
+                    - TX
+                    - UT
+                    - VT
+                    - VI
+                    - VA
+                    - WA
+                    - WV
+                    - WI
+                    - WY
+                line1:
+                  type: string
+                line2:
+                  type: string
+                ssn:
+                  type: string
+                  description: required if entity_type = individual
+                ein:
+                  type: string
+                  description: required if entity_type = business
+              required:
+                - entity_type
+                - user_id
+                - postcode
+                - city
+                - state
+                - country
+                - line1
+      responses:
+        '200':
+          description: Successul Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    description: Error message if success is false
+                    example: SSN did not match
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: >-
+                      payout_id must be provided. Email for paypal and phone
+                      number for venmo
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/users/get/{user_id}/intl_bank_accounts:
+    get:
+      tags:
+        - users
+      summary: List international bank accounts owned by a user
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  accounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        user_id:
+                          type: string
+                          format: uuid
+                        currency:
+                          type: string
+                          format: iso-4217
+                        country:
+                          type: string
+                          format: iso-3166
+                        mask:
+                          type: string
+                    description: Array of account data
+                    example:
+                      - 0e702e6d-5d2b-450b-8ee7-7c92f3d6c984
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  /api/users/wallet/get/{user_id}:
+    get:
+      tags:
+        - users
+      summary: Get user wallet information
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of user whose wallet to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  wallet:
+                    type: object
+                    properties:
+                      amount:
+                        type: number
+                        description: User's balance in cents
+                        example: 1000
+                      withdrawable_amount:
+                        type: number
+                        description: User's balance that they can withdraw
+                        example: 900
+                      credit_balance:
+                        type: number
+                        description: User's credit balance with the application
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: user_id is not a valid uuid
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/users/get_by_verification_id/{verification_id}:
+    get:
+      tags:
+        - users
+      summary: Retrieve limited information about a user given a verification ID
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  connected:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/UserLimited'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  /api/users/wallet/refill:
+    post:
+      tags:
+        - users
+      summary: Generate a link to refill the user's wallet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+              required:
+                - user_id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  link:
+                    type: string
+                    example: https://app.dots.dev/refill/dfjskjfhshgfdsjehf
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: user_id is not a valid uuid
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+      x-codegen-request-body-name: body
+  /api/users/wallet/payout:
+    post:
+      tags:
+        - users
+      summary: Generate a link to payout the user's wallet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                verification_id:
+                  type: string
+                  format: uuid
+              oneOf:
+                - required:
+                    - user_id
+                - required:
+                    - verification_id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  link:
+                    type: string
+                    example: https://app.dots.dev/payout/dfjskjfhshgfdsjehf
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: user_id is not a valid uuid
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+      x-codegen-request-body-name: body
+  /api/users/wallet/add_payout_method:
+    post:
+      tags:
+        - users
+      summary: Programatically add a payout method for a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                payout_method:
+                  type: string
+                  enum:
+                    - paypal
+                    - venmo
+                    - ach
+                    - cash_app
+                payout_id:
+                  type: string
+                  description: >-
+                    Email if `payout_method` is `paypal`, @handle or phone
+                    number is `payout_method` is `venmo`, $cashtag if
+                    `payout_method` is `cash_app`
+                ach_routing_number:
+                  type: string
+                  description: Must be provided if `payout_method` is `ach` or `cash_app`
+                ach_account_number:
+                  type: string
+                  description: Must be provided if `payout_method` is `ach` or `cash_app`
+                ach_account_type:
+                  type: string
+                  description: Must be provided if `payout_method` is `ach`
+                  enum:
+                    - checking
+                    - savings
+                set_default:
+                  type: boolean
+              required:
+                - user_id
+                - payout_method
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  ach_account_id:
+                    type: string
+                    description: The id of the ach account if ach account was added
+                    example: acc_43kfg84ifkgh
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: >-
+                      payout_id must be provided. Email for paypal and phone
+                      number for venmo
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/payouts/create:
+    post:
+      tags:
+        - payouts
+      summary: Create a payout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                amount:
+                  minimum: 0
+                  exclusiveMinimum: true
+                  type: number
+                payout_method:
+                  type: string
+                  enum:
+                    - paypal
+                    - venmo
+                    - ach
+                    - cash_app
+                    - intl_transfer
+                    - default
+                ach_account_id:
+                  type: string
+                  description: Account id from /users/get if payout_method is ach
+                intl_account_id:
+                  type: string
+                  description: >-
+                    Account id from /users/get{user_id}/intl_bank_accounts if
+                    payout_method is intl_transfer
+                fund:
+                  type: boolean
+                  description: >-
+                    Pays the payout amount to the user before creating the
+                    payout. The funds are returned if the payout does not
+                    succeed.
+              required:
+                - user_id
+                - amount
+                - payout_method
+      responses:
+        '200':
+          description: Request Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error_code:
+                    type: integer
+                    description: Error code if success is false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: >-
+                      Please set user venmo using
+                      api/users/wallet/add_payout_method
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/payouts/create_payout_link:
+    post:
+      tags:
+        - payouts
+      summary: Create a payout link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delivery:
+                  type: object
+                  properties:
+                    method:
+                      type: string
+                      enum:
+                        - link
+                  required:
+                    - method
+                amount:
+                  type: number
+                  minimum: 0
+                  exclusiveMinimum: true
+                notes:
+                  description: >-
+                    Custom data that will be attached to the transaction when
+                    the recipient claims the link.
+                tax_exempt:
+                  type: boolean
+                  description: Flags as tax exempt for the purpose of collecting form 1099.
+                payee:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
+                    country_code:
+                      type: string
+                    phone_number:
+                      type: string
+              required:
+                - delivery
+                - amount
+      responses:
+        '200':
+          description: Request Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payout_link:
+                    type: object
+                    description: The payout link if success is true
+                    properties:
+                      id:
+                        type: string
+                        description: The id of the payout link
+                        format: uuid
+                      link:
+                        type: string
+                        description: The link to the payout
+                        format: url
+                      original_amount:
+                        type: number
+                        description: The original amount of the payout
+                        minimum: 0
+                        exclusiveMinimum: true
+                      amount:
+                        type: number
+                        description: >-
+                          The amount left in the payout link/the amount in the
+                          user's wallet
+                        minimum: 0
+                        exclusiveMinimum: true
+                      status:
+                        type: string
+                        enum:
+                          - created
+                          - claimed
+                          - delivered
+                          - delivery_failed
+                      api_app_name:
+                        type: string
+                        description: The name of the app that created the payout link
+                      payee:
+                        type: object
+                        description: The payee of the payout link
+                        properties:
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          email:
+                            type: string
+                          country_code:
+                            type: string
+                          phone_number:
+                            type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Cannot parse or bad format
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Server could not process this request
+  /api/v2/payouts/send_payout:
+    post:
+      tags:
+        - payouts
+      summary: Send a payout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  minimum: 0
+                  exclusiveMinimum: true
+                user_id:
+                  type: string
+                  format: uuid
+                payee:
+                  type: object
+                  properties:
+                    country_code:
+                      type: string
+                    phone_number:
+                      type: string
+                delivery:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      description: Custom message to send to the recipient.
+                notes:
+                  description: >-
+                    Custom data that will be attached to the transaction when
+                    the recipient claims the link.
+                force_collect_compliance_information:
+                  type: boolean
+                  description: >-
+                    Require the recipient to fill out compliance information
+                    (i.e. form 1099) when below the payout limit.
+              oneOf:
+                - required:
+                    - amount
+                    - user_id
+                - required:
+                    - amount
+                    - payee
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid input
+  /api/payouts/create_direct_payout:
+    post:
+      tags:
+        - payouts
+      summary: Create a direct payout. It must be enabled for your account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payout_type:
+                  type: string
+                  enum:
+                    - paypal
+                    - venmo
+                    - visa
+                    - amazon
+                delivery_method:
+                  type: string
+                  description: Phone number for venmo and email for all other payout types
+                international:
+                  type: boolean
+                  description: Set to true if the payout is international
+      responses:
+        '200':
+          description: Request Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    description: Error message if success is false
+                    example: Invalid Venmo phone number
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: >-
+                      Please set user venmo using
+                      api/users/wallet/add_payout_method
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/transactions/create:
+    post:
+      tags:
+        - transactions
+      summary: Create transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                receipt:
+                  type: object
+                  properties:
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          unit_amount:
+                            type: integer
+                          quantity:
+                            type: integer
+                          description:
+                            type: string
+                    breakdown:
+                      type: object
+                      properties:
+                        items_total:
+                          type: integer
+                        tax:
+                          type: integer
+                        shipping:
+                          type: integer
+                notes:
+                  type: object
+                idempotency_key:
+                  type: string
+                  format: uuid
+                  description: >-
+                    An optional idempotency key to prevent duplicate
+                    transactions, must be a valid uuid
+      responses:
+        '200':
+          description: Successful Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    description: Error message if success is false
+                  transaction:
+                    $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Source and destination user cannot be the same
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/transactions/create_unverified:
+    post:
+      tags:
+        - transactions
+      summary: Create transaction (unverified user)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verification_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                receipt:
+                  type: object
+                  properties:
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          unit_amount:
+                            type: integer
+                          quantity:
+                            type: integer
+                          description:
+                            type: string
+                    breakdown:
+                      type: object
+                      properties:
+                        items_total:
+                          type: integer
+                        tax:
+                          type: integer
+                        shipping:
+                          type: integer
+                notes:
+                  type: object
+                idempotency_key:
+                  type: string
+                  format: uuid
+                  description: >-
+                    An optional idempotency key to prevent duplicate
+                    transactions, must be a valid uuid
+      responses:
+        '200':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    description: Error message if success is false
+                  transaction:
+                    $ref: '#/components/schemas/Transaction'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  /api/transactions/create_batch:
+    post:
+      tags:
+        - transactions
+      summary: >-
+        Creates multiple transactions asynchronously. Errors will be delivered
+        by email.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transactions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      user_id:
+                        type: string
+                        format: uuid
+                      amount:
+                        type: number
+                      receipt:
+                        type: object
+                        description: Optional information for the recipient
+                      notes:
+                        type: object
+                        description: Optional metadata
+                    required:
+                      - user_id
+                      - amount
+                idempotency_key:
+                  type: string
+                  maxLength: 64
+              required:
+                - transactions
+      responses:
+        '200':
+          description: Successful Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  status:
+                    type: string
+                    example: pending
+                    enum:
+                      - pending
+                      - completed
+                      - failed
+                      - unknown
+                    description: The status of the batch request.
+                  batch_id:
+                    type: string
+                    example: b7fbcb62-ce52-4fdc-9d91-1c03ffab338f
+                    description: >-
+                      Batch ID for checking status. Use with
+                      /api/transactions/batch/<batch_id>.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Missing parameter
+  /api/transactions/batch/{batch_id}:
+    post:
+      tags:
+        - transactions
+      summary: Gets the completion status of a transaction batch.
+      responses:
+        '200':
+          description: Successful Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  status:
+                    type: string
+                    example: pending
+                    enum:
+                      - pending
+                      - completed
+                      - failed
+                      - unknown
+                    description: >-
+                      The status of the batch request. This status is separate
+                      from the status of the individual transactions in the
+                      batch; a failed batch may actually be partially complete,
+                      for example.
+        '404':
+          description: Batch not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+  /api/transactions/get/user/{user_id}:
+    get:
+      tags:
+        - transactions
+      summary: Get transactions for a user
+      parameters:
+        - name: user_id
+          in: path
+          description: User's id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          description: Page of transactions to retirieve
+          required: false
+          schema:
+            type: integer
+        - name: type
+          in: query
+          description: Type of transactions to get (wallet or credit)
+          required: false
+          schema:
+            type: string
+            enum:
+              - wallet
+              - credit
+              - payout
+      responses:
+        '200':
+          description: Successful Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  transactions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        date:
+                          type: string
+                        source_username:
+                          type: string
+                        destination_username:
+                          type: string
+                        amount:
+                          type: number
+                        type:
+                          type: string
+                          enum:
+                            - credit
+                            - wallet
+                        direction:
+                          type: string
+                          enum:
+                            - credit
+                            - debit
+                            - refill
+                            - payout
+                        completed:
+                          type: boolean
+                        notes:
+                          type: object
+                        receipt:
+                          type: object
+                          properties:
+                            items:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  unit_amount:
+                                    type: integer
+                                  quantity:
+                                    type: integer
+                                  description:
+                                    type: string
+                            breakdown:
+                              type: object
+                              properties:
+                                items_total:
+                                  type: integer
+                                tax:
+                                  type: integer
+                                shipping:
+                                  type: integer
+                        credit_transaction_id:
+                          type: string
+                  total:
+                    type: integer
+                    description: Number of transactions
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: user_id is not a valid uuid string
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/transactions/get/transaction/{transaction_id}:
+    get:
+      tags:
+        - transactions
+      summary: Get a transaction by its id
+      parameters:
+        - name: transaction_id
+          in: path
+          description: Id of transaction to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  transaction:
+                    properties:
+                      id:
+                        type: integer
+                      date:
+                        type: string
+                      source_username:
+                        type: string
+                      destination_username:
+                        type: string
+                      amount:
+                        type: number
+                      type:
+                        type: string
+                        enum:
+                          - credit
+                          - wallet
+                      completed:
+                        type: boolean
+                      notes:
+                        type: object
+                      receipt:
+                        type: object
+                        properties:
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                unit_amount:
+                                  type: integer
+                                quantity:
+                                  type: integer
+                                description:
+                                  type: string
+                          breakdown:
+                            type: object
+                            properties:
+                              items_total:
+                                type: integer
+                              tax:
+                                type: integer
+                              shipping:
+                                type: integer
+                      credit_transaction_id:
+                        type: string
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/transactions/add_credit:
+    post:
+      tags:
+        - transactions
+      summary: Add credit balance to a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                  minimum: 0
+                  exclusiveMinimum: true
+                reciept:
+                  type: object
+                notes:
+                  type: object
+              required:
+                - user_id
+                - amount
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  transaction:
+                    properties:
+                      id:
+                        type: integer
+                      date:
+                        type: string
+                      source_username:
+                        type: string
+                      destination_username:
+                        type: string
+                      amount:
+                        type: number
+                      type:
+                        type: string
+                        enum:
+                          - credit
+                          - wallet
+                      completed:
+                        type: boolean
+                      notes:
+                        type: object
+                      receipt:
+                        type: object
+                        properties:
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                unit_amount:
+                                  type: integer
+                                quantity:
+                                  type: integer
+                                description:
+                                  type: string
+                          breakdown:
+                            type: object
+                            properties:
+                              items_total:
+                                type: integer
+                              tax:
+                                type: integer
+                              shipping:
+                                type: integer
+                      credit_transaction_id:
+                        type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: >-
+                      Destination user cannot be the same as the user of the api
+                      app
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/transactions/remove_credit:
+    post:
+      tags:
+        - transactions
+      summary: Remove credit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                  minimum: 0
+                  exclusiveMinimum: true
+                reciept:
+                  type: object
+                notes:
+                  type: object
+              required:
+                - user_id
+                - amount
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  transaction:
+                    properties:
+                      id:
+                        type: integer
+                      date:
+                        type: string
+                      source_username:
+                        type: string
+                      destination_username:
+                        type: string
+                      amount:
+                        type: number
+                      type:
+                        type: string
+                        enum:
+                          - credit
+                          - wallet
+                      completed:
+                        type: boolean
+                      notes:
+                        type: object
+                      receipt:
+                        type: object
+                        properties:
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                unit_amount:
+                                  type: integer
+                                quantity:
+                                  type: integer
+                                description:
+                                  type: string
+                          breakdown:
+                            type: object
+                            properties:
+                              items_total:
+                                type: integer
+                              tax:
+                                type: integer
+                              shipping:
+                                type: integer
+                      credit_transaction_id:
+                        type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: >-
+                      Destination user cannot be the same as the user of the api
+                      app
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/transactions/create_ach_payment:
+    post:
+      tags:
+        - transactions
+      summary: >-
+        Create an ACH payment from a user's bank account with their Plaid
+        information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                amount:
+                  type: number
+                  minimum: 0
+                  exclusiveMinimum: true
+                routing_number:
+                  type: string
+                account_number:
+                  type: string
+                account_type:
+                  type: string
+                  enum:
+                    - checking
+                    - savings
+                plaid:
+                  type: object
+                  properties:
+                    balances:
+                      type: object
+                      properties:
+                        available:
+                          type: number
+                          nullable: true
+                        current:
+                          type: number
+                          nullable: true
+                        limit:
+                          type: number
+                          nullable: true
+                        iso_currency_code:
+                          type: string
+                          nullable: true
+                        unofficial_currency_code:
+                          type: string
+                          nullable: true
+                    transactions:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          account_id:
+                            type: string
+                          amount:
+                            type: number
+                          iso_currency_code:
+                            type: string
+                            nullable: true
+                          unofficial_currency_code:
+                            type: string
+                            nullable: true
+                          category:
+                            type: array
+                            nullable: true
+                            items:
+                              type: string
+                          category_id:
+                            type: string
+                            nullable: true
+                          date:
+                            type: string
+                          datetime:
+                            type: string
+                            nullable: true
+                          location:
+                            type: object
+                            properties:
+                              address:
+                                type: string
+                                nullable: true
+                              city:
+                                type: string
+                                nullable: true
+                              state:
+                                type: string
+                                nullable: true
+                              zip:
+                                type: string
+                                nullable: true
+                              lat:
+                                type: number
+                                nullable: true
+                              lon:
+                                type: number
+                                nullable: true
+                          name:
+                            type: string
+                          payment_meta:
+                            type: object
+                            properties:
+                              by_order_of:
+                                type: string
+                                nullable: true
+                              payee:
+                                type: string
+                                nullable: true
+                              payer:
+                                type: string
+                                nullable: true
+                              payment_method:
+                                type: string
+                                nullable: true
+                              payment_processor:
+                                type: string
+                                nullable: true
+                              ppd_id:
+                                type: string
+                                nullable: true
+                              reason:
+                                type: string
+                                nullable: true
+                              reference_number:
+                                type: string
+                                nullable: true
+                          pending:
+                            type: boolean
+                          pending_transaction_id:
+                            type: string
+                            nullable: true
+                          transaction_id:
+                            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Amount must be greater than 0
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/invoice/create:
+    post:
+      tags:
+        - invoices
+      summary: Create an invoice link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      unit_amount:
+                        type: integer
+                      quantity:
+                        type: integer
+                      description:
+                        type: string
+                  description: sum of all items must match breakdown.item_total if provided
+                breakdown:
+                  type: object
+                  properties:
+                    items_total:
+                      type: integer
+                    tax:
+                      type: integer
+                    shipping:
+                      type: integer
+                  description: sum of entries in breakdown must equal amount
+                expires_in:
+                  type: integer
+                  minimum: 0
+                  maximum: 259200
+                  default: 10800
+                  description: >-
+                    Duration in seconds for which invoice will be valid and
+                    payable
+                amount:
+                  type: number
+                  minimum: 0
+                  exclusiveMinimum: true
+                requested_information:
+                  type: array
+                  items:
+                    type: string
+                    description: ('shipping_address')
+                metadata:
+                  type: object
+                  description: >-
+                    Set of key-value pairs in the format of string. This is
+                    attached to the invoice object for storing additional
+                    information.
+                user_id:
+                  type: string
+                  format: uuid
+                  description: User to bill the invoice to
+              required:
+                - amount
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  invoice:
+                    properties:
+                      id:
+                        type: integer
+                      api_app:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          user_id:
+                            type: integer
+                          name:
+                            type: string
+                      amount:
+                        type: number
+                      expiry:
+                        type: string
+                        format: date
+                      status:
+                        type: string
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            unit_amount:
+                              type: integer
+                            quantity:
+                              type: integer
+                            description:
+                              type: string
+                      breakdown:
+                        type: object
+                        properties:
+                          items_total:
+                            type: integer
+                          tax:
+                            type: integer
+                          shipping:
+                            type: integer
+                      requested_information:
+                        type: array
+                        items:
+                          type: string
+                          example: shipping_address
+                      metadata:
+                        type: object
+                      payer:
+                        type: object
+                        nullable: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Invoice expiry cannot exceed 72 hours
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/invoice/get/{invoice_id}:
+    get:
+      tags:
+        - invoices
+      summary: Get an invoice by its Id
+      parameters:
+        - name: invoice_id
+          in: path
+          description: Id of invoice to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  invoice:
+                    properties:
+                      id:
+                        type: integer
+                      api_app:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          user_id:
+                            type: integer
+                          name:
+                            type: string
+                      amount:
+                        type: number
+                      expiry:
+                        type: string
+                        format: date-time
+                      status:
+                        type: string
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            unit_amount:
+                              type: integer
+                            quantity:
+                              type: integer
+                            description:
+                              type: string
+                      breakdown:
+                        type: object
+                        properties:
+                          items_total:
+                            type: integer
+                          tax:
+                            type: integer
+                          shipping:
+                            type: integer
+                      requested_information:
+                        type: array
+                        items:
+                          type: string
+                          example: shipping_address
+                      metadata:
+                        type: object
+                      payer:
+                        type: object
+                        nullable: true
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: Invoice not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+  /api/metrics/transaction/volume:
+    get:
+      tags:
+        - metrics
+      summary: Transaction Volume Metrics
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum:
+              - day
+              - week
+              - month
+              - year
+              - 30d
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum:
+              - receive
+              - send
+        - name: tz
+          in: query
+          schema:
+            type: string
+            description: three letter timezone code
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  volume:
+                    type: number
+                    example: 100000
+                    description: Volume in cents
+  /api/metrics/wallet:
+    get:
+      tags:
+        - metrics
+      summary: API App's wallet balance
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  wallet:
+                    type: object
+                    properties:
+                      amount:
+                        type: number
+                      withdrawable_amount:
+                        type: number
+  /api/flow/create:
+    post:
+      tags:
+        - flows
+      summary: Create a flow
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                steps:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - compliance
+                      - manage-payments
+                      - manage-payouts
+                      - payout
+                user_id:
+                  type: string
+                  format: uuid
+              required:
+                - steps
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  flow:
+                    $ref: '#/components/schemas/Flow'
+  /api/flow/get/{flow_id}:
+    get:
+      tags:
+        - flows
+      summary: Get a flow by its Id
+      parameters:
+        - name: flow_id
+          in: path
+          description: Id of flow to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  flow:
+                    $ref: '#/components/schemas/Flow'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+        '404':
+          description: Flow not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+        source_username:
+          type: string
+        destination_username:
+          type: string
+        amount:
+          type: number
+        type:
+          type: string
+          enum:
+            - credit
+            - wallet
+        completed:
+          type: boolean
+        notes:
+          type: object
+        receipt:
+          type: object
+          properties:
+            items:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  unit_amount:
+                    type: integer
+                  quantity:
+                    type: integer
+                  description:
+                    type: string
+            breakdown:
+              type: object
+              properties:
+                items_total:
+                  type: integer
+                tax:
+                  type: integer
+                shipping:
+                  type: integer
+        credit_transaction_id:
+          type: string
+    UserLimited:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        first_name:
+          type: string
+        last_name:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        wallet:
+          type: object
+          properties:
+            amount:
+              type: number
+            withdrawable_amount:
+              type: number
+    Flow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+        user_id:
+          type: string
+          format: uuid
+        steps:
+          type: array
+          items:
+            type: string
+            enum:
+              - compliance
+              - manage-payments
+              - manage-payouts
+              - payout
+        completed-steps:
+          type: array
+          items:
+            type: string
+            enum:
+              - compliance
+              - manage-payments
+              - manage-payouts
+              - payout
+        payout-link-id:
+          type: string
+          format: uuid
+        link:
+          type: string
+          format: url
+  responses:
+    ResourceNotFound:
+      description: Object not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+    InvalidRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Missing parameter
+              error_code:
+                type: string
+                example: invalid-input
+security:
+  - basicAuth: []
