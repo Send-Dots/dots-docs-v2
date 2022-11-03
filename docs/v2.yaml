@@ -20,14 +20,18 @@ tags:
     description: Transfer routes
   - name: flows
     description: Flow routes
+  - name: payouts
+    description: Payout Routes
   - name: payout-links
     description: Payout Link Routes
+  - name: payout-requests
+    description: Payout Request Routes
   - name: transactions
     description: Transaction Routes
 paths:
   /v2/users:
     get:
-      summary: Your GET endpoint
+      summary: List all Users
       tags:
         - users
       responses:
@@ -65,8 +69,8 @@ paths:
           description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
       description: List all users connected to your application.
     post:
-      summary: ''
-      operationId: post-users
+      summary: Create a User
+      operationId: create-user
       responses:
         '200':
           description: OK
@@ -97,9 +101,7 @@ paths:
                   type: string
                   description: The user's phone number. e.g. "4157223331"
                 username:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   minLength: 1
                   maxLength: 50
                   description: Username to assign the user.
@@ -107,7 +109,6 @@ paths:
                   type:
                     - string
                     - object
-                    - 'null'
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - first_name
@@ -127,6 +128,8 @@ paths:
                     internal_id: user_121344
         description: ''
       description: Create a user.
+      tags:
+        - users
     parameters: []
   '/v2/users/{user_id}':
     parameters:
@@ -138,7 +141,7 @@ paths:
         required: true
         description: Id of the user to fetch
     get:
-      summary: Your GET endpoint
+      summary: Retrieve a User
       tags:
         - users
       responses:
@@ -148,11 +151,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
-      operationId: get-users-user_id
+      operationId: get-user
       description: Get a user by their id.
     delete:
-      summary: ''
-      operationId: delete-users-user_id
+      summary: Delete a User
+      operationId: delete-user
       responses:
         '200':
           description: OK
@@ -161,6 +164,167 @@ paths:
               schema:
                 $ref: '#/components/schemas/user'
       description: Delete a user.
+      tags:
+        - users
+  '/v2/users/{user_id}/compliance':
+    parameters:
+      - schema:
+          type: string
+        name: user_id
+        in: path
+        required: true
+        description: Id of the user to fetch
+    put:
+      summary: Submit Compliance Information
+      operationId: submit-compliance
+      responses:
+        '200':
+          description: OK
+      description: Add Compliance information to a user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                w9:
+                  type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                        - individual
+                        - business
+                    business_name:
+                      type: string
+                      description: Legal bussiness name. Required if `entity_type` is business.
+                    date_of_birth:
+                      type: string
+                      format: date
+                      description: Required if `entity_type` is individual.
+                    tin:
+                      type: string
+                      minLength: 9
+                      maxLength: 9
+                      description: SSN if `entity_type` is `individual`. EIN if `entity_type` is `business`.
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postcode
+                      properties:
+                        line_1:
+                          type: string
+                        line_2:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        country:
+                          type: string
+                        postcode:
+                          type: string
+                  required:
+                    - entity_type
+                    - tin
+                    - address
+                    - date_of_birth
+                w8ben:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Full name of the person.
+                    citizenship_country:
+                      type: string
+                      description: The two-letter ISO country code associated with the beneficial owner's citizenship.
+                    date_of_birth:
+                      type: string
+                      format: date
+                    tin:
+                      type: string
+                      minLength: 9
+                      maxLength: 9
+                      description: SSN
+                    foreign_tax_id:
+                      type: string
+                      description: The tax identification number associated with the beneficial owner's country of residence.
+                    tax_treaty_country:
+                      type: string
+                      description: The two-letter ISO country code of the country for tax treaty purposes.
+                    tax_treaty_citation:
+                      type: string
+                      description: The article and paragraph of the citation claimed for tax treaty purposes.
+                    tax_treaty_rate:
+                      type: number
+                      description: 'The withholding rate claimed for tax treaty purposes. For example, a 15% rate would be represented as 0.15.'
+                    tax_treaty_income_type:
+                      type: string
+                      enum:
+                        - interest1
+                        - dividend6
+                        - dividend7
+                        - pension15
+                        - socialSecurity
+                        - equipment10
+                        - knowhow10
+                        - patent10
+                        - film11
+                        - copyright12
+                      description: The type of income for tax treaty purposes. Valid values are - interest1 (Interest Paid by U.S. Obligors) - dividend6 (Dividends Paid by U.S. Corporations) - dividend7 (Dividends Qualifying for Direct Dividend Rate) - pension15 (Pensions and Annuities) - socialSecurity (Social Security) - equipment10 (Industrial Equipment) - knowhow10 (Know-How/Other Industrial Royalties) - patent10 (Patents) - film11 (Film & TV) - copyright12 (Copyrights)
+                    tax_treaty_explanation:
+                      type: string
+                      description: An optional explanation for the tax treaty claimed.
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postcode
+                      properties:
+                        line_1:
+                          type: string
+                        line_2:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        country:
+                          type: string
+                        postcode:
+                          type: string
+                    signature:
+                      type: object
+                      properties:
+                        consent:
+                          type: boolean
+                          description: The consent of the beneficial owner to the disclosure of their information to the IRS.
+                        name:
+                          type: string
+                          description: The name of the person signing the form.
+                        email:
+                          type: string
+                          description: The email address of the person signing the form.
+                      required:
+                        - consent
+                        - name
+                        - email
+                  required:
+                    - name
+                    - citizenship_country
+                    - date_of_birth
+                    - signature
+                    - tin
+                    - address
+      tags:
+        - users
   '/v2/users/{user_id}/send-verification-token':
     parameters:
       - schema:
@@ -170,12 +334,14 @@ paths:
         required: true
         description: Id of the user to fetch
     post:
-      summary: ''
-      operationId: post-users-user_id-send-verification-token
+      summary: Send a Verification Token
+      operationId: send-verification-token
       responses:
         '202':
           description: Accepted
       description: Send a user a verification token.
+      tags:
+        - users
   '/v2/users/{user_id}/verify':
     parameters:
       - schema:
@@ -186,8 +352,8 @@ paths:
         required: true
         description: Id of the user to fetch
     post:
-      summary: ''
-      operationId: post-users-user_id-verify
+      summary: Verify a User
+      operationId: verify
       responses:
         '200':
           description: OK
@@ -206,6 +372,8 @@ paths:
               required:
                 - token
       description: Verify a user with a token.
+      tags:
+        - users
   '/v2/users/{user_id}/payout-methods':
     parameters:
       - schema:
@@ -216,7 +384,7 @@ paths:
         required: true
         description: Id of the user to fetch
     get:
-      summary: Your GET endpoint
+      summary: Retrieve a Payout Method
       tags:
         - users
       responses:
@@ -228,11 +396,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/payment-method'
-      operationId: get-users-user_id-payout-methods
+      operationId: get-payout-methods
       description: Get a user's connected payout methods.
     put:
-      summary: ''
-      operationId: put-users-user_id-payout-methods
+      summary: Add a Payout Method
+      operationId: add-payout-method
       responses:
         '200':
           description: OK
@@ -299,9 +467,11 @@ paths:
                   account_number: '123456789'
                   cash_tag: $cash_tag
       description: 'Add a payout method to the user. Payout method can be one of `paypal`, `venmo`, `ach`, or `cash_app`. Each method has different required parameters.'
+      tags:
+        - users
   /v2/transfers:
     get:
-      summary: Your GET endpoint
+      summary: List all Transfers
       tags:
         - transfers
       responses:
@@ -339,8 +509,8 @@ paths:
           description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
       description: Lsit all transfers.
     post:
-      summary: ''
-      operationId: post-transfers
+      summary: Create a Transfer
+      operationId: create-transfer
       responses:
         '200':
           description: OK
@@ -391,6 +561,8 @@ paths:
                   user_id: a169451c-8525-4352-b8ca-070dd449a1a5
         description: ''
       description: Create a transfer.
+      tags:
+        - transfers
     parameters: []
   '/v2/transfers/{transfer_id}':
     parameters:
@@ -402,7 +574,7 @@ paths:
         required: true
         description: Id of the transfer to fetch
     get:
-      summary: Your GET endpoint
+      summary: Get a Transfer
       tags:
         - transfers
       responses:
@@ -412,11 +584,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/transfer'
-      operationId: get-transfers-transfer_id
+      operationId: get-transfer
       description: Get a transfer by its id.
   /v2/flows:
     get:
-      summary: Your GET endpoint
+      summary: List all Flows
       tags:
         - flows
       responses:
@@ -433,7 +605,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/flow'
-      operationId: get-v2-flows
+      operationId: get-flows
       parameters:
         - schema:
             type: integer
@@ -454,8 +626,8 @@ paths:
           description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
       description: List all Flows.
     post:
-      summary: ''
-      operationId: post-v2-flows
+      summary: Create a Flow
+      operationId: create-flow
       responses:
         '200':
           description: OK
@@ -494,20 +666,19 @@ paths:
                             type: boolean
                         required: [name]
                 user_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   format: uuid
                   description: The user's id.
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - steps
       description: Create a new Flow.
+      tags:
+        - flows
   '/v2/flows/{flow_id}':
     parameters:
       - schema:
@@ -518,7 +689,7 @@ paths:
         required: true
         description: Id of the flow to fetch
     get:
-      summary: Your GET endpoint
+      summary: Retrieve a Flow
       tags:
         - flows
       responses:
@@ -528,11 +699,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/flow'
-      operationId: get-v2-flows-flow_id
+      operationId: get-flow
       description: Get a Flow by its id.
   /v2/payout-links:
     get:
-      summary: Your GET endpoint
+      summary: List all Payout Links
       tags:
         - payout-links
       responses:
@@ -549,7 +720,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/payout-link'
-      operationId: get-v2-payout-links
+      operationId: get-payout-links
       parameters:
         - schema:
             type: integer
@@ -570,8 +741,8 @@ paths:
           description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
       description: List all created Payout Links.
     post:
-      summary: ''
-      operationId: post-v2-payout-links
+      summary: Create a Payout Link
+      operationId: create-payout-link
       responses:
         '200':
           description: OK
@@ -587,52 +758,32 @@ paths:
               additionalProperties: false
               properties:
                 user_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   format: uuid
                   description: The user's id.
                 payee:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   description: The payee. This is optional.
                   properties:
                     first_name:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     last_name:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     country_code:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     phone_number:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     email:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                 amount:
                   type: integer
                 delivery:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   properties:
                     message:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     method:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                       enum:
                         - sms
                         - link
@@ -646,13 +797,14 @@ paths:
                   type:
                     - string
                     - object
-                    - 'null'
                 memo:
                   type: string
                   description: Add a memo to the top of the Payout Link
               required:
                 - amount
       description: Create a Payout Link.
+      tags:
+        - payout-links
   '/v2/payout-links/{payout_link_id}':
     parameters:
       - schema:
@@ -662,7 +814,7 @@ paths:
         required: true
         description: Id of the payout link
     get:
-      summary: Your GET endpoint
+      summary: Retrieve a Payout Link
       tags:
         - payout-links
       responses:
@@ -672,11 +824,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payout-link'
-      operationId: get-v2-payout-links-payout_link_id
+      operationId: get-payout-link
       description: Get a payout link by its id.
     delete:
-      summary: ''
-      operationId: delete-v2-payout-links-payout_link_id
+      summary: Delete a Payout Link
+      operationId: delete-payout-link
       responses:
         '200':
           description: OK
@@ -685,10 +837,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/payout-link'
       description: Cancel a payout link
+      tags:
+        - payout-links
   /v2/payouts:
     post:
-      summary: ''
-      operationId: post-v2-payouts
+      summary: Create a Payout
+      operationId: create-payout
       responses:
         '201':
           description: Created
@@ -718,30 +872,27 @@ paths:
                     - cash_app
                     - default
                 account_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   description: Required for `ach` and `intl_bank`
                 fund:
-                  type:
-                    - boolean
-                    - 'null'
+                  type: boolean
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
               required:
                 - user_id
                 - amount
                 - platform
         description: ''
       description: Create a payout for an existing user that has a payout method saved to their account.
+      tags:
+        - payouts
   /v2/payouts/send-payout:
     parameters: []
     post:
-      summary: ''
-      operationId: post-v2-payouts-send-payout
+      summary: Send a Payout
+      operationId: send-payout
       responses:
         '201':
           description: Created
@@ -757,46 +908,34 @@ paths:
                   description: The amount in cents to pay the user.
                   exclusiveMinimum: 0
                 user_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   format: uuid
                   description: The user's id. `user_id` or `payee` is required.
                 payee:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   description: The payee's phone number. `user_id` or `payee` is required.
                   properties:
                     country_code:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     phone_number:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
+                  required:
+                    - country_code
+                    - phone_number
                 delivery:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   properties:
                     message:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                       description: Message to send with the payout through sms.
                 force_collect_compliance_information:
-                  type:
-                    - boolean
-                    - 'null'
+                  type: boolean
                   default: false
                   description: Collect 1099 or w8-ben information.
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
                 memo:
                   type: string
@@ -804,11 +943,13 @@ paths:
               required:
                 - amount
       description: 'Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds.'
+      tags:
+        - payouts
   /v2/payout-requests:
     parameters: []
     post:
-      summary: ''
-      operationId: post-v2-payouts-requests
+      summary: Create a Payout Request
+      operationId: create-payouts-request
       responses:
         '201':
           description: Created
@@ -828,30 +969,24 @@ paths:
                   description: The amount in cents to pay the user.
                   exclusiveMinimum: 0
                 user_id:
-                  type:
-                    - string
-                    - 'null'
+                  type: string
                   format: uuid
                   description: The user's id. `user_id` or `payee` is required.
                 payee:
-                  type:
-                    - object
-                    - 'null'
+                  type: object
                   description: The payee's phone number. `user_id` or `payee` is required.
                   properties:
                     country_code:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
                     phone_number:
-                      type:
-                        - string
-                        - 'null'
+                      type: string
+                  required:
+                    - country_code
+                    - phone_number
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
                 memo:
                   type: string
@@ -859,8 +994,10 @@ paths:
               required:
                 - amount
       description: 'Submit a payout request from a person when you know their phone number or user id. Once the payout request is approved, they will be sent a Payout Link to onboard and recieve funds.'
+      tags:
+        - payout-requests
     get:
-      summary: Your GET endpoint
+      summary: List all Payout Requests
       tags:
         - payout-requests
       responses:
@@ -877,7 +1014,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/payout-request'
-      operationId: get-v2-payout-requests
+      operationId: get-payout-requests
       parameters:
         - schema:
             type: integer
@@ -906,7 +1043,7 @@ paths:
         required: true
         description: Id of the payout request
     get:
-      summary: Your GET endpoint
+      summary: Retrieve a Payout Request
       tags:
         - payout-requests
       responses:
@@ -916,12 +1053,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payout-request'
-      operationId: get-v2-payout-requests-payout_request_id
+      operationId: get-payout-request
       description: Get a payout request by its id.
-
   /v2/transactions:
     get:
-      summary: Your GET endpoint
+      summary: List all Transactions
       tags:
         - transactions
       responses:
@@ -938,7 +1074,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/transaction'
-      operationId: get-v2-transactions
+      operationId: get-transactions
       parameters:
         - schema:
             type: integer
@@ -967,7 +1103,7 @@ paths:
         required: true
         description: Id of the transaction
     get:
-      summary: Your GET endpoint
+      summary: Retrieve a Transaction
       tags:
         - transactions
       responses:
@@ -977,174 +1113,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/transaction'
-      operationId: get-v2-transactions-transaction_id
+      operationId: get-transaction
       description: Get a transaction by its id.
-  '/v2/users/{user_id}/compliance':
-    parameters:
-      - schema:
-          type: string
-        name: user_id
-        in: path
-        required: true
-        description: Id of the user to fetch
-    put:
-      summary: ''
-      operationId: put-v2-users-user_id-compliance
-      responses:
-        '200':
-          description: OK
-      description: Add Compliance information to a user.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              w9:
-                type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                      - individual
-                      - business
-                  business_name:
-                    type: string
-                    description: Legal bussiness name. Required if `entity_type` is business.
-                  date_of_birth:
-                    type: string
-                    format: date
-                    description: Required if `entity_type` is individual.
-                  tin:
-                    type: string
-                    minLength: 9
-                    maxLength: 9
-                    description: SSN if `entity_type` is `individual`. EIN if `entity_type` is `business`.
-                  address:
-                    type: object
-                    required:
-                      - line_1
-                      - city
-                      - state
-                      - country
-                      - postcode
-                    properties:
-                      line_1:
-                        type: string
-                      line_2:
-                        type: string
-                      city:
-                        type: string
-                      state:
-                        type: string
-                      country:
-                        type: string
-                      postcode:
-                        type: string
-                required:
-                  - entity_type
-                  - tin
-                  - address
-                  - date_of_birth
-              w8ben:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: Full name of the person.
-                  citizenship_country:
-                    type: string
-                    description: The two-letter ISO country code associated with the beneficial owner's citizenship.
-                  date_of_birth:
-                    type: string
-                    format: date
-                  tin:
-                    type: string
-                    minLength: 9
-                    maxLength: 9
-                    description: SSN
-                  foreign_tax_id:
-                    type: string
-                    description: The tax identification number associated with the beneficial owner's country of residence.
-                  tax_treaty_country:
-                    type: string
-                    description: The two-letter ISO country code of the country for tax treaty purposes.
-                  tax_treaty_citation:
-                    type: string
-                    description: The article and paragraph of the citation claimed for tax treaty purposes.
-                  tax_treaty_rate:
-                    type: number
-                    description: The withholding rate claimed for tax treaty purposes. For example, a 15% rate would be represented as 0.15.
-                  tax_treaty_income_type:
-                    type: string
-                    enum:
-                      - interest1
-                      - dividend6
-                      - dividend7
-                      - pension15
-                      - socialSecurity
-                      - equipment10
-                      - knowhow10
-                      - patent10
-                      - film11
-                      - copyright12
-                    description:
-                      The type of income for tax treaty purposes. Valid values are
-                      - interest1 (Interest Paid by U.S. Obligors)
-                      - dividend6 (Dividends Paid by U.S. Corporations)
-                      - dividend7 (Dividends Qualifying for Direct Dividend Rate)
-                      - pension15 (Pensions and Annuities)
-                      - socialSecurity (Social Security)
-                      - equipment10 (Industrial Equipment)
-                      - knowhow10 (Know-How/Other Industrial Royalties)
-                      - patent10 (Patents)
-                      - film11 (Film & TV)
-                      - copyright12 (Copyrights)
-                  tax_treaty_explanation:
-                    type: string
-                    description: An optional explanation for the tax treaty claimed.
-                  address:
-                    type: object
-                    required:
-                      - line_1
-                      - city
-                      - state
-                      - country
-                      - postcode
-                    properties:
-                      line_1:
-                        type: string
-                      line_2:
-                        type: string
-                      city:
-                        type: string
-                      state:
-                        type: string
-                      country:
-                        type: string
-                      postcode:
-                        type: string
-                  signature:
-                    type: object
-                    properties:
-                      consent:
-                        type: boolean
-                        description: The consent of the beneficial owner to the disclosure of their information to the IRS.
-                      name:
-                        type: string
-                        description: The name of the person signing the form.
-                      email:
-                        type: string
-                        description: The email address of the person signing the form.
-                    required:
-                      - consent
-                      - name
-                      - email
-                required:
-                  - name
-                  - citizenship_country
-                  - date_of_birth
-                  - signature
-                  - tin
-                  - address
 components:
   schemas:
     flow:
