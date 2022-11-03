@@ -1,0 +1,46 @@
+---
+openapi: "v1 POST /api/users/create"
+---
+
+<RequestExample>
+
+```json Payload
+{
+  "email": "user@example.com",
+  "country_code": "string",
+  "phone_number": "string",
+  "first_name": "string",
+  "last_name": "string",
+  "username": "string"
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true,
+  "action": "verify",
+  "verification_id": "97984720-f763-4d02-87fa-477ea2a2587c"
+}
+```
+
+```json 400
+{
+  "success": false,
+  "error": 21,
+  "message": "Phone number is invalid"
+}
+```
+
+```json 403
+{
+  "success": false,
+  "error": 1,
+  "message": "This email is associated with a different phone number."
+}
+```
+
+</ResponseExample>

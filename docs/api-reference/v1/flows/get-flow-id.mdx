@@ -1,0 +1,35 @@
+---
+openapi: "v1 GET /api/flow/get/{flow_id}"
+---
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true,
+  "flow": {
+    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+    "created": "2019-08-24T14:15:22Z",
+    "updated": "2019-08-24T14:15:22Z",
+    "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+    "steps": ["compliance"],
+    "completed-steps": ["compliance"],
+    "payout-link-id": "d0cc26ba-2cf4-40ff-be89-1b949535e8e4",
+    "link": "string"
+  }
+}
+```
+
+```json 403
+{
+  "success": false
+}
+```
+
+```json 404
+{
+  "success": false
+}
+```
+
+</ResponseExample>

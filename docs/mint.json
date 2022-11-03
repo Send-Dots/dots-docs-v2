@@ -207,58 +207,128 @@
     },
     {
       "group": "Dots Endpoint (2.0.0)",
+      "version": "v2",
       "pages": [
-        "api-reference/introduction",
+        "api-reference/v2/introduction",
         {
           "group": "User Routes",
           "pages": [
-            "api-reference/users/get-users",
-            "api-reference/users/create-user",
-            "api-reference/users/get-user-by-id",
-            "api-reference/users/delete-user-by-id",
-            "api-reference/users/send-verification-token",
-            "api-reference/users/verify-user",
-            "api-reference/users/get-payout-methods",
-            "api-reference/users/add-payout-method"
+            "api-reference/v2/users/get-users",
+            "api-reference/v2/users/create-user",
+            "api-reference/v2/users/get-user-by-id",
+            "api-reference/v2/users/delete-user-by-id",
+            "api-reference/v2/users/send-verification-token",
+            "api-reference/v2/users/verify-user",
+            "api-reference/v2/users/get-payout-methods",
+            "api-reference/v2/users/add-payout-method"
           ]
         },
         {
           "group": "Transfer Routes",
           "pages": [
-            "api-reference/transfers/get-transfers",
-            "api-reference/transfers/create-transfer",
-            "api-reference/transfers/get-transfer-by-id"
+            "api-reference/v2/transfers/get-transfers",
+            "api-reference/v2/transfers/create-transfer",
+            "api-reference/v2/transfers/get-transfer-by-id"
           ]
         },
         {
           "group": "Flow Routes",
           "pages": [
-            "api-reference/flows/get-flows",
-            "api-reference/flows/create-flow",
-            "api-reference/flows/get-flow-by-id"
+            "api-reference/v2/flows/get-flows",
+            "api-reference/v2/flows/create-flow",
+            "api-reference/v2/flows/get-flow-by-id"
           ]
         },
         {
           "group": "Payout Link Routes",
           "pages": [
-            "api-reference/payout-links/get-payout-links",
-            "api-reference/payout-links/create-payout-link",
-            "api-reference/payout-links/get-payout-link-by-id",
-            "api-reference/payout-links/cancel-a-payout-link-by-id"
+            "api-reference/v2/payout-links/get-payout-links",
+            "api-reference/v2/payout-links/create-payout-link",
+            "api-reference/v2/payout-links/get-payout-link-by-id",
+            "api-reference/v2/payout-links/cancel-a-payout-link-by-id"
           ]
         },
         {
           "group": "Payouts",
           "pages": [
-            "api-reference/payouts/create-payout",
-            "api-reference/payouts/send-payout"
+            "api-reference/v2/payouts/create-payout",
+            "api-reference/v2/payouts/send-payout"
           ]
         },
         {
           "group": "Transaction Routes",
           "pages": [
-            "api-reference/transactions/get-transactions",
-            "api-reference/transactions/get-transaction-by-id"
+            "api-reference/v2/transactions/get-transactions",
+            "api-reference/v2/transactions/get-transaction-by-id"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Dots Endpoint (1.0.0)",
+      "version": "v1",
+      "pages": [
+        "api-reference/v1/introduction",
+        {
+          "group": "Users",
+          "pages": [
+            "api-reference/v1/users/create-connect-user",
+            "api-reference/v1/users/send-verification-token",
+            "api-reference/v1/users/verify-user",
+            "api-reference/v1/users/retrieve-filter-user-id",
+            "api-reference/v1/users/get-user-by-id",
+            "api-reference/v1/users/add-kyc-kyb",
+            "api-reference/v1/users/list-international-bank-accounts",
+            "api-reference/v1/users/get-user-wallet",
+            "api-reference/v1/users/retrieve-limited-info",
+            "api-reference/v1/users/generate-link-refill",
+            "api-reference/v1/users/generate-link-payout",
+            "api-reference/v1/users/programatically-add-payout",
+            "api-reference/v1/users/"
+          ]
+        },
+        {
+          "group": "Payouts",
+          "pages": [
+            "api-reference/v1/payouts/create-payout",
+            "api-reference/v1/payouts/create-payout-link",
+            "api-reference/v1/payouts/send-payout",
+            "api-reference/v1/payouts/create-direct-payout"
+          ]
+        },
+        {
+          "group": "Transactions",
+          "pages": [
+            "api-reference/v1/transactions/create-transaction",
+            "api-reference/v1/transactions/create-transaction-unverified",
+            "api-reference/v1/transactions/create-multiple-transactions",
+            "api-reference/v1/transactions/get-completion-status",
+            "api-reference/v1/transactions/get-transaction-user",
+            "api-reference/v1/transactions/get-transaction-id",
+            "api-reference/v1/transactions/add-creit-balance",
+            "api-reference/v1/transactions/remove-credit",
+            "api-reference/v1/transactions/create-ach-payment"
+          ]
+        },
+        {
+          "group": "Metrics",
+          "pages": [
+            "api-reference/v1/metrics/transaction-volume-metrics",
+            "api-reference/v1/metrics/api-apps-wallet-balance"
+          ]
+        },
+        {
+          "group": "Flows",
+          "pages": [
+            "api-reference/v1/flows/create-flow",
+            "api-reference/v1/flows/get-flow"
+          ]
+        },
+        {
+          "group": "Invoices",
+          "pages": [
+            "api-reference/v1/invoices/create-invoice-link",
+            "api-reference/v1/invoices/get-invoice-id"
           ]
         }
       ]

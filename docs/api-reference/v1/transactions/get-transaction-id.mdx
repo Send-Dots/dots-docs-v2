@@ -1,0 +1,51 @@
+---
+openapi: "v1 GET /api/transactions/get/transaction/{transaction_id}"
+---
+
+<ResponseExample>
+
+```json Response Example
+{
+  "success": true,
+  "transaction": {
+    "id": 0,
+    "date": "string",
+    "source_username": "string",
+    "destination_username": "string",
+    "amount": 0,
+    "type": "credit",
+    "completed": true,
+    "notes": {},
+    "receipt": {
+      "items": [
+        {
+          "name": "string",
+          "unit_amount": 0,
+          "quantity": 0,
+          "description": "string"
+        }
+      ],
+      "breakdown": {
+        "items_total": 0,
+        "tax": 0,
+        "shipping": 0
+      }
+    },
+    "credit_transaction_id": "string"
+  }
+}
+```
+
+```json 403
+{
+  "success": false
+}
+```
+
+```json 404
+{
+  "success": false
+}
+```
+
+</ResponseExample>
