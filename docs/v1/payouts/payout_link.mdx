@@ -1,0 +1,165 @@
+---
+title: "Create a Payout Link"
+description: "All requests to the /v2/payouts/* endpoints must include both the clientid and apikey as detailed in the Authentication document."
+---
+
+info
+
+All requests to the `/v2/payouts/*` endpoints must include both the `client_id` and `api_key` as detailed in the [Authentication](/docs/quick%5Fstart/authentication) document.
+
+A Payout Link is the easiest way to initiate a payout. The link does not need to be tied to a user and can be delivered via email or SMS. Once the link is claimed, the user will be able to pay themselves out in any method they choose.
+
+## Payout Link with Minimal Information
+
+### Method
+
+Make a request to the [/v2/payouts/create_payout_link](/api#tag/payouts/paths/~1api~1payouts~1create%5Fpayout%5Flink/post) endpoint
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddotssandbox.com/v2/payouts/create_payout_link \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "delivery": {
+            "method": "link"
+        }
+        "amount": 1000,
+      }'
+
+response = {
+    "success": true,
+    "payout_link": {
+      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+      "link": "https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf",
+      "original_amount": 1000,
+      "amount": 1000,
+      "status": "delivered",
+      "api_app_name": "Test App",
+      "payee": {
+        "first_name": null,
+        "last_name": null,
+        "email": null,
+        "country_code": null,
+        "phone_number": null
+      }
+    }
+  }
+
+```
+
+```python Python
+amount = 1000
+
+delivery = {
+  'method': 'link'
+}
+
+link = dots.PayoutLink.create(amount=amount, delivery=delivery)
+
+assert link == 'https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf'
+```
+
+```javascript NodeJS
+const amount = 1000;
+
+const delivery = {
+  method: "link",
+};
+
+const link = await dots.PayoutLink.create(amount, delivery);
+
+link ===
+  "https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf";
+```
+
+</CodeGroup>
+
+## Payout Link with Payee Information
+
+### Method
+
+Make a request to the [/v2/payouts/create_payout_link](/api#tag/payouts/paths/~1api~1payouts~1create%5Fpayout%5Flink/post) endpoint
+
+<CodeGroup>
+
+```bash cURL
+curl https://pls.senddotssandbox.com/v2/payouts/create_payout_link \
+  -X POST \
+  -H "Authorization: Basic <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "delivery": {
+            "method": "link"
+        }
+        "amount": 1000,
+        "payee": {
+            "first_name": "John",
+            "last_name": "Doe",
+            "country_code": "1",
+            "phone_number": "5555555555"
+        }
+      }'
+
+response = {
+    "success": true,
+    "payout_link": {
+      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+      "link": "https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf",
+      "original_amount": 1000,
+      "amount": 1000,
+      "status": "delivered",
+      "api_app_name": "Test App",
+      "payee": {
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": null,
+        "country_code": "1",
+        "phone_number": "5555555555"
+      }
+    }
+  }
+```
+
+```python Python
+amount = 1000
+
+delivery = {
+  'method': 'link'
+}
+
+payee = {
+  'first_name': 'John',
+  'last_name': 'Doe',
+  'country_code': '1',
+  'phone_number': '5555555555'
+}
+
+link = dots.PayoutLink.create(amount=amount, delivery=delivery, payee=payee)
+
+assert link == 'https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf'
+```
+
+```javascript NodeJS
+const amount = 1000;
+
+const delivery = {
+  method: "link",
+};
+
+const payee = {
+  first_name: "John",
+  last_name: "Doe",
+  country_code: "1",
+  phone_number: "5555555555",
+};
+
+const link = await dots.PayoutLink.create(amount, delivery, payee);
+
+link ===
+  "https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf";
+```
+
+</CodeGroup>

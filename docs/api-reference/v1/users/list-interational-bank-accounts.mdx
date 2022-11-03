@@ -1,0 +1,28 @@
+---
+openapi: "v1 GET /api/users/get/{user_id}/intl_bank_accounts"
+---
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true,
+  "accounts": ["0e702e6d-5d2b-450b-8ee7-7c92f3d6c984"]
+}
+```
+
+```json 400
+{
+  "success": false,
+  "message": "Missing parameter",
+  "error_code": "invalid-input"
+}
+```
+
+```json 404
+{
+  "success": false
+}
+```
+
+</ResponseExample>

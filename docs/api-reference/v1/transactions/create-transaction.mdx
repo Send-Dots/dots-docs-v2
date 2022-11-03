@@ -1,0 +1,87 @@
+---
+openapi: "v1 POST /api/transactions/create"
+---
+
+<RequestExample>
+
+```json
+{
+  "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+  "amount": 0,
+  "receipt": {
+    "items": [
+      {
+        "name": "string",
+        "unit_amount": 0,
+        "quantity": 0,
+        "description": "string"
+      }
+    ],
+    "breakdown": {
+      "items_total": 0,
+      "tax": 0,
+      "shipping": 0
+    }
+  },
+  "notes": {},
+  "idempotency_key": "0cd90e5a-2c03-4ab6-81a8-d48818026e58"
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true,
+  "message": "string",
+  "transaction": {
+    "id": 0,
+    "date": "string",
+    "source_username": "string",
+    "destination_username": "string",
+    "amount": 0,
+    "type": "credit",
+    "completed": true,
+    "notes": {},
+    "receipt": {
+      "items": [
+        {
+          "name": "string",
+          "unit_amount": 0,
+          "quantity": 0,
+          "description": "string"
+        }
+      ],
+      "breakdown": {
+        "items_total": 0,
+        "tax": 0,
+        "shipping": 0
+      }
+    },
+    "credit_transaction_id": "string"
+  }
+}
+```
+
+```json 400
+{
+  "success": false,
+  "message": "Source and destination user cannot be the same"
+}
+```
+
+```json 403
+{
+  "success": false
+}
+```
+
+```json 404
+{
+  "success": false
+}
+```
+
+</ResponseExample>

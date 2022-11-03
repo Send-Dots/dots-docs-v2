@@ -1,0 +1,23 @@
+---
+openapi: "v1 POST /api/v2/payouts/send_payout"
+---
+
+<RequestExample>
+
+```json
+{
+  "amount": 0,
+  "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+  "payee": {
+    "country_code": "string",
+    "phone_number": "string"
+  },
+  "delivery": {
+    "message": "string"
+  },
+  "notes": null,
+  "force_collect_compliance_information": true
+}
+```
+
+</RequestExample>

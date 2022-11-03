@@ -1,0 +1,48 @@
+---
+openapi: "v1 POST /api/payouts/create"
+---
+
+<RequestExample>
+
+```json Payload
+{
+  "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+  "amount": 0,
+  "payout_method": "paypal",
+  "ach_account_id": "string",
+  "intl_account_id": "string",
+  "fund": true
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true,
+  "error_code": 0
+}
+```
+
+```json 400
+{
+  "success": false,
+  "message": "Please set user venmo using api/users/wallet/add_payout_method"
+}
+```
+
+```json 403
+{
+  "success": false
+}
+```
+
+```json 404
+{
+  "success": false
+}
+```
+
+</ResponseExample>

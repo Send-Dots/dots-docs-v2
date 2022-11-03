@@ -1,0 +1,80 @@
+---
+openapi: "v1 POST /api/invoice/create"
+---
+
+<RequestExample>
+
+```json Payload
+{
+  "items": [
+    {
+      "name": "string",
+      "unit_amount": 0,
+      "quantity": 0,
+      "description": "string"
+    }
+  ],
+  "breakdown": {
+    "items_total": 0,
+    "tax": 0,
+    "shipping": 0
+  },
+  "expires_in": 10800,
+  "amount": 0,
+  "requested_information": ["string"],
+  "metadata": {},
+  "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true,
+  "invoice": {
+    "id": 0,
+    "api_app": {
+      "id": 0,
+      "user_id": 0,
+      "name": "string"
+    },
+    "amount": 0,
+    "expiry": "2019-08-24",
+    "status": "string",
+    "items": [
+      {
+        "name": "string",
+        "unit_amount": 0,
+        "quantity": 0,
+        "description": "string"
+      }
+    ],
+    "breakdown": {
+      "items_total": 0,
+      "tax": 0,
+      "shipping": 0
+    },
+    "requested_information": ["shipping_address"],
+    "metadata": {},
+    "payer": {}
+  }
+}
+```
+
+```json 400
+{
+  "success": false,
+  "message": "Invoice expiry cannot exceed 72 hours"
+}
+```
+
+```json 403
+{
+  "success": false
+}
+```
+
+</ResponseExample>

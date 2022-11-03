@@ -1,0 +1,49 @@
+---
+openapi: "v1 POST /api/users/wallet/add_payout_method"
+---
+
+<RequestExample>
+
+```json Payload
+{
+  "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+  "payout_method": "paypal",
+  "payout_id": "string",
+  "ach_routing_number": "string",
+  "ach_account_number": "string",
+  "ach_account_type": "checking",
+  "set_default": true
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true,
+  "ach_account_id": "acc_43kfg84ifkgh"
+}
+```
+
+```json 400
+{
+  "success": false,
+  "message": "payout_id must be provided. Email for paypal and phone number for venmo"
+}
+```
+
+```json 403
+{
+  "success": false
+}
+```
+
+```json 404
+{
+  "success": false
+}
+```
+
+</ResponseExample>
