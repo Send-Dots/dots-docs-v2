@@ -268,7 +268,7 @@
       "group": "Dots Endpoint (1.0.0)",
       "version": "v1",
       "pages": [
-        "api-reference/introduction",
+        "api-reference/v1/introduction",
         {
           "group": "Users",
           "pages": [
