@@ -1,0 +1,60 @@
+---
+openapi: "v1 GET /api/users/get/{user_id}"
+---
+
+<ResponseExample>
+
+```json 200
+{
+  "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+  "email": "user@example.com",
+  "username": "john-doe",
+  "first_name": "John",
+  "last_name": "Doe",
+  "display_name": "John Doe",
+  "ach_accounts": [
+    {
+      "id": "acc_2345683453",
+      "name": "Chase",
+      "mask": "2341"
+    }
+  ],
+  "payout_methods": {
+    "ach_accounts": [
+      {
+        "id": "acc_2345683453",
+        "name": "Chase",
+        "mask": "2341"
+      }
+    ],
+    "paypal": "string",
+    "venmo": "string"
+  },
+  "wallet": {
+    "amount": 1000,
+    "withdrawable_amount": 900,
+    "credit_balance": 250
+  }
+}
+```
+
+```400
+{
+  "success": false,
+  "message": "user_id is not a valid uuid"
+}
+```
+
+```403
+{
+  "success": false
+}
+```
+
+```404
+{
+  "success": false
+}
+```
+
+</ResponseExample>

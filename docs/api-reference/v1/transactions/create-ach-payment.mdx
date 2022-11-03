@@ -1,0 +1,85 @@
+---
+openapi: "v1 POST /api/transactions/create_ach_payment"
+---
+
+<RequestExample>
+
+```json Payload
+{
+  "first_name": "string",
+  "last_name": "string",
+  "email": "user@example.com",
+  "amount": 0,
+  "routing_number": "string",
+  "account_number": "string",
+  "account_type": "checking",
+  "plaid": {
+    "balances": {
+      "available": 0,
+      "current": 0,
+      "limit": 0,
+      "iso_currency_code": "string",
+      "unofficial_currency_code": "string"
+    },
+    "transactions": [
+      {
+        "account_id": "string",
+        "amount": 0,
+        "iso_currency_code": "string",
+        "unofficial_currency_code": "string",
+        "category": ["string"],
+        "category_id": "string",
+        "date": "string",
+        "datetime": "string",
+        "location": {
+          "address": "string",
+          "city": "string",
+          "state": "string",
+          "zip": "string",
+          "lat": 0,
+          "lon": 0
+        },
+        "name": "string",
+        "payment_meta": {
+          "by_order_of": "string",
+          "payee": "string",
+          "payer": "string",
+          "payment_method": "string",
+          "payment_processor": "string",
+          "ppd_id": "string",
+          "reason": "string",
+          "reference_number": "string"
+        },
+        "pending": true,
+        "pending_transaction_id": "string",
+        "transaction_id": "string"
+      }
+    ]
+  }
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true
+}
+```
+
+```json 400
+{
+  "success": false,
+  "message": "Amount must be greater than 0"
+}
+```
+
+```json 403
+{
+  "success": false
+}
+```
+
+</ResponseExample>

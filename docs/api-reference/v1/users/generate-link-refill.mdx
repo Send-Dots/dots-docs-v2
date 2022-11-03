@@ -1,0 +1,43 @@
+---
+openapi: "v1 POST /api/users/wallet/refill"
+---
+
+<RequestExample>
+
+```json Payload
+{
+  "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true,
+  "link": "https://app.dots.dev/refill/dfjskjfhshgfdsjehf"
+}
+```
+
+```json 400
+{
+  "success": false,
+  "message": "user_id is not a valid uuid"
+}
+```
+
+```json 403
+{
+  "success": false
+}
+```
+
+```json 404
+{
+  "success": false
+}
+```
+
+</ResponseExample>

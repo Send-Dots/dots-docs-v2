@@ -1,0 +1,70 @@
+---
+openapi: "v1 POST /api/payouts/create_payout_link"
+---
+
+<RequestExample>
+
+```json Payload
+{
+  "delivery": {
+    "method": "link"
+  },
+  "amount": 0,
+  "notes": null,
+  "tax_exempt": true,
+  "payee": {
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "country_code": "string",
+    "phone_number": "string"
+  }
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true,
+  "payout_link": {
+    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+    "link": "string",
+    "original_amount": 0,
+    "amount": 0,
+    "status": "created",
+    "api_app_name": "string",
+    "payee": {}
+  }
+}
+```
+
+```json 400
+{
+  "success": false,
+  "message": "Cannot parse or bad format"
+}
+```
+
+```json 403
+{
+  "success": false
+}
+```
+
+```json 404
+{
+  "success": false
+}
+```
+
+```json 405
+{
+  "success": false,
+  "message": "Server could not process this request"
+}
+```
+
+</ResponseExample>

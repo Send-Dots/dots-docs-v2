@@ -1,0 +1,28 @@
+---
+openapi: "v1 POST /api/users/verify_user"
+---
+
+<RequestExample>
+
+```json Payload
+{
+  "verification_id": "5bcbf7ac-c998-46ce-aa6e-a0c1a3f1f5bd",
+  "verification_token": "string"
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response Example
+{
+  "success": true,
+  "user": {
+    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
+  },
+  "message": "Error message"
+}
+```
+
+</ResponseExample>
