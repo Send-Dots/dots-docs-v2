@@ -890,6 +890,44 @@ paths:
       description: Create a payout for an existing user that has a payout method saved to their account.
       tags:
         - payouts
+  /v2/payments:
+    post:
+      summary: ''
+      operationId: post-v2-payments
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transfer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: integer
+                  exclusiveMinimum: 0
+                platform:
+                  type: string
+                  enum: [ach]
+                account_id:
+                  type: [string, null]
+                  description: The user's ACH account ID.
+                metadata: {}
+              required: [user_id, amount, platform]
+              if:
+                properties: { platform: { const: ach } }
+              then:
+                required: [account_id]
+      description: Creates a transaction from a user's stored payment method to
+        the app. User the `/users/{user_id}/payout-methods` route to get
+        a user's stored payment methods.
   /v2/payouts/send-payout:
     parameters: []
     post:
