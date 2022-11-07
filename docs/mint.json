@@ -43,6 +43,12 @@
       "name": "GitHub",
       "icon": "github",
       "url": "https://github.com/Send-Dots"
+    },
+    {
+      "name": "Create a Payment",
+      "icon": "satellite-dish",
+      "url": "payments/create-a-payment",
+      "isDefaultHidden": true
     }
   ],
   "versions": ["v2", "v1"],
