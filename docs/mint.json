@@ -5,7 +5,10 @@
     "dark": "/logo/dark.png"
   },
   "api": {
-    "baseUrl": ["https://api.senddotssandbox.com", "https://api.senddots.com"],
+    "baseUrl": [
+      "https://api.senddotssandbox.com/api",
+      "https://api.dots.dev/api"
+    ],
     "auth": {
       "method": "basic",
       "name": "client_id:api_key"
@@ -75,6 +78,10 @@
             "flows/create-a-flow",
             "flows/retrieve-a-flow"
           ]
+        },
+        {
+          "group": "Payments",
+          "pages": ["payments/create-a-payment"]
         },
         {
           "group": "Payouts",
