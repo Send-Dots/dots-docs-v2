@@ -129,7 +129,7 @@
             "users/create-a-user",
             "users/retrieve-a-user",
             "users/list-all-users",
-            "users/add-1099-information",
+            "users/add-compliance-information",
             "users/add-payout-methods"
           ]
         }
@@ -227,7 +227,8 @@
             "api-reference/v2/users/send-verification-token",
             "api-reference/v2/users/verify-user",
             "api-reference/v2/users/get-payout-methods",
-            "api-reference/v2/users/add-payout-method"
+            "api-reference/v2/users/add-payout-method",
+            "api-reference/v2/users/add-compliance-information"
           ]
         },
         {
