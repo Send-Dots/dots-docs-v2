@@ -507,7 +507,13 @@ paths:
           in: query
           name: ending_before
           description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
-      description: Lsit all transfers.
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: user_id
+          description: Include only results with this user ID attached.
+      description: List all transfers.
     post:
       summary: Create a Transfer
       operationId: create-transfer
