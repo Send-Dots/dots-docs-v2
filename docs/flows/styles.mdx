@@ -1,0 +1,95 @@
+---
+title: 'The Flows Styles API'
+sidebarTitle: 'Flows Styles API'
+description: 'Customize the look and feel of Flows to match the design of your site.'
+---
+
+Flow supports visual customization, which allows you to match the design of your site with the styling option. The layout of each flow stays consistent, but you can modify colors, buttons, borders, padding, and more.
+
+```
+{
+  theme: 'light',
+  variables: {
+    backgroundColor: '',
+    primaryTextColor: '',
+    secondaryTextColor: '',
+    primaryColor: '',
+    tabBackgroundColor: '',
+    tabHoverBackgroundColor: '',
+    buttonBackgroundColor: '',
+    buttonTextColor: '',
+    buttonHoverTextColor: '',
+    buttonHoverBackgroundColor: '',
+    inputBackgroundColor: '',
+    inputBorderColor: '',
+    tertiaryTextColor: '',
+    buttonDisabledBackgroundColor: '',
+    buttonDisabledTextColor: '',
+  },
+}
+```
+
+## Style configurations
+
+### Theme
+
+The `light` and `dark` theme allow you to control the general apperance of elements of flows that you cannot configure individually, such as the color of the Dots logo or the datepicker icon, defaults to `light`.
+
+### Variables
+
+Variables such as `backgroundColor` and `primaryInputColor` work like CSS variables and allow you to customize the looks of flow components individually.
+
+| Variable                        | Description                                                                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `backgroundColor`               | The background color of the flow                                                                                                     |
+| `primaryTextColor`              | The color of texts used in titles and labels                                                                                         |
+| `secondaryTextColor`            | The color of secondary texts used in sublabels in buttons                                                                            |
+| `tertiaryTextColor`             | The color of tertiary texts such as the default payout method indicator or the `Visit dashboard` link at the bottom of the flow page |
+| `primaryColor`                  | The primary color of the flow theme, such as button hovers or highlights                                                             |
+| `tabBackgroundColor`            | The background color of the rail tab                                                                                                 |
+| `tabHoverBackgroundColor`       | The background color of the rail tab when the cursor hovers over it                                                                  |
+| `buttonBackgroundColor`         | The background color of action buttons located at the bottom of each flow page                                                       |
+| `buttonTextColor`               | The text color of action buttons located at the bottom of each flow page                                                             |
+| `buttonHoverTextColor`          | The text color of action buttons when the cursor hovers over it                                                                      |
+| `buttonHoverBackgroundColor`    | The background color of action button when the cursor hovers over it                                                                 |
+| `buttonDisabledBackgroundColor` | The background color of action buttons when they are disabled                                                                        |
+| `buttonDisabledTextColor`       | The text color of action buttons when they are disabled                                                                              |
+| `inputBackgroundColor`          | The background color of inputs such as checkboxes or textfields                                                                      |
+| `inputBorderColor`              | The border color of inputs                                                                                                           |
+
+## Implementation
+
+To apply the styling to your flow, first stringify the configurations, then URL encode it and add it as a query parameter `?styles={url_encoded_config}` to the flow link
+
+## Example Flow Styling
+
+This example customize the flow styles with the following configurations:
+
+```javascript NodeJS
+const configurations = {
+  theme: 'dark',
+  variables: {
+    backgroundColor: '#A2f9A8',
+    primaryTextColor: '#E95E51',
+    primaryColor: '#0ea5e9',
+    inputBackgroundColor: '#c084fc',
+    inputBorderColor: '#f59e0b',
+    inputPlaceholderColor: '#99f6e4',
+    secondaryTextColor: '#fed7aa',
+    tabBackgroundColor: '#fbcfe8',
+    tabHoverBackgroundColor: '#fce7f3',
+    buttonBackgroundColor: '#b45309',
+    buttonHoverBackgroundColor: '#fef3c7',
+    buttonTextColor: '#22d3ee',
+    buttonHoverTextColor: '#c026d3',
+    buttonDisabledBackgroundColor: '#365314',
+    buttonDisabledTextColor: '#7f1d1d',
+  },
+};
+
+const url_encoded_config = encodeURIComponent(JSON.stringify(configurations));
+
+const flowURI =
+  'https://my.senddotssandbox.com/flow/5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8?styles=' +
+  url_encoded_config;
+```

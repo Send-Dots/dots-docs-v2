@@ -1,5 +1,5 @@
 ---
-title: "Create a User"
+title: 'Create a User'
 ---
 
 <Note>
@@ -14,11 +14,11 @@ Create and verify a user to your `application`.
 
 ## Creating a Users
 
-Creating users happens through the [/v2/users](/api-reference/users/create-user) endpoint. Once hit, a dots user will be created if one does not exist based on phone number. This user must then be verified through a one-time code sent over text-message. This code can be requested through the [/v2/users/{user_id}/send-verification-token]() endpoint and then verified through the [/v2/users/{user_id}/verify]() endpoint.
+Creating users happens through the [/v2/users](/api-reference/v2/users/create-user) endpoint. Once hit, a dots user will be created if one does not exist based on phone number. This user must then be verified through a one-time code sent over text-message. This code can be requested through the [/v2/users/{user_id}/send-verification-token](/api-reference/v2/users/send-verification-token) endpoint and then verified through the [/v2/users/{user_id}/verify](/api-reference/v2/users/verify-user) endpoint.
 
 ### Method
 
-Make a `POST` request to the [/v2/users](/api-reference/users/create-user) endpoint
+Make a `POST` request to the [/v2/users](/api-reference/v2/users/create-user) endpoint
 
 <CodeGroup>
 
@@ -86,7 +86,7 @@ Dots' pre built components can be used to verify the user. Information on flows 
 
 ### Verify through the API
 
-#### 1. Send a verification token by making a `POST` request to the [/v2/users/{user_id}/send-verification-token](/api-reference/users/send-verification-token) endpoint
+#### 1. Send a verification token by making a `POST` request to the [/v2/users/{user_id}/send-verification-token](/api-reference/v2/users/send-verification-token) endpoint
 
 <CodeGroup>
 
@@ -98,7 +98,7 @@ Dots' pre built components can be used to verify the user. Information on flows 
 
 </CodeGroup>
 
-#### 3. Submit the verification token by calling the [/v2/users/{user_id}/verify](/api-reference/users/verify) endpoint
+#### 3. Submit the verification token by calling the [/v2/users/{user_id}/verify](/api-reference/v2/users/verify) endpoint
 
 <CodeGroup>
 
