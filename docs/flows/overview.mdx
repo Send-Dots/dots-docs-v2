@@ -1,7 +1,7 @@
 ---
-title: 'The Flow Object'
-sidebarTitle: 'Flows Overview'
-description: 'Flows provide a simple yet customizable way to integrate payouts into your application.'
+title: "The Flow Object"
+sidebarTitle: "Flows Overview"
+description: "Flows provide a simple yet customizable way to integrate payouts into your application."
 ---
 
 ![Dots Flows](../images/flows.png)
@@ -33,6 +33,17 @@ The `manage-payouts` lets a user connect their desired payout methods to Dots an
 ### Payout
 
 The `payout` step lets the user withdraw their funds to their preferred payout method.
+
+### Redirect
+
+The `redirect` step lets you redirect the user to a URL of your choice. The `redirect` step looks like:
+
+```json
+{
+  "name": "redirect",
+  "redirect_url": "https://example.com"
+}
+```
 
 ## Example Flow
 
