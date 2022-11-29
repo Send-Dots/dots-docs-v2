@@ -12,18 +12,20 @@ This webhook event is fired when there is a change to the Payout Link's status w
 
 ```json
 {
+  "event": "payout_link.updated",
   "payout_link_id": "618a48cb-9ffb-4916-8b63-896a92d59443"
 }
 ```
 
 ## Flow Events
 
-This webhook event is fired when a user completed Flow steps. A Payout Link is a kind of Flow so it will also trigger this event.
+This webhook event is fired when a user completes Flow steps. A Payout Link is a kind of Flow so it will also trigger this event.
 
 Flow event body:
 
 ```json
 {
+  "event": "flow.updated",
   "flow_id": "dfff6b89-6437-43be-b835-29fb4c04347c"
 }
 ```
@@ -34,6 +36,7 @@ This webhook is fired when there is a change to the Transfer status with the fol
 
 ```json
 {
+  "event": "transfer.updated",
   "transfer_id": "ed0e9b81-de07-41b6-ad99-e0b51b412df1"
 }
 ```
