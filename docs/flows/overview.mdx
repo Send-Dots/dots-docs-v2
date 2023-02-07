@@ -52,7 +52,7 @@ This example flow onboards a user, collects compliance information, and then let
 ```bash
 > curl https://pls.senddotssandbox.com/v2/flow/create \
 -X POST \
--H "Authorization: Basic <TOKEN>" \
+-u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json" \
 -d '{
       "steps": ["compliance", "manage-payouts"],

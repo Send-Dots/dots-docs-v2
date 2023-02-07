@@ -1,5 +1,5 @@
 ---
-title: 'Create a User'
+title: "Create a User"
 ---
 
 <Note>
@@ -25,7 +25,7 @@ Make a `POST` request to the [/v2/users](/api-reference/v2/users/create-user) en
 ```bash cURL
 > curl https://pls.senddotssandbox.com/v2/users \
   -X POST \
-  -H "Authorization: Basic <TOKEN>" \
+  -u "CLIENT_ID:API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
         "email": "test@senddots.com",
@@ -93,7 +93,7 @@ Dots' pre built components can be used to verify the user. Information on flows 
 ```bash cURL
 > curl https://pls.senddotssandbox.com/v2/users/{user_id}/send_verification_token \
   -X POST \
-  -H "Authorization: Basic <TOKEN>" \
+  -u "CLIENT_ID:API_KEY" \
 ```
 
 </CodeGroup>
@@ -105,7 +105,7 @@ Dots' pre built components can be used to verify the user. Information on flows 
 ```bash cURL
 curl https://pls.senddotssandbox.com/v2/users/{user_id}/verify \
   -X POST \
-  -H "Authorization: Basic <TOKEN>" \
+  -u "CLIENT_ID:API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
         "token": "123456"

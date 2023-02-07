@@ -21,7 +21,7 @@ Please replace the phone number with your own.
 ```bash cURL
 https://pls.senddotssandbox.com/api/v2/payouts/send-payout \
 -X POST \
--H "Authorization: Basic <TOKEN>" \
+-u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json" \
 -d "{
       "delivery": {

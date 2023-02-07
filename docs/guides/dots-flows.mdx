@@ -32,7 +32,7 @@ Lets create the first flow to onboard users. This flow will create a Dots user, 
 ```bash cURL
 https://pls.senddotssandbox.com/api/v2/flows/ \
 -X POST \
--H "Authorization: Basic <TOKEN>" \
+-u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json" \
 -d "{
       "steps": ['compliance']
@@ -65,7 +65,7 @@ When the user completes each step, a webhook with the flow's `id` will be trigge
 ```bash cURL
 https://pls.senddotssandbox.com/api/v2/flows/19f4e351-2228-493e-b36f-90c6ecdab9f6 \
 -X GET \
--H "Authorization: Basic <TOKEN>" \
+-u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json"
 ```
 
@@ -92,7 +92,7 @@ Now that we have the user's `id`, we can transfer funds to the user's Dots accou
 ```bash cURL
 https://pls.senddotssandbox.com/api/v2/transfers/ \
 -X POST \
--H "Authorization: Basic <TOKEN>" \
+-u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json" \
 -d "{
       "amount": -1000,
@@ -109,7 +109,7 @@ With the user's `id`, we can create a pre-authorized flow for the user to withdr
 ```bash cURL
 https://pls.senddotssandbox.com/api/v2/flows/ \
 -X POST \
--H "Authorization: Basic <TOKEN>" \
+-u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json" \
 -d "{
       "user_id": "a1b2c3d4-e5f6-7g8h-9i0j-1k2l3m4n5o6p",
