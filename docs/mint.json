@@ -65,7 +65,11 @@
     {
       "version": "v2",
       "group": "Guides",
-      "pages": ["guides/your-first-payout", "guides/dots-flows"]
+      "pages": [
+        "guides/your-first-payout",
+        "guides/dots-flows",
+        "guides/accept-card-payments"
+      ]
     },
     {
       "version": "v2",
