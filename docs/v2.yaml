@@ -20,6 +20,8 @@ tags:
     description: Transfer routes
   - name: flows
     description: Flow routes
+  - name: payment-intents
+    description: Payment Intent Routes
   - name: payouts
     description: Payout Routes
   - name: payout-links
@@ -675,8 +677,9 @@ paths:
                             type: boolean
                           redirect_url:
                             type: string
-                            pattern: https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)
-                        required: [name]
+                            pattern: 'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'
+                        required:
+                          - name
                 user_id:
                   type: string
                   format: uuid
@@ -902,7 +905,7 @@ paths:
         - payouts
   /v2/payments:
     post:
-      summary: "Create a Payment"
+      summary: Create a Payment
       operationId: create-payment
       responses:
         "201":
@@ -925,19 +928,26 @@ paths:
                   exclusiveMinimum: 0
                 platform:
                   type: string
-                  enum: [ach]
+                  enum:
+                    - ach
                 account_id:
-                  type: [string, null]
+                  type:
+                    - string
+                    - null
                   description: The user's ACH account ID.
                 metadata: {}
-              required: [user_id, amount, platform]
+              required:
+                - user_id
+                - amount
+                - platform
               if:
-                properties: { platform: { const: ach } }
+                properties:
+                  platform:
+                    const: ach
               then:
-                required: [account_id]
-      description: Creates a transaction from a user's stored payment method to
-        the app. User the `/users/{user_id}/payout-methods` route to get
-        a user's stored payment methods.
+                required:
+                  - account_id
+      description: "Creates a transaction from a user's stored payment method to the app. User the `/users/{user_id}/payout-methods` route to get a user's stored payment methods."
   /v2/payouts/send-payout:
     parameters: []
     post:
@@ -1165,6 +1175,146 @@ paths:
                 $ref: "#/components/schemas/transaction"
       operationId: get-transaction
       description: Get a transaction by its id.
+  /v2/payment-intents:
+    get:
+      summary: List all Payment Intents
+      tags:
+        - payment-intents
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/payment-intent"
+                  x-stoplight:
+                    id: pqn9bmrscie6n
+      operationId: get-payment-intents
+      description: Get all payment intents
+    post:
+      summary: Create a Payment Intent
+      operationId: create-payment-intent
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payment-intent"
+      description: Create a Payment Intent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  x-stoplight:
+                    id: ovekwkwlhbny9
+                  exclusiveMinimum: 0
+                  description: Amount in cents
+                currency:
+                  type: string
+                  x-stoplight:
+                    id: bsfrung5170op
+                  enum:
+                    - usd
+                confirm:
+                  type: boolean
+                  x-stoplight:
+                    id: v91ke477lkh2h
+                  default: false
+                user_id:
+                  type: string
+                  x-stoplight:
+                    id: rfloef61orj2s
+                  format: uuid
+                description:
+                  type: string
+                  x-stoplight:
+                    id: dq2n5r3onbvb9
+                payment_method_id:
+                  type: string
+                  x-stoplight:
+                    id: h0xvq7172cvtj
+                  format: uuid
+                payment_method_types:
+                  type: array
+                  x-stoplight:
+                    id: 4nmdyvqhzyo4m
+                  items:
+                    x-stoplight:
+                      id: xi02iihwt236x
+                    type: string
+                    enum:
+                      - card
+                setup_future_usage:
+                  type: string
+                  x-stoplight:
+                    id: u4q8pn15hft7x
+                  enum:
+                    - on_session
+                metadata:
+                  type: boolean
+                  x-stoplight:
+                    id: dq8h17q4hcklq
+                transfer_data:
+                  type: object
+                  x-stoplight:
+                    id: ct61t4l964711
+                  properties:
+                    destination_user_id:
+                      type: string
+                      x-stoplight:
+                        id: 8ta84c9rn9cj6
+                      format: uuid
+                      description: The destination user to send the funds to. This is `amount` - transactions fees - `application_fee`.
+                application_fee_amount:
+                  type: integer
+                  x-stoplight:
+                    id: jc54cg67srr8j
+                  minimum: 0
+              required:
+                - amount
+                - currency
+  "/v2/payment-intents/{payment_intent_id}":
+    parameters:
+      - schema:
+          type: string
+        name: payment_intent_id
+        in: path
+        required: true
+        description: Payment Intent ID
+    get:
+      summary: Your GET endpoint
+      tags:
+        - payment-intents
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payment-intent"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    x-stoplight:
+                      id: rabj9qtzx7s64
+                    enum:
+                      - PaymentIntent not found
+      operationId: get-payment-intent
+      description: Retrieve a payment intent by its ID.
+      parameters: []
 components:
   schemas:
     flow:
@@ -1466,6 +1616,71 @@ components:
           type: integer
         credit_balance:
           type: integer
+    payment-intent:
+      title: payment-intent
+      x-stoplight:
+        id: nueyly6tyj0mq
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        amount:
+          type: integer
+          x-stoplight:
+            id: 3mch9ai94qu6x
+          minimum: 0
+          description: Amount in cents
+        currency:
+          type: string
+          x-stoplight:
+            id: q4tghgkt4yim4
+          enum:
+            - usd
+        user_id:
+          type: string
+          x-stoplight:
+            id: 6d0n5ovxn9j2q
+          format: uuid
+        status:
+          type: string
+          x-stoplight:
+            id: l46kwkcssv2so
+          enum:
+            - initialized
+            - created
+            - requires_payment_method
+            - requires_confirmation
+            - requires_action
+            - processing
+            - succeeded
+            - requires_capture
+            - canceled
+            - failed
+        transfer_id:
+          x-stoplight:
+            id: yaf95g0syoccw
+          format: uuid
+          type: string
+        payment_method_id:
+          type: string
+          x-stoplight:
+            id: h0ux65rk48gdz
+          format: uuid
+        metadata:
+          type:
+            - object
+          x-stoplight:
+            id: 75x0x70zhjxx3
+        client_secret:
+          type: string
+          x-stoplight:
+            id: 2y0cby2eshxe0
+          description: Only availble on payment intent creation.
+      required:
+        - id
+        - amount
+        - currency
   securitySchemes:
     api_key:
       type: http
