@@ -85,6 +85,14 @@
           "pages": ["payments/create-a-payment"]
         },
         {
+          "group": "Payment Intents",
+          "pages": [
+            "payment-intents/create-a-payment-intent",
+            "payment-intents/retrieve-a-payment-intent",
+            "payment-intents/list-all-payment-intents"
+          ]
+        },
+        {
           "group": "Payouts",
           "pages": [
             "payouts/overview",
