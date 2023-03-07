@@ -1,0 +1,178 @@
+# Accept a card payment
+
+## 1. Set up Dots
+
+First, [register](https://dashboard.dots.dev) for Dots account and request access to Dots Payments. Once you have access, you can create a new API keys.
+
+## 2. Create a payment intent `server-side`
+
+A Payment Intent object represents your intent to collect a payment from a customer. It is created with a set of parameters that describe the payment you intend to collect. Once created, you can confirm the payment intent to collect the payment.
+
+Create a Payment Intent on your server with the amount and currency as well as any other properties that might be required for your payment. For example, you can pass the `transfer_data.destination_user_id` to transfer the funds to a connected account.
+
+```bash cURL
+https://pls.senddotssandbox.com/api/v2/payment-intents/ \
+-X POST \
+-u "CLIENT_ID:API_KEY" \
+-H "Content-Type: application/json" \
+-d "{
+      "amount": 1000,
+      "currency": "usd",
+      "transfer_data": {
+        "destination_user_id": "0a7d51ec-04df-4eb8-a2c8-d066f6d3bb81"
+      },
+      "application_fee_amount": 100 //fee to be paid to the platform
+    }"
+
+> {
+  "client_secret": "...",
+  "id": "0e835300-5555-4ba1-816a-0abaa8609a83",
+  ...
+}
+```
+
+Once the payment intent is created, you can use the `client_secret` to confirm the payment intent. You will need to pass the `client_secret` to the client-side to confirm the payment intent. The `client_secret` should not be logged or stored on the server side.
+
+## 3. Collect card details `client-side`
+
+Once you have the `client_secret` from the server, you're ready to collect card details with [Dots Elements](). Elements are pre-built UI components that help you build your checkout flow. You can use Elements to collect card details and confirm the payment intent.
+
+Dots Elements are currently only available in React.
+
+### Set up Elements
+
+Install the `@dots.dev/react-dots-js` package.
+
+```bash
+npm install @dots.dev/react-dots-js @dots.dev/dots-js --save
+```
+
+### Add Elements to your page
+
+```jsx
+import React from 'react';
+import { loadDots } from '@dots.dev/dots-js';
+import { Elements } from '@dots.dev/react-dots-js';
+import CheckoutForm from './components/CheckoutForm';
+
+const dotsPromise = loadDots('DOTS_CLIENT_ID', 'sandbox');
+function App() {
+  return (
+    <div className='App'>
+      <Elements dots={dotsPromise}>
+        <CheckoutForm />
+      </Elements>
+    </div>
+  );
+}
+```
+
+### Add and configure a `PaymentElement` component
+
+```jsx
+import React from 'react';
+import { PaymentElement } from '@stripe/react-stripe-js';
+
+const fieldOptions = {
+  styles: {
+    base: {
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      color: '#32325d',
+      fontWeight: '400',
+      fontSize: '16px',
+    },
+    invalid: {
+      ':hover': {
+        textDecoration: 'underline dotted red',
+      },
+      color: '#fa755a',
+    },
+    valid: {
+      color: '#32CD32',
+    },
+  },
+};
+
+function CardSection() {
+  return (
+    <label>
+      Card details
+      <PaymentElement options={fieldOptions} />
+    </label>
+  );
+}
+
+export default CardSection;
+```
+
+The `PaymentElement` simplifies the form and minimizes the number of required fields by inserting a single, flexible input field that securely collects all necessary card and billing details.
+
+## 4. Submit the payment to Dots `client-side`
+
+Once the user has entered their card details, you can submit the payment intent to Dots to confirm the payment intent using the `client_secret` from the server.
+
+To complete the payment when the user clicks, retrieve the `client_secret` from the Payment Intent you created in step two and call `dots.confirmCardPayment` with the `client_secret` and the Element. Pass additional billing details, such as the cardholder name and address, to the `billing_details` dictionary.
+
+```jsx
+
+import React from 'react';
+import { PaymentElement, useDots, useElements } from '@dots.dev/react-dots-js';
+
+import CardSection from './CardSection';
+
+export default function CheckoutForm() {
+  const dots = useDots();
+  const elements = useElements();
+
+  const handleSubmit = async (event) => {
+    // We don't want to let default form submission happen here,
+    // which would refresh the page.
+    event.preventDefault();
+
+    if (!dots || !elements) {
+      // Dots.js has not yet loaded.
+      // Make sure to disable form submission until Dots.js has loaded.
+      return;
+    }
+
+    try {
+      const clientSecret = await api.createPaymentIntent(amount); //create a card charge of 96 dollar
+
+      const payload = await dots.confirmCardPayment(clientSecret, {
+        payment_method: {
+          element: elements?.getElement('payment')!,
+          billing_details: {
+            address: {
+              country: data.country,
+              zip: data.zip,
+            },
+          },
+        },
+      });
+
+      if (payload.status === 'succeeded') {
+        // Show a success message to your customer
+        // There's a risk of the customer closing the window before callback
+        // execution. Set up a webhook or plugin to listen for the
+        // payment_intent.succeeded event that handles any business critical
+        // post-payment actions.
+      } else {
+        // Show an error to your customer
+        console.log(payload.status);
+      }
+
+    } catch (error: any) {
+        console.log(error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <CardSection />
+      <button disabled={!dots}>Confirm order</button>
+    </form>
+  );
+}
+
+```
