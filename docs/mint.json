@@ -58,7 +58,6 @@
         "overview/authentication",
         "overview/environments",
         "overview/error-codes",
-        "overview/idempotency",
         "overview/metadata"
       ]
     },
