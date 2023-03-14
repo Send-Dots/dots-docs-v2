@@ -866,6 +866,12 @@ paths:
                 memo:
                   type: string
                   description: Add a memo to the top of the Payout Link
+                idempotency_key:
+                  type:
+                    - string
+                    - 'null'
+                  format: uuid
+                  description: Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.
               required:
                 - amount
       description: Create a Payout Link.
@@ -1071,6 +1077,12 @@ paths:
                 memo:
                   type: string
                   description: Add a memo to the top of the Payout Link
+                idempotency_key:
+                  type:
+                    - string
+                    - 'null'
+                  format: uuid
+                  description: Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.
               required:
                 - amount
       description: 'Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds.'
