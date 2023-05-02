@@ -10,6 +10,9 @@ info:
     name: Kartikye Mittal
     url: 'https://dots.dev'
     email: info@dots.dev
+  license:
+    name: MIT
+    url: 'https://opensource.org/license/mit/'
 servers:
   - url: 'https://api.dots.dev/api'
     description: Production
@@ -18,6 +21,8 @@ tags:
     description: User routes
   - name: transfers
     description: Transfer routes
+  - name: transfer-batches
+    description: Transfer Batch routes
   - name: flows
     description: Flow routes
   - name: payment-intents
@@ -1406,6 +1411,214 @@ paths:
       operationId: get-payment-intent
       description: Retrieve a payment intent by its ID.
       parameters: []
+  /v2/transfer-batches:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - transfer-batches
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: lq5c8p8mvffcr
+                    items:
+                      x-stoplight:
+                        id: t568w2rdeeoxt
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          x-stoplight:
+                            id: ct6m9n1i93jbm
+                          format: uuid
+                        status:
+                          type: string
+                          x-stoplight:
+                            id: 65vvp6fc5130o
+                          enum:
+                            - completed
+                            - pending
+                        metadata:
+                          type: object
+                          x-stoplight:
+                            id: lk25ld1jfeu1t
+                        items:
+                          type: array
+                          x-stoplight:
+                            id: 28otrvk116dpg
+                          items:
+                            $ref: '#/components/schemas/transfer-batch-item'
+                            x-stoplight:
+                              id: ddtkbmlyy1nta
+                  has_more:
+                    type: boolean
+                    x-stoplight:
+                      id: 1qql32marx8n0
+      operationId: get-transfer-batches
+      description: Get a transfer batch
+      requestBody:
+        content: {}
+        description: ''
+      parameters:
+        - schema:
+            type: string
+          in: query
+          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          name: limit
+        - schema:
+            type: string
+          in: query
+          name: starting_after
+          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+        - schema:
+            type: string
+          in: query
+          name: ending_before
+          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+    post:
+      summary: ''
+      operationId: create-transfer-batch
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    x-stoplight:
+                      id: gafoubz2pheay
+                    format: uuid
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: kpoohlwfsjyvg
+                    enum:
+                      - pending
+                      - completed
+                  metadata:
+                    type: object
+                    x-stoplight:
+                      id: hxr0o6n86ezv8
+                  items:
+                    type: array
+                    x-stoplight:
+                      id: ze6amdnhksd1a
+                    items:
+                      $ref: '#/components/schemas/transfer-batch-item'
+                      x-stoplight:
+                        id: 9turdslwiu9l8
+      description: Create a transfer batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  x-stoplight:
+                    id: zz0ygz7gw6zah
+                  items:
+                    x-stoplight:
+                      id: t0yxoqlo2dpw3
+                    type: object
+                    properties:
+                      amount:
+                        type: integer
+                        x-stoplight:
+                          id: rpexl68cf5llh
+                      user_id:
+                        type: string
+                        x-stoplight:
+                          id: qzzn5ri0tdjzk
+                        format: uuid
+                      tax_exempt:
+                        type: boolean
+                        x-stoplight:
+                          id: 6prp1w8aqtmv7
+                      allow_debit:
+                        type: boolean
+                        x-stoplight:
+                          id: d0t3ax8al4b2d
+                      idempotency_key:
+                        type: string
+                        x-stoplight:
+                          id: 7ux23ht6qunlf
+                        format: uuid
+                      metadata:
+                        type: object
+                        x-stoplight:
+                          id: vka6oeqjx67vb
+                idempotency_key:
+                  type: string
+                  x-stoplight:
+                    id: xsv0vqf3e3ppb
+                  format: uuid
+                metadata:
+                  type: object
+                  x-stoplight:
+                    id: 8plbsd2qbl7tq
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+    parameters: []
+  '/v2/transfer-batches/{transfer_batch_id}':
+    parameters:
+      - schema:
+          type: string
+        name: transfer_batch_id
+        in: path
+        required: true
+        description: Id of the transfer batch to fetch
+    get:
+      summary: Your GET endpoint
+      tags:
+        - transfer-batches
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    x-stoplight:
+                      id: v2l43716zr1ys
+                    format: uuid
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: ua6kiyw496z86
+                    enum:
+                      - completed
+                      - pending
+                  metadata:
+                    type: object
+                    x-stoplight:
+                      id: xbizjnjpid4i3
+                  items:
+                    type: array
+                    x-stoplight:
+                      id: rflc1nqtrlzgk
+                    items:
+                      $ref: '#/components/schemas/transfer-batch-item'
+                      x-stoplight:
+                        id: 3sd29mhir3874
+      operationId: get-transfer-batch
+      description: Get a transfer batch by id
 components:
   schemas:
     flow:
@@ -1805,6 +2018,42 @@ components:
         - id
         - amount
         - currency
+    transfer-batch-item:
+      title: transfer-batch-item
+      x-stoplight:
+        id: ivr4bdwjikx65
+      type: object
+      properties:
+        transfer_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: d6cmnc8o17zag
+        amount:
+          type: integer
+          x-stoplight:
+            id: ffsdw9268totz
+        user_id:
+          type: string
+          x-stoplight:
+            id: qrhkzhi8xehz2
+          format: uuid
+        tax_exempt:
+          type: boolean
+          x-stoplight:
+            id: nw21jpg2dgzmp
+        allow_debit:
+          type: boolean
+          x-stoplight:
+            id: b6v3qdlotmths
+        metadata:
+          type: object
+          x-stoplight:
+            id: 9flyexnislefu
+        error:
+          type: string
+          x-stoplight:
+            id: hv5z4jdwrnnlq
   securitySchemes:
     api_key:
       type: http
