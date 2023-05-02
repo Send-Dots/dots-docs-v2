@@ -127,6 +127,14 @@
           ]
         },
         {
+          "group": "Transfer Batches",
+          "pages": [
+            "transfer-batches/create-a-transfer-batch",
+            "transfer-batches/retrieve-a-transfer-batch",
+            "transfer-batches/list-all-transfer-batches"
+          ]
+        },
+        {
           "group": "Transactions",
           "pages": [
             "transactions/overview",
