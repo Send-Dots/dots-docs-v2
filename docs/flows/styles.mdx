@@ -24,7 +24,8 @@ Flow supports visual customization, which allows you to match the design of your
     "inputBorderColor": "",
     "tertiaryTextColor": "",
     "buttonDisabledBackgroundColor": "",
-    "buttonDisabledTextColor": ""
+    "buttonDisabledTextColor": "",
+    "inputPlaceholderColor": "",
   }
 }
 ```
@@ -56,6 +57,7 @@ Variables such as `backgroundColor` and `primaryInputColor` work like CSS variab
 | `buttonDisabledTextColor`       | The text color of action buttons when they are disabled                                                                              |
 | `inputBackgroundColor`          | The background color of inputs such as checkboxes or textfields                                                                      |
 | `inputBorderColor`              | The border color of inputs                                                                                                           |
+| `inputPlaceholderColor`         | The placeholder color of inputs                                                                                                      |
 
 ## Implementation
 
@@ -69,21 +71,22 @@ This example customize the flow styles with the following configurations:
 const configurations = {
   theme: 'dark',
   variables: {
-    backgroundColor: '#A2f9A8',
-    primaryTextColor: '#E95E51',
-    primaryColor: '#0ea5e9',
-    inputBackgroundColor: '#c084fc',
-    inputBorderColor: '#f59e0b',
-    inputPlaceholderColor: '#99f6e4',
-    secondaryTextColor: '#fed7aa',
-    tabBackgroundColor: '#fbcfe8',
-    tabHoverBackgroundColor: '#fce7f3',
-    buttonBackgroundColor: '#b45309',
-    buttonHoverBackgroundColor: '#fef3c7',
-    buttonTextColor: '#22d3ee',
-    buttonHoverTextColor: '#c026d3',
-    buttonDisabledBackgroundColor: '#365314',
-    buttonDisabledTextColor: '#7f1d1d',
+    backgroundColor: '#000000',
+    primaryTextColor: '#ffffff',
+    secondaryTextColor: '#9ca3af',
+    primaryColor: '#c88bc4',
+    tabBackgroundColor: '#111827',
+    tabHoverBackgroundColor: '#374151',
+    buttonBackgroundColor: '#c88bc4',
+    buttonTextColor: '#ffffff',
+    buttonHoverTextColor: '#ffffff',
+    buttonHoverBackgroundColor: '#a672a2',
+    inputBackgroundColor: '#111827',
+    inputBorderColor: '#c88bc4',
+    tertiaryTextColor: '',
+    buttonDisabledBackgroundColor: '#1f2937',
+    buttonDisabledTextColor: '#d1d5db',
+    inputPlaceholderColor: '#4b5563',
   },
 };
 
