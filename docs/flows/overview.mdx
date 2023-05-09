@@ -1,7 +1,7 @@
 ---
-title: "The Flow Object"
-sidebarTitle: "Flows Overview"
-description: "Flows provide a simple yet customizable way to integrate payouts into your application."
+title: 'The Flow Object'
+sidebarTitle: 'Flows Overview'
+description: 'Flows provide a simple yet customizable way to integrate payouts into your application.'
 ---
 
 ![Dots Flows](../images/flows.png)
@@ -28,7 +28,14 @@ The `manage-payments` lets a user connect their US bank account for payments to 
 
 ### Payout Method Management
 
-The `manage-payouts` lets a user connect their desired payout methods to Dots and choose a default method.
+The `manage-payouts` lets a user connect their desired payout methods to Dots and choose a default method. You can optionally hide the continue button on the flow UI so the user stays on this step, useful for embedded iframe application:
+
+```json
+{
+  "name": "manage-payouts",
+  "hide_continue_button": true
+}
+```
 
 ### Payout
 
