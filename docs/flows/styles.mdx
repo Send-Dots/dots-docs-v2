@@ -16,6 +16,8 @@ Flow supports visual customization, which allows you to match the design of your
     "primaryColor": "",
     "tabBackgroundColor": "",
     "tabHoverBackgroundColor": "",
+    "tabBorderColor": "",
+    "tabHoverBorderColor": "",
     "buttonBackgroundColor": "",
     "buttonTextColor": "",
     "buttonHoverTextColor": "",
@@ -26,6 +28,7 @@ Flow supports visual customization, which allows you to match the design of your
     "buttonDisabledBackgroundColor": "",
     "buttonDisabledTextColor": "",
     "inputPlaceholderColor": "",
+    "borderRadius": "",
   }
 }
 ```
@@ -49,6 +52,8 @@ Variables such as `backgroundColor` and `primaryInputColor` work like CSS variab
 | `primaryColor`                  | The primary color of the flow theme, such as button hovers or highlights                                                             |
 | `tabBackgroundColor`            | The background color of the rail tab                                                                                                 |
 | `tabHoverBackgroundColor`       | The background color of the rail tab when the cursor hovers over it                                                                  |
+| `tabBorderColor`                | The border color of the rail tab                                                                                                     |
+| `tabHoverBorderColor`           | The border color of the rail tab when the cursor hovers over it                                                                      |
 | `buttonBackgroundColor`         | The background color of action buttons located at the bottom of each flow page                                                       |
 | `buttonTextColor`               | The text color of action buttons located at the bottom of each flow page                                                             |
 | `buttonHoverTextColor`          | The text color of action buttons when the cursor hovers over it                                                                      |
@@ -58,6 +63,7 @@ Variables such as `backgroundColor` and `primaryInputColor` work like CSS variab
 | `inputBackgroundColor`          | The background color of inputs such as checkboxes or textfields                                                                      |
 | `inputBorderColor`              | The border color of inputs                                                                                                           |
 | `inputPlaceholderColor`         | The placeholder color of inputs                                                                                                      |
+| `borderRadius`                  | The border radius of the buttons, tabs, icons, and inputs                                                                            |
 
 ## Implementation
 
@@ -77,6 +83,8 @@ const configurations = {
     primaryColor: '#c88bc4',
     tabBackgroundColor: '#111827',
     tabHoverBackgroundColor: '#374151',
+    tabBorderColor: '#e5e7eb',
+    tabHoverBorderColor: '#7dd3fc',
     buttonBackgroundColor: '#c88bc4',
     buttonTextColor: '#ffffff',
     buttonHoverTextColor: '#ffffff',
@@ -87,6 +95,7 @@ const configurations = {
     buttonDisabledBackgroundColor: '#1f2937',
     buttonDisabledTextColor: '#d1d5db',
     inputPlaceholderColor: '#4b5563',
+    borderRadius: '8px',
   },
 };
 
