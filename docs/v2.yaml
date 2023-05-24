@@ -1440,7 +1440,7 @@ paths:
       parameters: []
   /v2/transfer-batches:
     get:
-      summary: Your GET endpoint
+      summary: List all Transfer Batches
       tags:
         - transfer-batches
       responses:
@@ -1510,7 +1510,7 @@ paths:
           name: ending_before
           description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
     post:
-      summary: ''
+      summary: Create a Transfer Batch
       operationId: create-transfer-batch
       responses:
         '200':
@@ -1611,7 +1611,7 @@ paths:
         required: true
         description: Id of the transfer batch to fetch
     get:
-      summary: Your GET endpoint
+      summary: Retrieve a Transfer Batch
       tags:
         - transfer-batches
       responses:
