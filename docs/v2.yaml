@@ -27,6 +27,8 @@ tags:
     description: Flow routes
   - name: payment-intents
     description: Payment Intent Routes
+  - name: payments
+    description: Payment Routes
   - name: payouts
     description: Payout Routes
   - name: payout-links
@@ -697,6 +699,7 @@ paths:
                   items:
                     oneOf:
                       - type: string
+                        title: Step Name
                         enum:
                           - compliance
                           - id-verification
@@ -705,6 +708,7 @@ paths:
                           - payout
                         description: The `step` name.
                       - type: object
+                        title: Step With Options
                         properties:
                           name:
                             type: string
@@ -883,7 +887,7 @@ paths:
                     - string
                     - 'null'
                   format: uuid
-                  description: Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.
+                  description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
               required:
                 - amount
       description: Create a Payout Link.
@@ -1030,6 +1034,8 @@ paths:
                 required:
                   - account_id
       description: "Creates a transaction from a user's stored payment method to the app. User the `/users/{user_id}/payout-methods` route to get a user's stored payment methods."
+      tags:
+        - payments
   /v2/payouts/send-payout:
     parameters: []
     post:
@@ -1094,7 +1100,7 @@ paths:
                     - string
                     - 'null'
                   format: uuid
-                  description: Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.
+                  description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
               required:
                 - amount
       description: 'Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds.'
@@ -1394,6 +1400,8 @@ paths:
               required:
                 - amount
                 - currency
+      tags:
+        - payment-intents
   '/v2/payment-intents/{payment_intent_id}':
     parameters:
       - schema:
@@ -1403,7 +1411,7 @@ paths:
         required: true
         description: Payment Intent ID
     get:
-      summary: Your GET endpoint
+      summary: Retrieve a Payment Intent
       tags:
         - payment-intents
       responses:
@@ -1591,6 +1599,8 @@ paths:
             schema:
               type: object
               properties: {}
+      tags:
+        - transfer-batches
     parameters: []
   '/v2/transfer-batches/{transfer_batch_id}':
     parameters:
