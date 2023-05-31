@@ -1814,7 +1814,7 @@ paths:
 
       tags:
         - checkout-sessions
-  '/v2/checkout-session/{checkout_session_id}':
+  '/v2/checkout-sessions/{checkout_session_id}':
     parameters:
       - schema:
           type: string
