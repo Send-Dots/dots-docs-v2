@@ -84,18 +84,6 @@
           ]
         },
         {
-          "group": "Payments",
-          "pages": ["payments/create-a-payment"]
-        },
-        {
-          "group": "Payment Intents",
-          "pages": [
-            "payment-intents/create-a-payment-intent",
-            "payment-intents/retrieve-a-payment-intent",
-            "payment-intents/list-all-payment-intents"
-          ]
-        },
-        {
           "group": "Payouts",
           "pages": [
             "payouts/overview",
@@ -151,6 +139,40 @@
             "users/list-all-users",
             "users/add-compliance-information",
             "users/add-payout-methods"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "v2",
+      "group": "Payments",
+      "pages": [
+        {
+          "group": "Checkout Sessions",
+          "pages": [
+            "checkout-sessions/create-a-checkout-session",
+            "checkout-sessions/retrieve-a-checkout-session",
+            "checkout-sessions/list-all-checkout-sessions"
+          ]
+        },
+        {
+          "group": "Payments",
+          "pages": ["payments/create-a-payment"]
+        },
+        {
+          "group": "Payment Customers",
+          "pages": [
+            "payment-customers/create-a-payment-customer",
+            "payment-customers/retrieve-a-payment-customer",
+            "payment-customers/list-all-payment-customers"
+          ]
+        },
+        {
+          "group": "Payment Intents",
+          "pages": [
+            "payment-intents/create-a-payment-intent",
+            "payment-intents/retrieve-a-payment-intent",
+            "payment-intents/list-all-payment-intents"
           ]
         }
       ]
