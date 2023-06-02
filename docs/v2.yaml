@@ -1011,6 +1011,9 @@ paths:
                 user_id:
                   type: string
                   format: uuid
+                customer_id:
+                  type: string
+                  format: uuid
                 amount:
                   type: integer
                   exclusiveMinimum: 0
@@ -1018,24 +1021,41 @@ paths:
                   type: string
                   enum:
                     - ach
+                ach_info:
+                  type: object
+                  properties:
+                    account_number:
+                      type: string
+                      pattern: '[0-9]{7,17}'
+                    routing_number:
+                      type: string
+                      pattern: '[0-9]{9}'
+                    account_type:
+                      type: string
+                      enum: ['checking', 'savings']
+                  description: >
+                    Specifies the bank account to draw the payment from.
+                    This can be used as an alternative to a stored
+                    account ID.
                 account_id:
                   type:
                     - string
                     - null
                   description: The user's ACH account ID.
                 metadata: {}
-              required:
-                - user_id
-                - amount
-                - platform
+              required: [amount, platform]
+              oneOf:
+                - required: [user_id]
+                - required: [customer_id]
               if:
                 properties:
                   platform:
                     const: ach
               then:
-                required:
-                  - account_id
-      description: "Creates a transaction from a user's stored payment method to the app. User the `/users/{user_id}/payout-methods` route to get a user's stored payment methods."
+                oneOf:
+                  - required: [account_id]
+                  - required: [ach_info]
+      description: "Creates a transaction from a user or a payment customer to the app. User the `/users/{user_id}/payout-methods` route to get a user's stored payment methods."
       tags:
         - payments
   /v2/payouts/send-payout:
