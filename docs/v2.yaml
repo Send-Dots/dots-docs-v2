@@ -876,6 +876,9 @@ paths:
                   type: boolean
                   default: false
                   description: Force the collection of 1099 or W-8 information. Defaults to `false`.
+                tax_exempt:
+                  type: boolean
+                  description: Payout links marked as `tax_exempt` will not be counted towards the 1099 threshold.
                 metadata:
                   type:
                     - string
@@ -1109,6 +1112,9 @@ paths:
                   type: boolean
                   default: false
                   description: Collect 1099 or w8-ben information.
+                tax_exempt:
+                  type: boolean
+                  description: Payouts marked as `tax_exempt` will not be counted towards the 1099 threshold.
                 metadata:
                   type:
                     - string
@@ -2164,6 +2170,8 @@ components:
             address_collected:
               type: boolean
             date_of_birth_collected:
+              type: boolean
+            must_collect_1099:
               type: boolean
             1099_collected:
               type: boolean
