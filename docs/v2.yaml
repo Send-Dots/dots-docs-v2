@@ -216,6 +216,10 @@ paths:
                     business_name:
                       type: string
                       description: Legal bussiness name. Required if `entity_type` is `business`.
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
                     date_of_birth:
                       type: string
                       format: date
