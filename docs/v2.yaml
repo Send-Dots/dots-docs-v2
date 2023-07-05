@@ -926,6 +926,11 @@ paths:
                     - 'null'
                   format: uuid
                   description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
+                payout_fee_party:
+                  type: [string, 'null']
+                  format: uuid
+                  enum: ['user', 'platform']
+                  description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
               required:
                 - amount
       description: Create a Payout Link.
@@ -1162,6 +1167,11 @@ paths:
                     - 'null'
                   format: uuid
                   description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
+                payout_fee_party:
+                  type: [string, 'null']
+                  format: uuid
+                  enum: ['user', 'platform']
+                  description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
               required:
                 - amount
       description: 'Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds.'
