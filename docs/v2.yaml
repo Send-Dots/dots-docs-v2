@@ -2012,6 +2012,10 @@ components:
           type: string
           format: uuid
           description: ID of the `user` that has claimed the `payout-link`.
+        flow_id:
+          type: string
+          format: uuid
+          description: ID of the payout flow UI that is sent to the user.
         metadata:
           type:
             - string
