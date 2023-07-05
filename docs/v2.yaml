@@ -182,6 +182,35 @@ paths:
       description: Delete a user.
       tags:
         - users
+    patch:
+      summary: Update a user
+      description: Update mutable fields of a user object.
+      operationId: update-user
+      tags:
+        - users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+                description: The `user` object.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                default_payout_method:
+                  type: string
+                  enum: [paypal, venmo, cash_app, ach, intl_bank]
+                  description: Configures the user's default payout method. Must be a payout method already configured by the user.
+                auto_payout_enabled:
+                  type: boolean
+                  description: Enables auto payout for the user whenever a default payout method is defined
+                metadata:
+                  description: Arbitrary metadata
   '/v2/users/{user_id}/compliance':
     parameters:
       - schema:
