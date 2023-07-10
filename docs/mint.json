@@ -391,5 +391,10 @@
   },
   "classes": {
     "topbarCtaButton": "items-center space-x-1 px-4 py-1.5 shadow-sm text-sm font-medium rounded-full text-white bg-primary hover:bg-primary-dark"
+  },
+  "analytics": {
+    "koala": {
+      "publicApiKey": "pk_bbccc8882a15b6b2ade6e7e4528b4978f4f5"
+    }
   }
 }
