@@ -904,7 +904,8 @@ paths:
                         - sms
                         - link
                         - email
-                      description: 'Delivery method. `sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`.'
+                        - all
+                      description: 'Delivery method. `sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`. `all` will deliver to all the methods supplied in the payee object (e.g., `all` with empty `payee` has the same effect as `link`, and `all` with `payee.email` has the same effect as `email`).'
                 force_collect_compliance_information:
                   type: boolean
                   default: false
@@ -2008,6 +2009,7 @@ components:
         status:
           type: string
           enum:
+            - sent
             - claimed
             - delivery_pending
             - delivery_failed
