@@ -741,6 +741,7 @@ paths:
                           - manage-payouts
                           - manage-payments
                           - payout
+                          - background-check
                         description: The `step` name.
                       - type: object
                         title: Step With Options
@@ -753,6 +754,7 @@ paths:
                               - manage-payouts
                               - manage-payments
                               - payout
+                              - background-check
                               - redirect
                             description: The `step` name.
                           auto_payout_enabled:
@@ -1932,6 +1934,7 @@ components:
             enum:
               - compliance
               - id-verification
+              - background-check
               - manage-payments
               - manage-payouts
               - payout
@@ -1943,6 +1946,7 @@ components:
             enum:
               - compliance
               - id-verification
+              - background-check
               - manage-payments
               - manage-payouts
               - payout
