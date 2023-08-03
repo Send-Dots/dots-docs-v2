@@ -1,0 +1,29 @@
+---
+title: 'Core Concepts'
+---
+
+The Dots API makes it simple to build fintech infrastructure directly into your appliction. Here's a quick overview of Dots' core concepts.
+
+## Users
+
+Each user represents an individual or business that has been onboarded onto Dots either through your application or another platform. User's can be created through the Dashboard or through the API and must go through phone number verification before you can pay them out. Each user also has a wallet attached that can be used to store funds and transact with for both payouts and payins. Each user object also stores information about their compliance such as tax information, KYC, ID verification, and more.
+
+## Applications
+
+Applications are the main way that you interact with the Dots API. Each application has a unique API key and secret that you can use to authenticate with the API. You can create as many applications as you want and each application can have multiple users. Applications are also where you can configure your webhook endpoints and view your transaction history.
+
+## Transfers
+
+Transfers represent the movement of money on the Dots platform. Each transfer can be made of multiple transactions such as the movement of funds from the application's wallet to the user's wallet or fee's for a payout or payment. Transfers are used for both wallet to wallet transfers as well as external money movement like a payout or a payment. Each transfer goes through a standard lifecycle and can be tracked from creation to completion.
+
+## Transactions
+
+A transaction is a line item on the Dots ledger and represents movement of money from wallet to wallet. Transactions cannot be created directly and are always created as part of a transfer.
+
+## Payout Links
+
+Payout links are a simple way to send money without having to create a user or transfer. With basic information such as a phone number or email, you can send a payout link and have us handle the complexities of onboarding. Once a payout link is claimed, it is updated with a user and their ID allowing you to pay them out again in the future.
+
+## Flows
+
+Flows are the UI components that Dots provides. Each flow consists of a series of steps that guide the user through the onboarding process. Flows can be customized to fit your brand and can be embedded directly into your application. Flows can be created in a pre-authenticated state where the user is automatically logged in or in an unauthenticated state where the user must log in or create an account before continuing.
