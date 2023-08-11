@@ -1,0 +1,80 @@
+---
+title: 'Accepting Card Payment using React'
+sidebarTitle: 'Overview'
+---
+
+This guide shows how to build a card form to take a payment using the [Payment Intents API](/payments/create-a-payment), [Dots Elements](https://github.com/Send-Dots/react-dots-js) and React
+
+### 1. Setup your Dots Account <span style={{fontSize: 16, paddingLeft: 10}}>`server-side`</span>
+
+First, [create a Dots account](https://dashboard.dots.dev/signup) or [sign in](https://dashboard.dots.dev/login).
+
+### 2. Create a Payment Intent <span style={{fontSize: 16, paddingLeft: 10}}>`server-side`</span>
+
+Dots uses a [PaymentIntent](/payment-intents/create-a-payment-intent) object to represent your intent to collect payment from a customer, tracking charge attempts and payment state changes throughout the process.
+
+### ID Verification
+
+Adding the `id-verification` step to your flow will force the collection and verification of user's government-issued ID and matching of their facial scan to that ID.
+
+### Background Check
+
+Adding the `background-check` step to your flow will force the collection of a user's SSN, date of birth, and address to run a background check. If background check fails it will trigger an email notification to the app and `user.has_criminal_activity` would be `true`.
+
+### Payment Method Management
+
+The `manage-payments` lets a user connect their US bank account for payments to your app.
+
+### Payout Method Management
+
+The `manage-payouts` lets a user connect their desired payout methods to Dots and choose a default method. You can optionally hide the continue button on the flow UI so the user stays on this step, useful for embedded iframe application:
+
+```json
+{
+  "name": "manage-payouts",
+  "hide_continue_button": true
+}
+```
+
+### Payout
+
+The `payout` step lets the user withdraw their funds to their preferred payout method.
+
+### Redirect
+
+The `redirect` step lets you redirect the user to a URL of your choice. The `redirect` step looks like:
+
+```json
+{
+  "name": "redirect",
+  "redirect_url": "https://example.com"
+}
+```
+
+## Example Flow
+
+This example flow onboards a user, collects compliance information, and then lets them manage their payment methods.
+
+```bash
+> curl https://pls.senddotssandbox.com/v2/flow/create \
+-X POST \
+-u "CLIENT_ID:API_KEY" \
+-H "Content-Type: application/json" \
+-d '{
+      "steps": ["compliance", "manage-payouts"],
+    }'
+
+> response = {
+    "id": "5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8",
+    "created": "2020-12-09T00:40:51.107Z",
+    "updated": "2020-12-09T00:40:51.107Z",
+    "user_id": null,
+    "steps": ["compliance", "manage-payouts"],
+    "completed_steps": [],
+    "payout_link_id": null,
+    "link": "https://my.senddotssandbox.com/flow/5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8",
+}
+
+```
+
+A webhook is sent to your app on completion of every step of the flow.

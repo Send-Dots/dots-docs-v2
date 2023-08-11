@@ -157,7 +157,7 @@
         },
         {
           "group": "Payments",
-          "pages": ["payments/create-a-payment"]
+          "pages": ["payments/overview", "payments/create-a-payment"]
         },
         {
           "group": "Payment Customers",
