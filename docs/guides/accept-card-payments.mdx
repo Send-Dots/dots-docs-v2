@@ -91,6 +91,7 @@ npm install --save @dots.dev/react-dots-js @dots.dev/dots-js
 
 To use Element components, wrap the root of your React app in an Elements provider. Call loadDots with your publishable key and pass the returned Promise to the Elements provider.
 
+
 ```typescript app.ts
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -120,12 +121,14 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 Add and configure a PaymentElement component
 
+<CodeGroup>
 ```typescript CheckoutForm.ts
 import { PaymentElement, useDots, useElements } from '@dots.dev/react-dots-js';
 import countryList from 'react-select-country-list';
 import React, { useEffect, useMemo, useState } from 'react';
 
 export default function CheckoutForm() {
+  ...
   const {
     register,
     handleSubmit,
@@ -207,6 +210,7 @@ export default function CheckoutForm() {
       </form>
     );
   };
+  ...
 }
 ```
 
@@ -243,6 +247,7 @@ input {
   flex-direction: column;
 }
 ```
+</CodeGroup>
 
 Elements are completely customizable. You can style Elements to match the look and feel of your site, providing a seamless checkout experience for your customers. It’s also possible to style various input states, for example when the Element has focus.
 
@@ -273,6 +278,7 @@ export default function CheckoutForm() {
   const [processing, setProcessing] = useState(false);
   const dots = useDots();
   const elements = useElements();
+  ...
 
   const onSubmit = async (data: any) => {
     if (!dots || !elements) return;
@@ -300,7 +306,7 @@ export default function CheckoutForm() {
     }
   };
 
-  const renderForm = () => {};
+  const renderForm = () => {...};
 
   return (
     <div className="checkout-form">
