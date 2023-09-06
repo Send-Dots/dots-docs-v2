@@ -742,6 +742,7 @@ paths:
                           - manage-payments
                           - payout
                           - background-check
+                          - redirect
                         description: The `step` name.
                       - type: object
                         title: Step With Options
@@ -934,6 +935,19 @@ paths:
                   format: uuid
                   enum: ['user', 'platform']
                   description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
+                additional_steps:
+                  type: array
+                  description: Array of steps in the flow.
+                  items:
+                    type: string
+                    enum:
+                      - compliance
+                      - id-verification
+                      - background-check
+                      - manage-payments
+                      - manage-payouts
+                      - payout
+                      - redirect
               required:
                 - amount
       description: Create a Payout Link.
@@ -1021,6 +1035,19 @@ paths:
                   type: string
                   format: uuid
                   description: UUID that will be used to idempotently handle requests. Transfers with existing idempotency keys will be rejected.
+                additional_steps:
+                  type: array
+                  description: Array of steps in the flow.
+                  items:
+                    type: string
+                    enum:
+                      - compliance
+                      - id-verification
+                      - background-check
+                      - manage-payments
+                      - manage-payouts
+                      - payout
+                      - redirect
                 metadata:
                   type:
                     - string
@@ -1938,6 +1965,7 @@ components:
               - manage-payments
               - manage-payouts
               - payout
+              - redirect
         completed_steps:
           type: array
           description: Array of steps that have been completed in the flow.
@@ -1950,6 +1978,7 @@ components:
               - manage-payments
               - manage-payouts
               - payout
+              - redirect
         link:
           type: string
           format: uri
