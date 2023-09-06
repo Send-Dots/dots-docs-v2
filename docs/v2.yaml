@@ -1035,19 +1035,6 @@ paths:
                   type: string
                   format: uuid
                   description: UUID that will be used to idempotently handle requests. Transfers with existing idempotency keys will be rejected.
-                additional_steps:
-                  type: array
-                  description: Array of steps in the flow.
-                  items:
-                    type: string
-                    enum:
-                      - compliance
-                      - id-verification
-                      - background-check
-                      - manage-payments
-                      - manage-payouts
-                      - payout
-                      - redirect
                 metadata:
                   type:
                     - string
@@ -1180,6 +1167,19 @@ paths:
                   type: boolean
                   default: false
                   description: Collect 1099 or w8-ben information.
+                additional_steps:
+                  type: array
+                  description: Array of steps in the flow.
+                  items:
+                    type: string
+                    enum:
+                      - compliance
+                      - id-verification
+                      - background-check
+                      - manage-payments
+                      - manage-payouts
+                      - payout
+                      - redirect
                 tax_exempt:
                   type: boolean
                   description: Payouts marked as `tax_exempt` will not be counted towards the 1099 threshold.
