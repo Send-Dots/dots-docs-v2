@@ -1438,6 +1438,10 @@ paths:
                   type: string
                   format: uuid
                   description: ID of a Dots `user` making this payment.
+                customer_id:
+                  type: string
+                  format: uuid
+                  description: ID of a Dots `payment_customer` making this payment.
                 description:
                   type: string
                   description: An arbitrary string attached to the object. Often useful for displaying to users.
