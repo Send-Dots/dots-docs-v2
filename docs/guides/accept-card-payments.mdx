@@ -9,13 +9,46 @@ This guide shows how to build a card form to take a payment using the [Payment I
 
 First, [create a Dots account](https://dashboard.dots.dev/signup) or [sign in](https://dashboard.dots.dev/login).
 
-## 2. Create a Payment Intent <span style={{fontSize: 16, paddingLeft: 10}}>`server-side`</span>
+## 2. Create a Payment Customer <span style={{fontSize: 16, paddingLeft: 10}}>`server-side`</span> <span style={{fontSize: 16, paddingLeft: 10}}>`optional`</span>
+
+<Note>
+  You may skip this step if you do not intend to integrate payment method reusability for your customers.
+</Note>
+
+When a payment is created, a payment method is generated and saved to the [PaymentIntent](/payment-intents/create-a-payment-intent) object. This payment method is only capable of being used once (i.e. single-use) unless it is attached to a [PaymentCustomer](/payment-customers/create-a-payment-customer), in which case it becomes reusable.
+
+Therefore, to setup future usage, create a [PaymentCustomer](/payment-customers/create-a-payment-customer) object on your server before creating the payment and save the `id` to your database. This will used in the following step. An alternative is to create a [Dots User](/users/overview) which will automatically back populates a payment customer on Dots end and use the `user.id` instead of `payment_customer.id`. 
+
+```bash cURL
+https://pls.senddotssandbox.com/api/v2/payment-customers/ \
+-X POST \
+-u "CLIENT_ID:API_KEY" \
+-H "Content-Type: application/json" \
+-d "{
+      "first_name": "John",
+      "last_name": "Hardy",
+      "email": "john_hardy@gmail.com",
+      ...
+    }"
+
+> {
+  "id": "0e835300-5555-4ba1-816a-0abaa8609a83",
+  ...
+}
+```
+
+## 3. Create a Payment Intent <span style={{fontSize: 16, paddingLeft: 10}}>`server-side`</span>
 
 Dots uses a [PaymentIntent](/payment-intents/create-a-payment-intent) object to represent your intent to collect payment from a customer, tracking charge attempts and payment state changes throughout the process.
 
 Create a PaymentIntent on your server with an amount and currency. Always decide how much to charge on the server side, a trusted environment, as opposed to the client. This prevents malicious customers from being able to choose their own prices.
 
-```bash cURL
+<Info>
+  If you intend to save the payment method captured by this payment intent for future usage, you must pass in the `customer_id` or `user_id` below and set `setup_future_usage` to `on_session`.
+</Info>
+
+<CodeGroup>
+```bash Single-use payment
 https://pls.senddotssandbox.com/api/v2/payment-intents/ \
 -X POST \
 -u "CLIENT_ID:API_KEY" \
@@ -35,6 +68,30 @@ https://pls.senddotssandbox.com/api/v2/payment-intents/ \
   ...
 }
 ```
+```bash Reusable payment
+https://pls.senddotssandbox.com/api/v2/payment-intents/ \
+-X POST \
+-u "CLIENT_ID:API_KEY" \
+-H "Content-Type: application/json" \
+-d "{
+      "amount": 1000,
+      "currency": "usd",
+      "customer_id": "0e835300-5555-4ba1-816a-0abaa8609a83", // or use "user_id"
+      "setup_future_usage": "on_session",
+      "transfer_data": {
+        "destination_user_id": "0a7d51ec-04df-4eb8-a2c8-d066f6d3bb81"
+      },
+      "application_fee_amount": 100 //fee to be paid to the platform
+    }"
+
+> {
+  "client_secret": "...",
+  "id": "0e835300-5555-4ba1-816a-0abaa8609a83",
+  ...
+}
+```
+
+</CodeGroup>
 
 The returned PaymentIntent includes a client secret. The client side uses the client secret to securely complete the payment process instead of passing the entire PaymentIntent object. There are different approaches that you can use to pass the client secret to the client side.
 
@@ -75,7 +132,7 @@ const createPaymentIntent = async (amount: number) => {
 };
 ```
 
-## 3. Collect card details <span style={{fontSize: 16, paddingLeft: 10}}>`client-side`</span>
+## 4. Collect card details <span style={{fontSize: 16, paddingLeft: 10}}>`client-side`</span>
 
 You’re ready to collect card information on the client with [Dots Elements](https://github.com/Send-Dots/react-dots-js). Elements is a set of prebuilt UI components for collecting and validating card number and expiration date.
 
@@ -90,7 +147,6 @@ npm install --save @dots.dev/react-dots-js @dots.dev/dots-js
 ### Add Dots.js and Elements to your page
 
 To use Element components, wrap the root of your React app in an Elements provider. Call loadDots with your publishable key and pass the returned Promise to the Elements provider.
-
 
 ```typescript app.ts
 import React from 'react';
@@ -256,9 +312,9 @@ Elements are completely customizable. You can style Elements to match the look a
   fraud.
 </Info>
 
-## 4. Submit payments to Dots <span style={{fontSize: 16, paddingLeft: 10}}>`client-side`</span>
+## 5. Submit payments to Dots <span style={{fontSize: 16, paddingLeft: 10}}>`client-side`</span>
 
-Rather than sending the entire PaymentIntent object to the client, use its client secret from [step 2](#2-create-a-payment-intent). After you create the PaymentIntent, the API returns a unique client secret for it (the client secret is different from the secret key you use to make Dots API requests).
+Rather than sending the entire PaymentIntent object to the client, use its client secret from [step 3](#3-create-a-payment-intent). After you create the PaymentIntent, the API returns a unique client secret for it (the client secret is different from the secret key you use to make Dots API requests).
 
 The client secret can complete a charge, so handle it with discretion. Don’t log it, embed it in URLs, or expose it to anyone but the customer.
 
@@ -319,9 +375,45 @@ export default function CheckoutForm() {
 }
 ```
 
-When the payment completes successfully, the value of the returned PaymentIntent’s status property is succeeded. Check the status of a PaymentIntent in the Dashboard or by inspecting the status property on the object. If the payment isn’t successful, inspect the returned error to determine the cause.
+When the payment completes successfully, the value of the returned PaymentIntent’s status property is succeeded. Check the status of a PaymentIntent in the Dashboard or by inspecting the status property on the object. If the payment isn’t successful, inspect the returned error to determine the cause.\
 
-## 5. Test the integration
+## 6. Create future payments with reusable payment method. <span style={{fontSize: 16, paddingLeft: 10}}>`optional`</span>
+
+You can create an `off_session` payment by creating and confirming the same payment intent in single API call.
+
+### Save the reusable payment method
+
+When a customer completed the first payment, a payment method will be saved to that payment intent. You can listen to the webhook event `payment_intent.updated`, and [retrieve the payment intent](/payment-intents/retrieve-a-payment-intent) object to find the `payment_method_id`. Save that id to your user on your database. 
+
+### Create off session payments
+
+Follow [step 3](#3-create-a-payment-intent) to create a payment intent. Instead of passing in `customer_id` or `user_id`, pass in the `payment_method_id` and set `confirm` to `True`. This creates and confirm the payments immediately. 
+
+```bash Off session payment
+https://pls.senddotssandbox.com/api/v2/payment-intents/ \
+-X POST \
+-u "CLIENT_ID:API_KEY" \
+-H "Content-Type: application/json" \
+-d "{
+      "amount": 1000,
+      "currency": "usd",
+      "confirm": True
+      "payment_method_id": "u5835300-5555-4ba1-816a-0abaa8609a42",
+      "transfer_data": {
+        "destination_user_id": "0a7d51ec-04df-4eb8-a2c8-d066f6d3bb81"
+      },
+      "application_fee_amount": 100 //fee to be paid to the platform
+    }"
+
+> {
+  "id": "0e835300-5555-4ba1-816a-0abaa8609a83",
+  "status": "succeeded",
+  ...
+}
+```
+
+
+## 7. Test the integration
 
 <Note>This information only applies to the sandbox environment</Note>
 
