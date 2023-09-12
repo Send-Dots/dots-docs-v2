@@ -1938,6 +1938,141 @@ paths:
                 $ref: '#/components/schemas/checkout-session'
       operationId: get-checkout-session
       description: Retrieve a checkout session by an ID
+  '/v2/apps':
+    get:
+      summary: List apps
+      description: List apps created by your organization
+      operationId: list-apps
+      tags:
+        - apps
+      parameters:
+        - name: limit
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 100
+          in: query
+          required: false
+          description: Maximum number of results to retrieve
+        - name: starting_after
+          schema:
+            type: string
+            format: UUID
+          in: query
+          required: false
+          description: ID of first app to retrieve
+        - name: ending_after
+          schema:
+            type: string
+            format: UUID
+          in: query
+          required: false
+          description: ID of last app to retrieve
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/app'
+    post:
+      summary: List apps
+      description: List apps created by your organization
+      operationId: list-apps
+      tags:
+        - apps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              parameters:
+                name:
+                  type: 'string'
+                  minLength: 3
+                  maxLength: 60
+              required: [name]
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/app'
+  '/v2/apps/{app_id}':
+    parameters:
+      - schema:
+          type: string
+          format: UUID
+        name: app_id
+        in: path
+        required: true
+        description: ID of the app to retrieve
+    get:
+      summary: Retrieve app
+      description: Retrieve an app in your organization by its ID
+      operationId: get-app
+      tags:
+        - apps
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app'
+        '404':
+          description: Not found
+  '/v2/apps/{app_id}/compliance':
+    parameters:
+      - schema:
+          type: string
+          format: UUID
+        name: app_id
+        in: path
+        required: true
+        description: ID of the app to query or modify
+    get:
+      summary: Retrieve compliance info
+      description: Retrieve business compliance information for an app in your
+        organization
+      operationId: get-app-compliance
+      tags:
+        - apps
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business-compliance-info'
+        '404':
+          description: Not found
+    put:
+      summary: Update compliance info
+      description: Add or update business compliance information for an app
+        in your organization
+      operationId: put-app-compliance
+      tags:
+        - apps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business-compliance-info'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business-compliance-info'
+        '404':
+          description: Not found
 components:
   schemas:
     flow:
@@ -2435,6 +2570,150 @@ components:
           format: email
         amount_total:
           type: integer
+    app:
+      type: object
+      properties:
+        name:
+          type: string
+      required: [name]
+    business-compliance-info:
+      type: object
+      properties:
+        company_info:
+          type: object
+          properties:
+            dba:
+              maxLength: 60
+              minLength: 1
+              type: string
+            ein:
+              pattern: '[0-9]{9}'
+              type: string
+            incorporation_date:
+              format: date
+              type: string
+            incorporation_state:
+              type: string
+            incorporation_type:
+              enum:
+                - sole_proprietorship
+                - partnership
+                - llc
+                - c_corporation
+                - s_corporation
+              type: string
+            name:
+              maxLength: 100
+              minLength: 3
+              type: string
+            website:
+              maxLength: 100
+              minLength: 3
+              type: string
+        contact_info:
+          city:
+            maxLength: 100
+            minLength: 1
+            type: string
+          country:
+            maxLength: 60
+            minLength: 2
+            type: string
+          email:
+            format: email
+            maxLength: 100
+            minLength: 3
+            type: string
+          line1:
+            maxLength: 100
+            minLength: 1
+            type: string
+          line2:
+            maxLength: 100
+            minLength: 1
+            type: string
+          phone_number:
+            maxLength: 30
+            minLength: 3
+            type: string
+          state:
+            maxLength: 60
+            minLength: 2
+            type: string
+          zip:
+            maxLength: 20
+            minLength: 3
+            type: string
+        directors:
+          items:
+            properties:
+              address:
+                properties:
+                  city:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  country:
+                    maxLength: 60
+                    minLength: 2
+                    type: string
+                  line1:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  line2:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  state:
+                    maxLength: 60
+                    minLength: 1
+                    type: string
+                  zip:
+                    maxLength: 20
+                    minLength: 3
+                    type: string
+                type: object
+              dob:
+                format: date
+                type: string
+              email:
+                format: email
+                maxLength: 100
+                minLength: 3
+                type: string
+              first_name:
+                maxLength: 60
+                minLength: 1
+                type: string
+              last_name:
+                maxLength: 60
+                minLength: 1
+                type: string
+              ownership_percentage:
+                max: 100
+                min: 0
+                type: number
+              phone:
+                maxLength: 30
+                minLength: 3
+                type: string
+              title:
+                maxLength: 60
+                minLength: 3
+                type: string
+            type: object
+          type: array
+        flow_of_funds:
+          reasons:
+            maxLength: 400
+            minLength: 3
+            type: string
+          usage:
+            maxLength: 400
+            minLength: 3
+            type: string
+      required: []
   securitySchemes:
     api_key:
       type: http
