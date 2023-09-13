@@ -55,8 +55,9 @@
       "group": "Overview",
       "pages": [
         "overview/introduction",
-        "overview/authentication",
+        "overview/core-concepts",
         "overview/environments",
+        "overview/authentication",
         "overview/error-codes",
         "overview/metadata"
       ]
