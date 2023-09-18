@@ -1940,8 +1940,8 @@ paths:
       description: Retrieve a checkout session by an ID
   '/v2/apps':
     get:
-      summary: List apps
-      description: List apps created by your organization
+      summary: List all Apps
+      description: List all apps created by your organization
       operationId: list-apps
       tags:
         - apps
@@ -1978,9 +1978,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/app'
     post:
-      summary: List apps
-      description: List apps created by your organization
-      operationId: list-apps
+      summary: Create an App
+      description: Create an app in your organization
+      operationId: create-app
       tags:
         - apps
       requestBody:
@@ -2013,7 +2013,7 @@ paths:
         required: true
         description: ID of the app to retrieve
     get:
-      summary: Retrieve app
+      summary: Retrieve an App
       description: Retrieve an app in your organization by its ID
       operationId: get-app
       tags:
@@ -2037,8 +2037,8 @@ paths:
         required: true
         description: ID of the app to query or modify
     get:
-      summary: Retrieve compliance info
-      description: Retrieve business compliance information for an app in your
+      summary: Retrieve an App's Compliance Information
+      description: Retrieve the compliance information for an app in your
         organization
       operationId: get-app-compliance
       tags:
@@ -2053,8 +2053,8 @@ paths:
         '404':
           description: Not found
     put:
-      summary: Update compliance info
-      description: Add or update business compliance information for an app
+      summary: Update an App's Compliance Information
+      description: Add or update compliance information for an app
         in your organization
       operationId: put-app-compliance
       tags:
