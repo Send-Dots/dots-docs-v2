@@ -76,6 +76,17 @@
       "group": "Core Resources",
       "pages": [
         {
+          "group": "Apps",
+          "pages": [
+            "apps/overview",
+            "apps/create-an-app",
+            "apps/retrieve-an-app",
+            "apps/list-all-apps",
+            "apps/add-compliance-information",
+            "apps/retrieve-compliance-information"
+          ]
+        },
+        {
           "group": "Flows",
           "pages": [
             "flows/overview",
