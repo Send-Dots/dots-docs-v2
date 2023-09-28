@@ -2611,6 +2611,7 @@ components:
               minLength: 3
               type: string
         contact_info:
+          type: object
           city:
             maxLength: 100
             minLength: 1
@@ -2648,6 +2649,7 @@ components:
           items:
             properties:
               address:
+                type: object
                 properties:
                   city:
                     maxLength: 100
@@ -2673,7 +2675,6 @@ components:
                     maxLength: 20
                     minLength: 3
                     type: string
-                type: object
               dob:
                 format: date
                 type: string
@@ -2705,6 +2706,7 @@ components:
             type: object
           type: array
         flow_of_funds:
+          type: object
           reasons:
             maxLength: 400
             minLength: 3
