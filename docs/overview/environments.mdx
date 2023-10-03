@@ -1,5 +1,5 @@
 ---
-title: "Environments"
+title: "Setup and Environments"
 description: "Dots API Environments."
 ---
 
@@ -17,22 +17,22 @@ The sandbox environment can be enabled on the Dots dashboard ([https://dashboard
 
 ### Payouts
 
-<Card title="ACH" icon={regular("money-bill-transfer")}>
+<Card title="ACH" icon="money-bill-transfer">
   Live bank accounts can be connected via Plaid but no transactions will go
   through. Please ensure that the Plaid interface is properly integrated into
   your application.
 </Card>
 
-<Card title="PayPal" icon={brands("paypal")}>
+<Card title="PayPal" icon="paypal">
   Any email can be connected to PayPal and all transactions return a successful
   response.
 </Card>
 
-<Card title="Venmo" icon={solid("money-bill-1-wave")}>
+<Card title="Venmo" icon="money-bill-1-wave" iconType="solid">
   Any phone number can be connected to Venmo and all transactions return a
   successful response.
 </Card>
 
 ## Production Environment
 
-The Dots production environment is the live environment. You can use this environment to send money to your customers. Access to the production environment can be requested by contacting us at [info@senddots.com](mailto:info@senddots.com) or through the Dashboard.
+The Dots production environment is the live environment with the api url `https://api.dots.dev/api/`. You can use this environment to send money to your customers. Access to the production environment can be requested by contacting us at [info@dots.dev](mailto:info@dots.dev) or through the Dashboard.

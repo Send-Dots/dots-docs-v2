@@ -22,6 +22,10 @@ Adding the `compliance` step to your flow will force the collection of a user's 
 
 Adding the `id-verification` step to your flow will force the collection and verification of user's government-issued ID and matching of their facial scan to that ID.
 
+### Background Check
+
+Adding the `background-check` step to your flow will force the collection of a user's SSN, date of birth, and address to run a background check. If background check fails it will trigger an email notification to the app and `user.has_criminal_activity` would be `true`.
+
 ### Payment Method Management
 
 The `manage-payments` lets a user connect their US bank account for payments to your app.

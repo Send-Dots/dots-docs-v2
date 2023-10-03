@@ -1,0 +1,31 @@
+---
+title: 'Apps Overview (Multi-tenancy)'
+---
+
+An `app` is a logically seperated instance of the Dots platform. Each app has its own set of users, payouts, and payout methods. Apps are useful for multi-tenancy applications where you want to logically seperate funds and users on your platform. For example if you platform has customers that each have a different balance, bank account, and users, you can create an `app` for each customer.
+
+## Getting Organization Level API Keys
+
+To work with Apps you will need an organization level API key. You can request organization level API keys by emailing info@dots.dev.
+
+## Using Organization Level API Keys
+
+Organization level API keys are used to create, update, and delete apps. They are also used to act on behalf of the Apps. Organization level keys can be used just like App level keys as described in the [Authentication](/overview/authentication) section. To act on behalf of an App, you must pass in the `Api-App-Id` header with the App's ID as the value.
+
+```
+https://pls.senddotssandbox.com/api/v2/payouts/send-payout \
+-X POST \
+-u "CLIENT_ID:API_KEY" \
+-H "Content-Type: application/json" \
+-H "Api-App-Id: APP_ID" \
+-d "{
+      "delivery": {
+        "message": "My first payout"
+      },
+      "amount": 1000,
+      "payee": {
+        "country_code": "1",
+        "phone_number": "2025550139"
+      }
+    }"
+```

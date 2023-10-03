@@ -55,8 +55,9 @@
       "group": "Overview",
       "pages": [
         "overview/introduction",
-        "overview/authentication",
+        "overview/core-concepts",
         "overview/environments",
+        "overview/authentication",
         "overview/error-codes",
         "overview/metadata"
       ]
@@ -74,6 +75,17 @@
       "version": "v2",
       "group": "Core Resources",
       "pages": [
+        {
+          "group": "Apps",
+          "pages": [
+            "apps/overview",
+            "apps/create-an-app",
+            "apps/retrieve-an-app",
+            "apps/list-all-apps",
+            "apps/add-compliance-information",
+            "apps/retrieve-compliance-information"
+          ]
+        },
         {
           "group": "Flows",
           "pages": [
@@ -391,5 +403,10 @@
   },
   "classes": {
     "topbarCtaButton": "items-center space-x-1 px-4 py-1.5 shadow-sm text-sm font-medium rounded-full text-white bg-primary hover:bg-primary-dark"
+  },
+  "analytics": {
+    "koala": {
+      "publicApiKey": "pk_bbccc8882a15b6b2ade6e7e4528b4978f4f5"
+    }
   }
 }

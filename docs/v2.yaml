@@ -182,6 +182,35 @@ paths:
       description: Delete a user.
       tags:
         - users
+    patch:
+      summary: Update a user
+      description: Update mutable fields of a user object.
+      operationId: update-user
+      tags:
+        - users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+                description: The `user` object.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                default_payout_method:
+                  type: string
+                  enum: [paypal, venmo, cash_app, ach, intl_bank]
+                  description: Configures the user's default payout method. Must be a payout method already configured by the user.
+                auto_payout_enabled:
+                  type: boolean
+                  description: Enables auto payout for the user whenever a default payout method is defined
+                metadata:
+                  description: Arbitrary metadata
   '/v2/users/{user_id}/compliance':
     parameters:
       - schema:
@@ -216,6 +245,10 @@ paths:
                     business_name:
                       type: string
                       description: Legal bussiness name. Required if `entity_type` is `business`.
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
                     date_of_birth:
                       type: string
                       format: date
@@ -708,6 +741,8 @@ paths:
                           - manage-payouts
                           - manage-payments
                           - payout
+                          - background-check
+                          - redirect
                         description: The `step` name.
                       - type: object
                         title: Step With Options
@@ -720,6 +755,7 @@ paths:
                               - manage-payouts
                               - manage-payments
                               - payout
+                              - background-check
                               - redirect
                             description: The `step` name.
                           auto_payout_enabled:
@@ -871,11 +907,15 @@ paths:
                         - sms
                         - link
                         - email
-                      description: 'Delivery method. `sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`.'
+                        - all
+                      description: 'Delivery method. `sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`. `all` will deliver to all the methods supplied in the payee object (e.g., `all` with empty `payee` has the same effect as `link`, and `all` with `payee.email` has the same effect as `email`).'
                 force_collect_compliance_information:
                   type: boolean
                   default: false
                   description: Force the collection of 1099 or W-8 information. Defaults to `false`.
+                tax_exempt:
+                  type: boolean
+                  description: Payout links marked as `tax_exempt` will not be counted towards the 1099 threshold.
                 metadata:
                   type:
                     - string
@@ -890,6 +930,24 @@ paths:
                     - 'null'
                   format: uuid
                   description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
+                payout_fee_party:
+                  type: [string, 'null']
+                  format: uuid
+                  enum: ['user', 'platform']
+                  description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
+                additional_steps:
+                  type: array
+                  description: Array of steps in the flow.
+                  items:
+                    type: string
+                    enum:
+                      - compliance
+                      - id-verification
+                      - background-check
+                      - manage-payments
+                      - manage-payouts
+                      - payout
+                      - redirect
               required:
                 - amount
       description: Create a Payout Link.
@@ -1109,6 +1167,22 @@ paths:
                   type: boolean
                   default: false
                   description: Collect 1099 or w8-ben information.
+                additional_steps:
+                  type: array
+                  description: Array of steps in the flow.
+                  items:
+                    type: string
+                    enum:
+                      - compliance
+                      - id-verification
+                      - background-check
+                      - manage-payments
+                      - manage-payouts
+                      - payout
+                      - redirect
+                tax_exempt:
+                  type: boolean
+                  description: Payouts marked as `tax_exempt` will not be counted towards the 1099 threshold.
                 metadata:
                   type:
                     - string
@@ -1123,6 +1197,11 @@ paths:
                     - 'null'
                   format: uuid
                   description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
+                payout_fee_party:
+                  type: [string, 'null']
+                  format: uuid
+                  enum: ['user', 'platform']
+                  description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
               required:
                 - amount
       description: 'Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds.'
@@ -1359,6 +1438,10 @@ paths:
                   type: string
                   format: uuid
                   description: ID of a Dots `user` making this payment.
+                customer_id:
+                  type: string
+                  format: uuid
+                  description: ID of a Dots `payment_customer` making this payment.
                 description:
                   type: string
                   description: An arbitrary string attached to the object. Often useful for displaying to users.
@@ -1855,6 +1938,141 @@ paths:
                 $ref: '#/components/schemas/checkout-session'
       operationId: get-checkout-session
       description: Retrieve a checkout session by an ID
+  '/v2/apps':
+    get:
+      summary: List all Apps
+      description: List all apps created by your organization
+      operationId: list-apps
+      tags:
+        - apps
+      parameters:
+        - name: limit
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 100
+          in: query
+          required: false
+          description: Maximum number of results to retrieve
+        - name: starting_after
+          schema:
+            type: string
+            format: UUID
+          in: query
+          required: false
+          description: ID of first app to retrieve
+        - name: ending_after
+          schema:
+            type: string
+            format: UUID
+          in: query
+          required: false
+          description: ID of last app to retrieve
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/app'
+    post:
+      summary: Create an App
+      description: Create an app in your organization
+      operationId: create-app
+      tags:
+        - apps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              parameters:
+                name:
+                  type: 'string'
+                  minLength: 3
+                  maxLength: 60
+              required: [name]
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/app'
+  '/v2/apps/{app_id}':
+    parameters:
+      - schema:
+          type: string
+          format: UUID
+        name: app_id
+        in: path
+        required: true
+        description: ID of the app to retrieve
+    get:
+      summary: Retrieve an App
+      description: Retrieve an app in your organization by its ID
+      operationId: get-app
+      tags:
+        - apps
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app'
+        '404':
+          description: Not found
+  '/v2/apps/{app_id}/compliance':
+    parameters:
+      - schema:
+          type: string
+          format: UUID
+        name: app_id
+        in: path
+        required: true
+        description: ID of the app to query or modify
+    get:
+      summary: Retrieve an App's Compliance Information
+      description: Retrieve the compliance information for an app in your
+        organization
+      operationId: get-app-compliance
+      tags:
+        - apps
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business-compliance-info'
+        '404':
+          description: Not found
+    put:
+      summary: Update an App's Compliance Information
+      description: Add or update compliance information for an app
+        in your organization
+      operationId: put-app-compliance
+      tags:
+        - apps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business-compliance-info'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business-compliance-info'
+        '404':
+          description: Not found
 components:
   schemas:
     flow:
@@ -1882,9 +2100,11 @@ components:
             enum:
               - compliance
               - id-verification
+              - background-check
               - manage-payments
               - manage-payouts
               - payout
+              - redirect
         completed_steps:
           type: array
           description: Array of steps that have been completed in the flow.
@@ -1893,9 +2113,11 @@ components:
             enum:
               - compliance
               - id-verification
+              - background-check
               - manage-payments
               - manage-payouts
               - payout
+              - redirect
         link:
           type: string
           format: uri
@@ -1959,6 +2181,7 @@ components:
         status:
           type: string
           enum:
+            - sent
             - claimed
             - delivery_pending
             - delivery_failed
@@ -2008,6 +2231,10 @@ components:
           type: string
           format: uuid
           description: ID of the `user` that has claimed the `payout-link`.
+        flow_id:
+          type: string
+          format: uuid
+          description: ID of the payout flow UI that is sent to the user.
         metadata:
           type:
             - string
@@ -2164,6 +2391,8 @@ components:
             address_collected:
               type: boolean
             date_of_birth_collected:
+              type: boolean
+            must_collect_1099:
               type: boolean
             1099_collected:
               type: boolean
@@ -2341,6 +2570,152 @@ components:
           format: email
         amount_total:
           type: integer
+    app:
+      type: object
+      properties:
+        name:
+          type: string
+      required: [name]
+    business-compliance-info:
+      type: object
+      properties:
+        company_info:
+          type: object
+          properties:
+            dba:
+              maxLength: 60
+              minLength: 1
+              type: string
+            ein:
+              pattern: '[0-9]{9}'
+              type: string
+            incorporation_date:
+              format: date
+              type: string
+            incorporation_state:
+              type: string
+            incorporation_type:
+              enum:
+                - sole_proprietorship
+                - partnership
+                - llc
+                - c_corporation
+                - s_corporation
+              type: string
+            name:
+              maxLength: 100
+              minLength: 3
+              type: string
+            website:
+              maxLength: 100
+              minLength: 3
+              type: string
+        contact_info:
+          type: object
+          city:
+            maxLength: 100
+            minLength: 1
+            type: string
+          country:
+            maxLength: 60
+            minLength: 2
+            type: string
+          email:
+            format: email
+            maxLength: 100
+            minLength: 3
+            type: string
+          line1:
+            maxLength: 100
+            minLength: 1
+            type: string
+          line2:
+            maxLength: 100
+            minLength: 1
+            type: string
+          phone_number:
+            maxLength: 30
+            minLength: 3
+            type: string
+          state:
+            maxLength: 60
+            minLength: 2
+            type: string
+          zip:
+            maxLength: 20
+            minLength: 3
+            type: string
+        directors:
+          items:
+            properties:
+              address:
+                type: object
+                properties:
+                  city:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  country:
+                    maxLength: 60
+                    minLength: 2
+                    type: string
+                  line1:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  line2:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  state:
+                    maxLength: 60
+                    minLength: 1
+                    type: string
+                  zip:
+                    maxLength: 20
+                    minLength: 3
+                    type: string
+              dob:
+                format: date
+                type: string
+              email:
+                format: email
+                maxLength: 100
+                minLength: 3
+                type: string
+              first_name:
+                maxLength: 60
+                minLength: 1
+                type: string
+              last_name:
+                maxLength: 60
+                minLength: 1
+                type: string
+              ownership_percentage:
+                max: 100
+                min: 0
+                type: number
+              phone:
+                maxLength: 30
+                minLength: 3
+                type: string
+              title:
+                maxLength: 60
+                minLength: 3
+                type: string
+            type: object
+          type: array
+        flow_of_funds:
+          type: object
+          reasons:
+            maxLength: 400
+            minLength: 3
+            type: string
+          usage:
+            maxLength: 400
+            minLength: 3
+            type: string
+      required: []
   securitySchemes:
     api_key:
       type: http
