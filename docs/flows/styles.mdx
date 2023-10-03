@@ -1,7 +1,7 @@
 ---
-title: 'The Flows Styles API'
-sidebarTitle: 'Flows Styles API'
-description: 'Customize the look and feel of Flows to match the design of your site.'
+title: "The Flows Styles API"
+sidebarTitle: "Flows Styles API"
+description: "Customize the look and feel of Flows to match the design of your site."
 ---
 
 Flow supports visual customization, which allows you to match the design of your site with the styling option. The layout of each flow stays consistent, but you can modify colors, buttons, borders, padding, and more.
@@ -75,33 +75,33 @@ This example customize the flow styles with the following configurations:
 
 ```javascript NodeJS
 const configurations = {
-  theme: 'dark',
+  theme: "dark",
   variables: {
-    backgroundColor: '#000000',
-    primaryTextColor: '#ffffff',
-    secondaryTextColor: '#9ca3af',
-    primaryColor: '#c88bc4',
-    tabBackgroundColor: '#111827',
-    tabHoverBackgroundColor: '#374151',
-    tabBorderColor: '#e5e7eb',
-    tabHoverBorderColor: '#7dd3fc',
-    buttonBackgroundColor: '#c88bc4',
-    buttonTextColor: '#ffffff',
-    buttonHoverTextColor: '#ffffff',
-    buttonHoverBackgroundColor: '#a672a2',
-    inputBackgroundColor: '#111827',
-    inputBorderColor: '#c88bc4',
-    tertiaryTextColor: '',
-    buttonDisabledBackgroundColor: '#1f2937',
-    buttonDisabledTextColor: '#d1d5db',
-    inputPlaceholderColor: '#4b5563',
-    borderRadius: '8px',
+    backgroundColor: "#000000",
+    primaryTextColor: "#ffffff",
+    secondaryTextColor: "#9ca3af",
+    primaryColor: "#c88bc4",
+    tabBackgroundColor: "#111827",
+    tabHoverBackgroundColor: "#374151",
+    tabBorderColor: "#e5e7eb",
+    tabHoverBorderColor: "#7dd3fc",
+    buttonBackgroundColor: "#c88bc4",
+    buttonTextColor: "#ffffff",
+    buttonHoverTextColor: "#ffffff",
+    buttonHoverBackgroundColor: "#a672a2",
+    inputBackgroundColor: "#111827",
+    inputBorderColor: "#c88bc4",
+    tertiaryTextColor: "",
+    buttonDisabledBackgroundColor: "#1f2937",
+    buttonDisabledTextColor: "#d1d5db",
+    inputPlaceholderColor: "#4b5563",
+    borderRadius: "8px",
   },
 };
 
 const url_encoded_config = encodeURIComponent(JSON.stringify(configurations));
 
 const flowURI =
-  'https://my.senddotssandbox.com/flow/5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8?styles=' +
+  "https://my.senddotssandbox.com/flow/5f0f8f8f-f8f8-f8f8-f8f8-f8f8f8f8f8f8?styles=" +
   url_encoded_config;
 ```
