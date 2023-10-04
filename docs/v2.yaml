@@ -2612,39 +2612,40 @@ components:
               type: string
         contact_info:
           type: object
-          city:
-            maxLength: 100
-            minLength: 1
-            type: string
-          country:
-            maxLength: 60
-            minLength: 2
-            type: string
-          email:
-            format: email
-            maxLength: 100
-            minLength: 3
-            type: string
-          line1:
-            maxLength: 100
-            minLength: 1
-            type: string
-          line2:
-            maxLength: 100
-            minLength: 1
-            type: string
-          phone_number:
-            maxLength: 30
-            minLength: 3
-            type: string
-          state:
-            maxLength: 60
-            minLength: 2
-            type: string
-          zip:
-            maxLength: 20
-            minLength: 3
-            type: string
+          properties:
+            city:
+              maxLength: 100
+              minLength: 1
+              type: string
+            country:
+              maxLength: 60
+              minLength: 2
+              type: string
+            email:
+              format: email
+              maxLength: 100
+              minLength: 3
+              type: string
+            line1:
+              maxLength: 100
+              minLength: 1
+              type: string
+            line2:
+              maxLength: 100
+              minLength: 1
+              type: string
+            phone_number:
+              maxLength: 30
+              minLength: 3
+              type: string
+            state:
+              maxLength: 60
+              minLength: 2
+              type: string
+            zip:
+              maxLength: 20
+              minLength: 3
+              type: string
         directors:
           items:
             properties:
@@ -2707,14 +2708,15 @@ components:
           type: array
         flow_of_funds:
           type: object
-          reasons:
-            maxLength: 400
-            minLength: 3
-            type: string
-          usage:
-            maxLength: 400
-            minLength: 3
-            type: string
+          properties:
+            reasons:
+              maxLength: 400
+              minLength: 3
+              type: string
+            usage:
+              maxLength: 400
+              minLength: 3
+              type: string
       required: []
   securitySchemes:
     api_key:
