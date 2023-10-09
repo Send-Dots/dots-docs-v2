@@ -15,18 +15,18 @@ servers:
   - url: 'https://api.dots.dev/api'
     description: Production
 tags:
-  - name: users
-    description: User routes
-  - name: transfers
-    description: Transfer routes
-  - name: transfer-batches
-    description: Transfer Batch routes
+  - name: apps
+    description: App Routes
+  - name: checkout-sessions
+    description: Checkout Session Routes
   - name: flows
     description: Flow routes
   - name: payment-customers
     description: Payment Customer Routes
   - name: payment-intents
     description: Payment Intent Routes
+  - name: payment-methods
+    description: Payment Method Routes
   - name: payments
     description: Payment Routes
   - name: payouts
@@ -37,8 +37,12 @@ tags:
     description: Payout Request Routes
   - name: transactions
     description: Transaction Routes
-  - name: checkout-sessions
-    description: Checkout Session Routes
+  - name: transfers
+    description: Transfer routes
+  - name: transfer-batches
+    description: Transfer Batch routes
+  - name: users
+    description: User routes
 paths:
   /v2/users:
     get:
@@ -204,7 +208,12 @@ paths:
               properties:
                 default_payout_method:
                   type: string
-                  enum: [paypal, venmo, cash_app, ach, intl_bank]
+                  enum:
+                    - paypal
+                    - venmo
+                    - cash_app
+                    - ach
+                    - intl_bank
                   description: Configures the user's default payout method. Must be a payout method already configured by the user.
                 auto_payout_enabled:
                   type: boolean
@@ -931,9 +940,13 @@ paths:
                   format: uuid
                   description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
                 payout_fee_party:
-                  type: [string, 'null']
+                  type:
+                    - string
+                    - 'null'
                   format: uuid
-                  enum: ['user', 'platform']
+                  enum:
+                    - user
+                    - platform
                   description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
                 additional_steps:
                   type: array
@@ -1090,29 +1103,35 @@ paths:
                       pattern: '[0-9]{9}'
                     account_type:
                       type: string
-                      enum: ['checking', 'savings']
-                  description: >
-                    Specifies the bank account to draw the payment from.
-                    This can be used as an alternative to a stored
-                    account ID.
+                      enum:
+                        - checking
+                        - savings
+                  description: |
+                    Specifies the bank account to draw the payment from. This can be used as an alternative to a stored account ID.
                 account_id:
                   type:
                     - string
                     - null
                   description: The user's ACH account ID.
                 metadata: {}
-              required: [amount, platform]
+              required:
+                - amount
+                - platform
               oneOf:
-                - required: [user_id]
-                - required: [customer_id]
+                - required:
+                    - user_id
+                - required:
+                    - customer_id
               if:
                 properties:
                   platform:
                     const: ach
               then:
                 oneOf:
-                  - required: [account_id]
-                  - required: [ach_info]
+                  - required:
+                      - account_id
+                  - required:
+                      - ach_info
       description: "Creates a transaction from a user or a payment customer to the app. User the `/users/{user_id}/payout-methods` route to get a user's stored payment methods."
       tags:
         - payments
@@ -1198,9 +1217,13 @@ paths:
                   format: uuid
                   description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
                 payout_fee_party:
-                  type: [string, 'null']
+                  type:
+                    - string
+                    - 'null'
                   format: uuid
-                  enum: ['user', 'platform']
+                  enum:
+                    - user
+                    - platform
                   description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
               required:
                 - amount
@@ -1513,6 +1536,40 @@ paths:
       operationId: get-payment-intent
       description: Retrieve a payment intent by its ID.
       parameters: []
+  '/v2/payment-intents/{payment_intent_id}/confirm':
+    parameters:
+      - schema:
+          type: string
+        name: payment_intent_id
+        in: path
+        required: true
+        description: The ID if the Payment Intent to confirm.
+    post:
+      summary: Confirm a Payment Intent
+      operationId: confirm-payment-intent
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-intent'
+      x-stoplight:
+        id: ob396t2z0m16y
+      description: Confirm a payment intent that has not been confirmed yet.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_method_id:
+                  type: string
+                  x-stoplight:
+                    id: 05e8e461u85qf
+                  description: ID of the payment method to confirm the intent with.
+              required:
+                - payment_method_id
   /v2/transfer-batches:
     get:
       summary: List all Transfer Batches
@@ -1683,13 +1740,10 @@ paths:
                 properties:
                   data:
                     type: array
-
                     items:
                       $ref: '#/components/schemas/payment-customer'
-
                   has_more:
                     type: boolean
-
                     description: '`true` if there are more objects.'
       operationId: get-payment-customers
       parameters:
@@ -1724,22 +1778,17 @@ paths:
                 properties:
                   id:
                     type: string
-
                     format: uuid
                   user_id:
                     type: string
-
                     format: uuid
                   email:
                     type: string
-
                     format: email
                   country_code:
                     type: string
-
                   phone_number:
                     type: string
-
       description: Create a Payment Customer
       requestBody:
         content:
@@ -1784,14 +1833,11 @@ paths:
                 properties:
                   has_more:
                     type: boolean
-
                     description: '`true` if there are more objects.'
                   data:
                     type: array
-
                     items:
                       $ref: '#/components/schemas/checkout-session'
-
       operationId: get-checkout-sessions
       description: List all checkout sessions
       parameters:
@@ -1825,7 +1871,6 @@ paths:
               properties:
                 line_items:
                   type: array
-
                   uniqueItems: true
                   items:
                     type: object
@@ -1833,7 +1878,6 @@ paths:
                     properties:
                       price_data:
                         type: object
-
                         additionalProperties: false
                         required:
                           - currency
@@ -1842,79 +1886,62 @@ paths:
                         properties:
                           currency:
                             type: string
-
                             enum:
                               - usd
                           amount:
                             type: integer
-
                             description: amount in cents
                           product_data:
                             type: object
-
                             additionalProperties: false
                             required:
                               - name
                             properties:
                               name:
                                 type: string
-
                               description:
                                 type: string
-
                               images:
                                 type: array
-
                                 items:
                                   type: string
                                   format: uri
                               metadata:
                                 type: object
-
                       quantity:
                         type: integer
-
                     required:
                       - price_data
                       - quantity
                 customer_email:
                   type: string
-
                   format: email
                 client_reference_id:
                   type: string
-
                 success_url:
                   type: string
-
                   format: uri
                 cancel_url:
                   type: string
-
                   format: uri
                 mode:
                   type: string
-
                   enum:
                     - payment
                 user_id:
                   type: string
-
                   format: uuid
                   description: Supply a Dots user ID in place of a customer ID
                 customer_id:
                   type: string
-
                   format: uuid
                 expires_in:
                   type: integer
-
                   minimum: 0
                   maximum: 10800
                   default: 10800
                 metadata:
                   type: string
-
       tags:
         - checkout-sessions
   '/v2/checkout-sessions/{checkout_session_id}':
@@ -1938,7 +1965,7 @@ paths:
                 $ref: '#/components/schemas/checkout-session'
       operationId: get-checkout-session
       description: Retrieve a checkout session by an ID
-  '/v2/apps':
+  /v2/apps:
     get:
       summary: List all Apps
       description: List all apps created by your organization
@@ -1990,10 +2017,12 @@ paths:
               type: object
               parameters:
                 name:
-                  type: 'string'
+                  description: The name of the Application
+                  type: string
                   minLength: 3
                   maxLength: 60
-              required: [name]
+              required:
+                - name
       responses:
         '201':
           description: Created
@@ -2038,8 +2067,7 @@ paths:
         description: ID of the app to query or modify
     get:
       summary: Retrieve an App's Compliance Information
-      description: Retrieve the compliance information for an app in your
-        organization
+      description: Retrieve the compliance information for an app in your organization
       operationId: get-app-compliance
       tags:
         - apps
@@ -2054,8 +2082,7 @@ paths:
           description: Not found
     put:
       summary: Update an App's Compliance Information
-      description: Add or update compliance information for an app
-        in your organization
+      description: Add or update compliance information for an app in your organization
       operationId: put-app-compliance
       tags:
         - apps
@@ -2073,6 +2100,146 @@ paths:
                 $ref: '#/components/schemas/business-compliance-info'
         '404':
           description: Not found
+  /v2/payment-methods:
+    get:
+      summary: List all Payment Methods for a Payment Customer
+      tags:
+        - payment-methods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: thk5z5q0c5ll6
+                    description: List of payment methods.
+                    items:
+                      $ref: '#/components/schemas/payment-method'
+                      x-stoplight:
+                        id: bf1yxdihwsmca
+                  has_more:
+                    type: boolean
+                    x-stoplight:
+                      id: fsn0rb1eogn59
+      operationId: get-payment-methods
+      x-stoplight:
+        id: vjgrvan9af27a
+      requestBody:
+        content: {}
+      description: Get the payment methods for a payment customer
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: customer_id
+          description: Payment Customer ID
+        - schema:
+            type: number
+          in: query
+          name: limit
+          description: Number or payment methods to return
+    parameters: []
+  '/v2/payment-methods/{payment_method_id}':
+    parameters:
+      - schema:
+          type: string
+        name: payment_method_id
+        in: path
+        required: true
+        description: ID of the payment method to get
+    get:
+      summary: Retrieve a Payment Method
+      tags:
+        - payment-methods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+      operationId: get-payment-method
+      x-stoplight:
+        id: n2wkgusltyt2p
+      description: Get a payment method by its ID.
+      requestBody:
+        content: {}
+  '/v2/payment-methods/{payment_method_id}/attach':
+    parameters:
+      - schema:
+          type: string
+        name: payment_method_id
+        in: path
+        required: true
+        description: The ID of the payment method.
+    post:
+      summary: Attach a Payment Method to a Payment Customer
+      operationId: attach-payment-method
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+      x-stoplight:
+        id: ys8mw8rb3333t
+      tags:
+        - payment-methods
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: string
+                  x-stoplight:
+                    id: c8nuymnf87j63
+                  description: ID of the payment customer
+              required:
+                - customer_id
+      description: Attach a payment method to a payment customer for future usage.
+  '/reference/dots-/v2/payment-methods/{payment_method_id}/detach':
+    parameters:
+      - schema:
+          type: string
+        name: payment_method_id
+        in: path
+        required: true
+        description: ID of the payment method.
+    post:
+      summary: Detach Payment Method from a Payment Customer
+      operationId: detach-payment-method
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+      x-stoplight:
+        id: gmsve5h8cad98
+      tags:
+        - payment-methods
+      description: Detach a payment method from a payment customer
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: string
+                  x-stoplight:
+                    id: hns5wbq9v1ppl
+                  description: ID of the payment customer to detach the payment method from.
 components:
   schemas:
     flow:
@@ -2453,7 +2620,6 @@ components:
           type: string
         payment_method_id:
           type: string
-
           format: uuid
         metadata:
           type:
@@ -2575,7 +2741,8 @@ components:
       properties:
         name:
           type: string
-      required: [name]
+      required:
+        - name
     business-compliance-info:
       type: object
       properties:
