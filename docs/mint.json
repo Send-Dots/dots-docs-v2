@@ -26,18 +26,15 @@
       "dark": "#18181B"
     }
   },
-  "topbarLinks": [
-    {
-      "name": "Log in",
-      "url": "https://dashboard.dots.dev/login"
-    }
-  ],
+  "topbarLinks": [{
+    "name": "Log in",
+    "url": "https://dashboard.dots.dev/login"
+  }],
   "topbarCtaButton": {
     "name": "Get Started",
     "url": "https://dashboard.dots.dev/signup"
   },
-  "anchors": [
-    {
+  "anchors": [{
       "name": "API Reference",
       "icon": "rectangle-terminal",
       "url": "api-reference"
@@ -49,8 +46,7 @@
     }
   ],
   "versions": ["v2", "v1"],
-  "navigation": [
-    {
+  "navigation": [{
       "version": "v2",
       "group": "Overview",
       "pages": [
@@ -74,8 +70,7 @@
     {
       "version": "v2",
       "group": "Core Resources",
-      "pages": [
-        {
+      "pages": [{
           "group": "Apps",
           "pages": [
             "apps/overview",
@@ -158,8 +153,7 @@
     {
       "version": "v2",
       "group": "Payments",
-      "pages": [
-        {
+      "pages": [{
           "group": "Checkout Sessions",
           "pages": [
             "checkout-sessions/create-a-checkout-session",
@@ -184,7 +178,17 @@
           "pages": [
             "payment-intents/create-a-payment-intent",
             "payment-intents/retrieve-a-payment-intent",
-            "payment-intents/list-all-payment-intents"
+            "payment-intents/list-all-payment-intents",
+            "payment-customers/confirm-a-payment-intent"
+          ]
+        },
+        {
+          "group": "Payment Methods",
+          "pages": [
+            "payment-methods/retrieve-a-payment-method",
+            "payment-methods/list-payment-methods",
+            "payment-methods/attach-a-payment-method",
+            "payment-methods/detach-a-payment-method"
           ]
         }
       ]
