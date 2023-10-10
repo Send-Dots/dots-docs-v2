@@ -2240,6 +2240,95 @@ paths:
                   x-stoplight:
                     id: hns5wbq9v1ppl
                   description: ID of the payment customer to detach the payment method from.
+  '/v2/apps/{app_id}/ach-account':
+    parameters:
+      - schema:
+          type: string
+        name: app_id
+        in: path
+        required: true
+        description: The ID of the app.
+    get:
+      summary: Get App ACH Account
+      operationId: get-app-ach-account
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mask:
+                    type: string
+                    x-stoplight:
+                      id: ox6wsbsdyhbng
+                    description: The last four digits of the bank account number.
+                  name:
+                    type: string
+                    x-stoplight:
+                      id: fw8uvop7s9rzl
+                    description: The name of the bank account.
+      x-stoplight:
+        id: bhwa9l3dmqfcu
+      tags:
+        - apps
+      description: Get the App's ach account information.
+    put:
+      summary: Add App ACH Account
+      operationId: add-app-ach-account
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mask:
+                    type: string
+                    x-stoplight:
+                      id: os0z5qhxpqsxa
+                    description: The last four digits of the bank account number.
+                  name:
+                    type: string
+                    x-stoplight:
+                      id: zfqsv3dcgyvuw
+                    description: The name of the bank account.
+      x-stoplight:
+        id: lp12n20e25mhr
+      description: Add an ACH account to an app. The account's owner must match the compliance information submitted.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_number:
+                  type: string
+                  x-stoplight:
+                    id: 27aq3m1aapmcs
+                  pattern: '[0-9]{7,20}'
+                  description: The bank account number.
+                routing_number:
+                  type: string
+                  x-stoplight:
+                    id: raa0cjudyil9a
+                  pattern: '[0-9]{9}'
+                  description: The bank's ABA routing number.
+                account_type:
+                  x-stoplight:
+                    id: g12n1zobuljv6
+                  enum:
+                    - checking
+                    - savings
+                  description: The type of bank account.
+              required:
+                - account_number
+                - routing_number
+                - account_type
+      tags:
+        - apps
 components:
   schemas:
     flow:
@@ -2779,40 +2868,39 @@ components:
               type: string
         contact_info:
           type: object
-          properties:
-            city:
-              maxLength: 100
-              minLength: 1
-              type: string
-            country:
-              maxLength: 60
-              minLength: 2
-              type: string
-            email:
-              format: email
-              maxLength: 100
-              minLength: 3
-              type: string
-            line1:
-              maxLength: 100
-              minLength: 1
-              type: string
-            line2:
-              maxLength: 100
-              minLength: 1
-              type: string
-            phone_number:
-              maxLength: 30
-              minLength: 3
-              type: string
-            state:
-              maxLength: 60
-              minLength: 2
-              type: string
-            zip:
-              maxLength: 20
-              minLength: 3
-              type: string
+          city:
+            maxLength: 100
+            minLength: 1
+            type: string
+          country:
+            maxLength: 60
+            minLength: 2
+            type: string
+          email:
+            format: email
+            maxLength: 100
+            minLength: 3
+            type: string
+          line1:
+            maxLength: 100
+            minLength: 1
+            type: string
+          line2:
+            maxLength: 100
+            minLength: 1
+            type: string
+          phone_number:
+            maxLength: 30
+            minLength: 3
+            type: string
+          state:
+            maxLength: 60
+            minLength: 2
+            type: string
+          zip:
+            maxLength: 20
+            minLength: 3
+            type: string
         directors:
           items:
             properties:
@@ -2875,15 +2963,14 @@ components:
           type: array
         flow_of_funds:
           type: object
-          properties:
-            reasons:
-              maxLength: 400
-              minLength: 3
-              type: string
-            usage:
-              maxLength: 400
-              minLength: 3
-              type: string
+          reasons:
+            maxLength: 400
+            minLength: 3
+            type: string
+          usage:
+            maxLength: 400
+            minLength: 3
+            type: string
       required: []
   securitySchemes:
     api_key:

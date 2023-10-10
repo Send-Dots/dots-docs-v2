@@ -78,7 +78,9 @@
             "apps/retrieve-an-app",
             "apps/list-all-apps",
             "apps/add-compliance-information",
-            "apps/retrieve-compliance-information"
+            "apps/retrieve-compliance-information",
+            "apps/add-ach-account",
+            "apps/retrieve-ach-account"
           ]
         },
         {
