@@ -179,7 +179,7 @@
             "payment-intents/create-a-payment-intent",
             "payment-intents/retrieve-a-payment-intent",
             "payment-intents/list-all-payment-intents",
-            "payment-customers/confirm-a-payment-intent"
+            "payment-intents/confirm-a-payment-intent"
           ]
         },
         {
