@@ -1484,7 +1484,7 @@ paths:
                   enum:
                     - on_session
                 metadata:
-                  type: boolean
+                  type: object
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
                 transfer_data:
                   type: object
@@ -2327,6 +2327,42 @@ paths:
                 - account_number
                 - routing_number
                 - account_type
+      tags:
+        - apps
+  '/v2/apps/{app_id}/deposit':
+    parameters:
+      - schema:
+          type: string
+        name: app_id
+        in: path
+        required: true
+        description: The ID of the app.
+    post:
+      summary: Create app wallet deposit
+      operationId: app-deposit-ach
+      description: Creates a deposit from the app's connected ACH account
+        to its Dots wallet.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  minimum: 1
+                idempotency_key:
+                  type: string
+                  format: uuid
+              required: [amount]
+              additionalProperties: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transfer'
       tags:
         - apps
 components:
