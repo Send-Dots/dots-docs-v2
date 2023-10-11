@@ -80,7 +80,8 @@
             "apps/add-compliance-information",
             "apps/retrieve-compliance-information",
             "apps/add-ach-account",
-            "apps/retrieve-ach-account"
+            "apps/retrieve-ach-account",
+            "apps/deposit-into-app-wallet"
           ]
         },
         {

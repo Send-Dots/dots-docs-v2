@@ -1555,7 +1555,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/payment-intent'
       x-stoplight:
-        id: ob396t2z0m16y
+        id: v2srs2x700cy4
       description: Confirm a payment intent that has not been confirmed yet.
       requestBody:
         content:
@@ -1566,7 +1566,7 @@ paths:
                 payment_method_id:
                   type: string
                   x-stoplight:
-                    id: 05e8e461u85qf
+                    id: jz3nlyh5t43ns
                   description: ID of the payment method to confirm the intent with.
               required:
                 - payment_method_id
@@ -2116,19 +2116,19 @@ paths:
                   data:
                     type: array
                     x-stoplight:
-                      id: thk5z5q0c5ll6
+                      id: i52a37g1i2nq8
                     description: List of payment methods.
                     items:
                       $ref: '#/components/schemas/payment-method'
                       x-stoplight:
-                        id: bf1yxdihwsmca
+                        id: 6qr5adsopokz7
                   has_more:
                     type: boolean
                     x-stoplight:
-                      id: fsn0rb1eogn59
+                      id: ef28mdf8n8374
       operationId: get-payment-methods
       x-stoplight:
-        id: vjgrvan9af27a
+        id: 9708ovebb8tmc
       requestBody:
         content: {}
       description: Get the payment methods for a payment customer
@@ -2165,7 +2165,7 @@ paths:
                 $ref: '#/components/schemas/payment-method'
       operationId: get-payment-method
       x-stoplight:
-        id: n2wkgusltyt2p
+        id: 48bimr1w7zhi2
       description: Get a payment method by its ID.
       requestBody:
         content: {}
@@ -2188,7 +2188,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/payment-method'
       x-stoplight:
-        id: ys8mw8rb3333t
+        id: 5h7abutkkyih4
       tags:
         - payment-methods
       requestBody:
@@ -2200,7 +2200,7 @@ paths:
                 customer_id:
                   type: string
                   x-stoplight:
-                    id: c8nuymnf87j63
+                    id: og5qmzidg2qji
                   description: ID of the payment customer
               required:
                 - customer_id
@@ -2224,7 +2224,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/payment-method'
       x-stoplight:
-        id: gmsve5h8cad98
+        id: 5ho04gvmlor80
       tags:
         - payment-methods
       description: Detach a payment method from a payment customer
@@ -2238,7 +2238,7 @@ paths:
                 customer_id:
                   type: string
                   x-stoplight:
-                    id: hns5wbq9v1ppl
+                    id: gbnzpyvfmdhhe
                   description: ID of the payment customer to detach the payment method from.
   '/v2/apps/{app_id}/ach-account':
     parameters:
@@ -2262,15 +2262,15 @@ paths:
                   mask:
                     type: string
                     x-stoplight:
-                      id: ox6wsbsdyhbng
+                      id: pw1reb7q211un
                     description: The last four digits of the bank account number.
                   name:
                     type: string
                     x-stoplight:
-                      id: fw8uvop7s9rzl
+                      id: 5b5s5gglkxqwg
                     description: The name of the bank account.
       x-stoplight:
-        id: bhwa9l3dmqfcu
+        id: s97r7hmic7mxm
       tags:
         - apps
       description: Get the App's ach account information.
@@ -2288,15 +2288,15 @@ paths:
                   mask:
                     type: string
                     x-stoplight:
-                      id: os0z5qhxpqsxa
+                      id: o9c1e4wtni9lc
                     description: The last four digits of the bank account number.
                   name:
                     type: string
                     x-stoplight:
-                      id: zfqsv3dcgyvuw
+                      id: sqosggarhqtns
                     description: The name of the bank account.
       x-stoplight:
-        id: lp12n20e25mhr
+        id: b8j34c3v52gk6
       description: Add an ACH account to an app. The account's owner must match the compliance information submitted.
       requestBody:
         content:
@@ -2307,18 +2307,18 @@ paths:
                 account_number:
                   type: string
                   x-stoplight:
-                    id: 27aq3m1aapmcs
+                    id: c7wxarpakfdl4
                   pattern: '[0-9]{7,20}'
                   description: The bank account number.
                 routing_number:
                   type: string
                   x-stoplight:
-                    id: raa0cjudyil9a
+                    id: iq51y24u1l9vf
                   pattern: '[0-9]{9}'
                   description: The bank's ABA routing number.
                 account_type:
                   x-stoplight:
-                    id: g12n1zobuljv6
+                    id: xdsc8wpxa0ovv
                   enum:
                     - checking
                     - savings
@@ -2329,6 +2329,48 @@ paths:
                 - account_type
       tags:
         - apps
+  '/v2/apps/{app_id}/deposit':
+    parameters:
+      - schema:
+          type: string
+        name: app_id
+        in: path
+        required: true
+        description: The ID of the App.
+    post:
+      summary: Deposit Funds into App Wallet
+      operationId: post-app-deposit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transfer'
+      x-stoplight:
+        id: fi8etlazerryn
+      tags:
+        - apps
+      description: Deposit funds into App wallet by endpoint.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  x-stoplight:
+                    id: dnzygq3ku4v84
+                  description: The amount to deposit in cents.
+                idempotency_key:
+                  type: string
+                  x-stoplight:
+                    id: e7zp2cuwcc0jb
+                  format: uuid
+                  description: Idempotency key in UUID format.
+              required:
+                - amount
 components:
   schemas:
     flow:
