@@ -2741,6 +2741,16 @@ components:
           type: string
         destination_name:
           type: string
+        type:
+          type: string
+          enum:
+            - balance
+            - refill
+            - payout
+            - payment
+            - fee
+            - surrogate
+          description: The general category of the transaction
         metadata:
           type:
             - string
