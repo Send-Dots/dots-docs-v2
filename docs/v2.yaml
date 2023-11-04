@@ -19,16 +19,18 @@ tags:
     description: App Routes
   - name: checkout-sessions
     description: Checkout Session Routes
+  - name: disputes
+    description: Disputes Routes
   - name: flows
     description: Flow routes
+  - name: payments
+    description: Payment Routes
   - name: payment-customers
     description: Payment Customer Routes
   - name: payment-intents
     description: Payment Intent Routes
   - name: payment-methods
     description: Payment Method Routes
-  - name: payments
-    description: Payment Routes
   - name: payouts
     description: Payout Routes
   - name: payout-links
@@ -1555,7 +1557,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/payment-intent'
       x-stoplight:
-        id: v2srs2x700cy4
+        id: ro7a3tshuzy5o
       description: Confirm a payment intent that has not been confirmed yet.
       requestBody:
         content:
@@ -1566,7 +1568,7 @@ paths:
                 payment_method_id:
                   type: string
                   x-stoplight:
-                    id: jz3nlyh5t43ns
+                    id: 2fwggff2hgqht
                   description: ID of the payment method to confirm the intent with.
               required:
                 - payment_method_id
@@ -1988,7 +1990,7 @@ paths:
           in: query
           required: false
           description: ID of first app to retrieve
-        - name: ending_after
+        - name: ending_before
           schema:
             type: string
             format: UUID
@@ -2116,19 +2118,19 @@ paths:
                   data:
                     type: array
                     x-stoplight:
-                      id: i52a37g1i2nq8
+                      id: rvy0rmcmujdar
                     description: List of payment methods.
                     items:
                       $ref: '#/components/schemas/payment-method'
                       x-stoplight:
-                        id: 6qr5adsopokz7
+                        id: krbfid1m3jbn4
                   has_more:
                     type: boolean
                     x-stoplight:
-                      id: ef28mdf8n8374
+                      id: 2oom6y25uu70h
       operationId: get-payment-methods
       x-stoplight:
-        id: 9708ovebb8tmc
+        id: usda8tv1u0qdu
       requestBody:
         content: {}
       description: Get the payment methods for a payment customer
@@ -2165,7 +2167,7 @@ paths:
                 $ref: '#/components/schemas/payment-method'
       operationId: get-payment-method
       x-stoplight:
-        id: 48bimr1w7zhi2
+        id: 1wff2wdkrpmm5
       description: Get a payment method by its ID.
       requestBody:
         content: {}
@@ -2188,7 +2190,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/payment-method'
       x-stoplight:
-        id: 5h7abutkkyih4
+        id: rhj1a6x4espto
       tags:
         - payment-methods
       requestBody:
@@ -2200,7 +2202,7 @@ paths:
                 customer_id:
                   type: string
                   x-stoplight:
-                    id: og5qmzidg2qji
+                    id: qok8ufow3sc9f
                   description: ID of the payment customer
               required:
                 - customer_id
@@ -2224,7 +2226,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/payment-method'
       x-stoplight:
-        id: 5ho04gvmlor80
+        id: j6h5yn3yffbxc
       tags:
         - payment-methods
       description: Detach a payment method from a payment customer
@@ -2238,7 +2240,7 @@ paths:
                 customer_id:
                   type: string
                   x-stoplight:
-                    id: gbnzpyvfmdhhe
+                    id: rnmbh8n6187eo
                   description: ID of the payment customer to detach the payment method from.
   '/v2/apps/{app_id}/ach-account':
     parameters:
@@ -2262,15 +2264,15 @@ paths:
                   mask:
                     type: string
                     x-stoplight:
-                      id: pw1reb7q211un
+                      id: 5q5k2qudm445l
                     description: The last four digits of the bank account number.
                   name:
                     type: string
                     x-stoplight:
-                      id: 5b5s5gglkxqwg
+                      id: efxjk5bfdv971
                     description: The name of the bank account.
       x-stoplight:
-        id: s97r7hmic7mxm
+        id: xrm26osjz3c9k
       tags:
         - apps
       description: Get the App's ach account information.
@@ -2288,15 +2290,15 @@ paths:
                   mask:
                     type: string
                     x-stoplight:
-                      id: o9c1e4wtni9lc
+                      id: 7c4sx8m7pzgyn
                     description: The last four digits of the bank account number.
                   name:
                     type: string
                     x-stoplight:
-                      id: sqosggarhqtns
+                      id: k9qf4ez5de4zw
                     description: The name of the bank account.
       x-stoplight:
-        id: b8j34c3v52gk6
+        id: edmu2w44b1qmz
       description: Add an ACH account to an app. The account's owner must match the compliance information submitted.
       requestBody:
         content:
@@ -2307,18 +2309,18 @@ paths:
                 account_number:
                   type: string
                   x-stoplight:
-                    id: c7wxarpakfdl4
+                    id: dsjt9ggxcvf9k
                   pattern: '[0-9]{7,20}'
                   description: The bank account number.
                 routing_number:
                   type: string
                   x-stoplight:
-                    id: iq51y24u1l9vf
+                    id: rlk61ntxar50i
                   pattern: '[0-9]{9}'
                   description: The bank's ABA routing number.
                 account_type:
                   x-stoplight:
-                    id: xdsc8wpxa0ovv
+                    id: i43n32bletnp0
                   enum:
                     - checking
                     - savings
@@ -2348,7 +2350,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/transfer'
       x-stoplight:
-        id: fi8etlazerryn
+        id: upnmivo37zbj7
       tags:
         - apps
       description: Deposit funds into App wallet by endpoint.
@@ -2361,16 +2363,159 @@ paths:
                 amount:
                   type: integer
                   x-stoplight:
-                    id: dnzygq3ku4v84
+                    id: 0914w8490q542
                   description: The amount to deposit in cents.
                 idempotency_key:
                   type: string
                   x-stoplight:
-                    id: e7zp2cuwcc0jb
+                    id: du6bq4ndob197
                   format: uuid
                   description: Idempotency key in UUID format.
               required:
                 - amount
+  /v2/disputes:
+    get:
+      summary: List all Disputes
+      tags:
+        - disputes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    x-stoplight:
+                      id: e95txhfrpzpy3
+                    type: boolean
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: c1iz2siopjtxa
+                    items:
+                      $ref: '#/components/schemas/dispute'
+                      x-stoplight:
+                        id: zyetv6dxt7qkj
+      operationId: list-disputes
+      x-stoplight:
+        id: vhfgricvutsrj
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: limit
+          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+        - schema:
+            type: string
+          in: query
+          name: starting_after
+          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+        - schema:
+            type: string
+          in: query
+          name: ending_before
+          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+      description: List all disputes
+  '/v2/disputes/{dispute_id}':
+    parameters:
+      - schema:
+          type: string
+        name: dispute_id
+        in: path
+        required: true
+        description: ID of the dispute to retrieve
+    get:
+      summary: Retrieve a Dispute
+      tags:
+        - disputes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dispute'
+      operationId: get-dispute
+      x-stoplight:
+        id: c4gaxmzqibmfb
+      description: Retreieve a dispute by its ID
+  '/v2/disputes/{dispute_id}/evidence':
+    parameters:
+      - schema:
+          type: string
+        name: dispute_id
+        in: path
+        required: true
+        description: ID of the dispute to add evidence to
+    post:
+      summary: Add Evidence to a Dispute
+      operationId: post-dispute-evidence
+      responses:
+        '201':
+          description: Created
+          content: {}
+      x-stoplight:
+        id: 6litkky3z5lim
+      tags:
+        - disputes
+      description: Add an evidence file to the dispute
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                type:
+                  x-stoplight:
+                    id: pqh9pmvsb9u92
+                  enum:
+                    - customer_communications
+                    - refund_policy
+                    - cancellation_policy
+                    - customer_signature
+                    - receipt
+                    - service_documentation
+                    - duplicate_charge_documentation
+                    - shipping_documentation
+                    - uncategorized
+                content:
+                  type: string
+                  x-stoplight:
+                    id: 3dze4sr0x7obi
+        description: ''
+  '/v2/disputes/{dispute_id}/submit':
+    parameters:
+      - schema:
+          type: string
+        name: dispute_id
+        in: path
+        required: true
+        description: ID of the dispute to submit
+    post:
+      summary: Submit a Dispute
+      operationId: post-dispute-submit
+      responses:
+        '200':
+          description: OK
+      x-stoplight:
+        id: uzec9knpfiyb9
+      tags:
+        - disputes
+      description: Submit a dispute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  x-stoplight:
+                    id: kq5nzltznbd00
+              required:
+                - description
 components:
   schemas:
     flow:
@@ -3014,6 +3159,66 @@ components:
             minLength: 3
             type: string
       required: []
+    dispute:
+      title: dispute
+      x-stoplight:
+        id: 558r9p6l50c7n
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: v0lukkvqqzs2f
+          format: uuid
+        payment_intent_id:
+          type: string
+          x-stoplight:
+            id: y8qb19jzyfd9p
+          format: uuid
+        status:
+          x-stoplight:
+            id: zs2yc4l5b3xk1
+          enum:
+            - needs_response
+            - under_review
+            - closed
+            - warning_needs_response
+            - warning_under_review
+            - warning_closed
+            - won
+            - lost
+        evidence:
+          type: array
+          x-stoplight:
+            id: ugd9bgrjmbtvj
+          items:
+            $ref: '#/components/schemas/dispute-file'
+            x-stoplight:
+              id: vfi0y8dfmnxoi
+    dispute-file:
+      title: dispute-file
+      x-stoplight:
+        id: 78xy5f1fp0wfa
+      type: object
+      properties:
+        type:
+          x-stoplight:
+            id: 16gdf3wuoi3tn
+          enum:
+            - customer_communications
+            - refund_policy
+            - cancellation_policy
+            - customer_signature
+            - receipt
+            - service_documentation
+            - duplicate_charge_documentation
+            - shipping_documentation
+            - uncategorized
+        url:
+          type: string
+          x-stoplight:
+            id: 6jo6xtvkglc9a
+          format: uri
   securitySchemes:
     api_key:
       type: http
