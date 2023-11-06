@@ -170,6 +170,7 @@
             "disputes/list-all-disputes",
             "disputes/retrieve-a-dispute",
             "disputes/add-dispute-evidence",
+            "disputes/submit-dispute",
             "disputes/submit-dispute"
           ]
         },
