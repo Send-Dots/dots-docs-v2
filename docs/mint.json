@@ -165,6 +165,15 @@
           ]
         },
         {
+          "group": "Disputes",
+          "pages": [
+            "disputes/list-all-disputes",
+            "disputes/retrieve-a-dispute",
+            "disputes/add-dispute-evidence",
+            "disputes/submit-dispute"
+          ]
+        },
+        {
           "group": "Payments",
           "pages": ["payments/create-a-payment"]
         },
