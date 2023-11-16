@@ -26,15 +26,18 @@
       "dark": "#18181B"
     }
   },
-  "topbarLinks": [{
-    "name": "Log in",
-    "url": "https://dashboard.dots.dev/login"
-  }],
+  "topbarLinks": [
+    {
+      "name": "Log in",
+      "url": "https://dashboard.dots.dev/login"
+    }
+  ],
   "topbarCtaButton": {
     "name": "Get Started",
     "url": "https://dashboard.dots.dev/signup"
   },
-  "anchors": [{
+  "anchors": [
+    {
       "name": "API Reference",
       "icon": "rectangle-terminal",
       "url": "api-reference"
@@ -46,7 +49,8 @@
     }
   ],
   "versions": ["v2", "v1"],
-  "navigation": [{
+  "navigation": [
+    {
       "version": "v2",
       "group": "Overview",
       "pages": [
@@ -70,7 +74,8 @@
     {
       "version": "v2",
       "group": "Core Resources",
-      "pages": [{
+      "pages": [
+        {
           "group": "Apps",
           "pages": [
             "apps/overview",
@@ -156,7 +161,8 @@
     {
       "version": "v2",
       "group": "Payments",
-      "pages": [{
+      "pages": [
+        {
           "group": "Checkout Sessions",
           "pages": [
             "checkout-sessions/create-a-checkout-session",
@@ -170,8 +176,15 @@
             "disputes/list-all-disputes",
             "disputes/retrieve-a-dispute",
             "disputes/add-dispute-evidence",
-            "disputes/submit-dispute",
             "disputes/submit-dispute"
+          ]
+        },
+        {
+          "group": "Refunds",
+          "pages": [
+            "refunds/create-a-refund",
+            "refunds/list-all-refunds",
+            "refunds/retrieve-a-refund"
           ]
         },
         {
