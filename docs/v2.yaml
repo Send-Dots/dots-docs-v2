@@ -2102,146 +2102,6 @@ paths:
                 $ref: '#/components/schemas/business-compliance-info'
         '404':
           description: Not found
-  /v2/payment-methods:
-    get:
-      summary: List all Payment Methods for a Payment Customer
-      tags:
-        - payment-methods
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    x-stoplight:
-                      id: rvy0rmcmujdar
-                    description: List of payment methods.
-                    items:
-                      $ref: '#/components/schemas/payment-method'
-                      x-stoplight:
-                        id: krbfid1m3jbn4
-                  has_more:
-                    type: boolean
-                    x-stoplight:
-                      id: 2oom6y25uu70h
-      operationId: get-payment-methods
-      x-stoplight:
-        id: usda8tv1u0qdu
-      requestBody:
-        content: {}
-      description: Get the payment methods for a payment customer
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: customer_id
-          description: Payment Customer ID
-        - schema:
-            type: number
-          in: query
-          name: limit
-          description: Number or payment methods to return
-    parameters: []
-  '/v2/payment-methods/{payment_method_id}':
-    parameters:
-      - schema:
-          type: string
-        name: payment_method_id
-        in: path
-        required: true
-        description: ID of the payment method to get
-    get:
-      summary: Retrieve a Payment Method
-      tags:
-        - payment-methods
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/payment-method'
-      operationId: get-payment-method
-      x-stoplight:
-        id: 1wff2wdkrpmm5
-      description: Get a payment method by its ID.
-      requestBody:
-        content: {}
-  '/v2/payment-methods/{payment_method_id}/attach':
-    parameters:
-      - schema:
-          type: string
-        name: payment_method_id
-        in: path
-        required: true
-        description: The ID of the payment method.
-    post:
-      summary: Attach a Payment Method to a Payment Customer
-      operationId: attach-payment-method
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/payment-method'
-      x-stoplight:
-        id: rhj1a6x4espto
-      tags:
-        - payment-methods
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                customer_id:
-                  type: string
-                  x-stoplight:
-                    id: qok8ufow3sc9f
-                  description: ID of the payment customer
-              required:
-                - customer_id
-      description: Attach a payment method to a payment customer for future usage.
-  '/reference/dots-/v2/payment-methods/{payment_method_id}/detach':
-    parameters:
-      - schema:
-          type: string
-        name: payment_method_id
-        in: path
-        required: true
-        description: ID of the payment method.
-    post:
-      summary: Detach Payment Method from a Payment Customer
-      operationId: detach-payment-method
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/payment-method'
-      x-stoplight:
-        id: j6h5yn3yffbxc
-      tags:
-        - payment-methods
-      description: Detach a payment method from a payment customer
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                customer_id:
-                  type: string
-                  x-stoplight:
-                    id: rnmbh8n6187eo
-                  description: ID of the payment customer to detach the payment method from.
   '/v2/apps/{app_id}/ach-account':
     parameters:
       - schema:
@@ -2373,6 +2233,146 @@ paths:
                   description: Idempotency key in UUID format.
               required:
                 - amount
+  /v2/payment-methods:
+    get:
+      summary: List all Payment Methods for a Payment Customer
+      tags:
+        - payment-methods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: rvy0rmcmujdar
+                    description: List of payment methods.
+                    items:
+                      $ref: '#/components/schemas/payment-method'
+                      x-stoplight:
+                        id: krbfid1m3jbn4
+                  has_more:
+                    type: boolean
+                    x-stoplight:
+                      id: 2oom6y25uu70h
+      operationId: get-payment-methods
+      x-stoplight:
+        id: usda8tv1u0qdu
+      requestBody:
+        content: {}
+      description: Get the payment methods for a payment customer
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: customer_id
+          description: Payment Customer ID
+        - schema:
+            type: number
+          in: query
+          name: limit
+          description: Number or payment methods to return
+    parameters: []
+  '/v2/payment-methods/{payment_method_id}':
+    parameters:
+      - schema:
+          type: string
+        name: payment_method_id
+        in: path
+        required: true
+        description: ID of the payment method to get
+    get:
+      summary: Retrieve a Payment Method
+      tags:
+        - payment-methods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+      operationId: get-payment-method
+      x-stoplight:
+        id: 1wff2wdkrpmm5
+      description: Get a payment method by its ID.
+      requestBody:
+        content: {}
+  '/v2/payment-methods/{payment_method_id}/attach':
+    parameters:
+      - schema:
+          type: string
+        name: payment_method_id
+        in: path
+        required: true
+        description: The ID of the payment method.
+    post:
+      summary: Attach a Payment Method to a Payment Customer
+      operationId: attach-payment-method
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+      x-stoplight:
+        id: rhj1a6x4espto
+      tags:
+        - payment-methods
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: string
+                  x-stoplight:
+                    id: qok8ufow3sc9f
+                  description: ID of the payment customer
+              required:
+                - customer_id
+      description: Attach a payment method to a payment customer for future usage.
+  '/v2/payment-methods/{payment_method_id}/detach':
+    parameters:
+      - schema:
+          type: string
+        name: payment_method_id
+        in: path
+        required: true
+        description: ID of the payment method.
+    post:
+      summary: Detach Payment Method from a Payment Customer
+      operationId: detach-payment-method
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-method'
+      x-stoplight:
+        id: j6h5yn3yffbxc
+      tags:
+        - payment-methods
+      description: Detach a payment method from a payment customer
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: string
+                  x-stoplight:
+                    id: rnmbh8n6187eo
+                  description: ID of the payment customer to detach the payment method from.
   /v2/disputes:
     get:
       summary: List all Disputes
