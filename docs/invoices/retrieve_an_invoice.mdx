@@ -1,18 +1,18 @@
 ---
-title: "Retrieve an Invoice"
+title: 'Retrieve an Invoice'
 ---
 
 <Note>
   All requests to the `/v2/invoice/*` endpoints must include both the
   `client_id` and `api_key` as detailed in the
-  [Authentication](/docs/quick%5Fstart/authentication) document.
+  [Authentication](/overview/authentication) document.
 </Note>
 
 Get an invoice by its ID
 
 ### Method
 
-Make a request to [/v2/invoice/get/{INVOICE_ID}](/api#tag/invoices/paths/~1api~1invoice~1get~1%7Binvoice%5Fid%7D/get)
+Make a request to `/v2/invoice/get/{INVOICE_ID}`
 
 ### Request Example
 
@@ -110,33 +110,33 @@ assert invoice == {
 ```
 
 ```javascript NodeJS
-const invoice = await dots.Invoice.get("8f246ca0-4ade-4296-bab4-5a6d37d9af10");
+const invoice = await dots.Invoice.get('8f246ca0-4ade-4296-bab4-5a6d37d9af10');
 
 invoice ===
   {
-    id: "8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+    id: '8f246ca0-4ade-4296-bab4-5a6d37d9af10',
     payer: null,
     api_app: {
-      id: "b7a00ae2-e638-4d66-9d46-adf38d810cde",
-      name: "Zappy",
+      id: 'b7a00ae2-e638-4d66-9d46-adf38d810cde',
+      name: 'Zappy',
       user_id: 2,
     },
     amount: 800,
-    expiry: "2020-12-09T00:40:51.107Z",
-    status: "created",
-    link: "https://www.senddotssandbox.com/invoice/8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+    expiry: '2020-12-09T00:40:51.107Z',
+    status: 'created',
+    link: 'https://www.senddotssandbox.com/invoice/8f246ca0-4ade-4296-bab4-5a6d37d9af10',
     items: [
       {
-        name: "Pikachu Digital Pet",
+        name: 'Pikachu Digital Pet',
         unit_amount: 250,
         quantity: 1,
-        description: "A little Pikachu for your desktop",
+        description: 'A little Pikachu for your desktop',
       },
       {
-        name: "Charmander Digital Pet",
+        name: 'Charmander Digital Pet',
         unit_amount: 225,
         quantity: 2,
-        description: "A ferocius Charmander for your desktop",
+        description: 'A ferocius Charmander for your desktop',
       },
     ],
     breakdown: {
@@ -148,7 +148,7 @@ invoice ===
       shipping_address: null,
     },
     metadata: {
-      zappy_user_id: "61f8c2f8263e340016f4d4e8",
+      zappy_user_id: '61f8c2f8263e340016f4d4e8',
     },
   };
 ```

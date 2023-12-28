@@ -1,11 +1,11 @@
 ---
-title: "Create an Invoice"
-description: "Creates a new invoice that has a link that the user can be redirected to complete a transaction"
+title: 'Create an Invoice'
+description: 'Creates a new invoice that has a link that the user can be redirected to complete a transaction'
 ---
 
 ### Method
 
-Make a request to the [/v2/invoice/create](/api#tag/invoices/paths/~1api~1invoice~1create/post) endpoint
+Make a request to the /v2/invoice/create endpoint
 
 ### Request
 
@@ -171,16 +171,16 @@ const expires_in = 3600;
 
 const items = [
   {
-    name: "Pikachu Digital Pet",
+    name: 'Pikachu Digital Pet',
     unit_amount: 250,
     quantity: 1,
-    description: "A little Pikachu for your desktop",
+    description: 'A little Pikachu for your desktop',
   },
   {
-    name: "Charmander Digital Pet",
+    name: 'Charmander Digital Pet',
     unit_amount: 225,
     quantity: 2,
-    description: "A ferocius Charmander for your desktop",
+    description: 'A ferocius Charmander for your desktop',
   },
 ];
 
@@ -193,7 +193,7 @@ const breakdown = {
 
 const metadata = {
   // any metadata you would like to include
-  zappy_user_id: "61f8c2f8263e340016f4d4e8",
+  zappy_user_id: '61f8c2f8263e340016f4d4e8',
 };
 
 const invoice = await dots.Invoice.create(
@@ -201,35 +201,35 @@ const invoice = await dots.Invoice.create(
   expired_in,
   items,
   breakdown,
-  ["shipping_address"],
+  ['shipping_address'],
   metadata
 );
 
 invoice ===
   {
-    id: "8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+    id: '8f246ca0-4ade-4296-bab4-5a6d37d9af10',
     payer: null,
     api_app: {
-      id: "b7a00ae2-e638-4d66-9d46-adf38d810cde",
-      name: "Zappy",
+      id: 'b7a00ae2-e638-4d66-9d46-adf38d810cde',
+      name: 'Zappy',
       user_id: 2,
     },
     amount: 800,
-    expiry: "2020-12-09T00:40:51.107Z",
-    status: "created",
-    link: "https://www.senddotssandbox.com/invoice/8f246ca0-4ade-4296-bab4-5a6d37d9af10",
+    expiry: '2020-12-09T00:40:51.107Z',
+    status: 'created',
+    link: 'https://www.senddotssandbox.com/invoice/8f246ca0-4ade-4296-bab4-5a6d37d9af10',
     items: [
       {
-        name: "Pikachu Digital Pet",
+        name: 'Pikachu Digital Pet',
         unit_amount: 250,
         quantity: 1,
-        description: "A little Pikachu for your desktop",
+        description: 'A little Pikachu for your desktop',
       },
       {
-        name: "Charmander Digital Pet",
+        name: 'Charmander Digital Pet',
         unit_amount: 225,
         quantity: 2,
-        description: "A ferocius Charmander for your desktop",
+        description: 'A ferocius Charmander for your desktop',
       },
     ],
     breakdown: {
@@ -241,7 +241,7 @@ invoice ===
       shipping_address: null,
     },
     metadata: {
-      zappy_user_id: "61f8c2f8263e340016f4d4e8",
+      zappy_user_id: '61f8c2f8263e340016f4d4e8',
     },
   };
 ```

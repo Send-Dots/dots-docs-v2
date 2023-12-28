@@ -1,11 +1,11 @@
 ---
-title: "Create a Payout Link"
-description: "All requests to the /v2/payouts/* endpoints must include both the clientid and apikey as detailed in the Authentication document."
+title: 'Create a Payout Link'
+description: 'All requests to the /v2/payouts/* endpoints must include both the clientid and apikey as detailed in the Authentication document.'
 ---
 
 info
 
-All requests to the `/v2/payouts/*` endpoints must include both the `client_id` and `api_key` as detailed in the [Authentication](/docs/quick%5Fstart/authentication) document.
+All requests to the `/v2/payouts/*` endpoints must include both the `client_id` and `api_key` as detailed in the [Authentication](/docs/quickstart/authentication) document.
 
 A Payout Link is the easiest way to initiate a payout. The link does not need to be tied to a user and can be delivered via email or SMS. Once the link is claimed, the user will be able to pay themselves out in any method they choose.
 
@@ -13,7 +13,7 @@ A Payout Link is the easiest way to initiate a payout. The link does not need to
 
 ### Method
 
-Make a request to the [/v2/payouts/create_payout_link](/api#tag/payouts/paths/~1api~1payouts~1create%5Fpayout%5Flink/post) endpoint
+Make a request to the `/v2/payouts/create_payout_link` endpoint
 
 <CodeGroup>
 
@@ -66,13 +66,13 @@ assert link == 'https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k32445
 const amount = 1000;
 
 const delivery = {
-  method: "link",
+  method: 'link',
 };
 
 const link = await dots.PayoutLink.create(amount, delivery);
 
 link ===
-  "https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf";
+  'https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf';
 ```
 
 </CodeGroup>
@@ -81,7 +81,7 @@ link ===
 
 ### Method
 
-Make a request to the [/v2/payouts/create_payout_link](/api#tag/payouts/paths/~1api~1payouts~1create%5Fpayout%5Flink/post) endpoint
+Make a request to the `/v2/payouts/create_payout_link` endpoint
 
 <CodeGroup>
 
@@ -146,20 +146,20 @@ assert link == 'https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k32445
 const amount = 1000;
 
 const delivery = {
-  method: "link",
+  method: 'link',
 };
 
 const payee = {
-  first_name: "John",
-  last_name: "Doe",
-  country_code: "1",
-  phone_number: "5555555555",
+  first_name: 'John',
+  last_name: 'Doe',
+  country_code: '1',
+  phone_number: '5555555555',
 };
 
 const link = await dots.PayoutLink.create(amount, delivery, payee);
 
 link ===
-  "https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf";
+  'https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf';
 ```
 
 </CodeGroup>
