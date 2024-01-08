@@ -3340,6 +3340,13 @@ components:
           x-stoplight:
             id: 6jo6xtvkglc9a
           format: uri
+    refund:
+      title: refund
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
   securitySchemes:
     api_key:
       type: http
