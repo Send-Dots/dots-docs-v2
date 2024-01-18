@@ -3136,10 +3136,25 @@ components:
     app:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
-      required:
-        - name
+        metrics:
+          type: object
+          properties:
+            wallet_balance:
+              type: string
+              format: decimal
+            money_out:
+              type: string
+              format: decimal
+            connected_users:
+              type: integer
+              min: 0
+          required: [wallet_balance, money_out, connected_users]
+      required: [id, name, metrics]
     business-compliance-info:
       type: object
       properties:
