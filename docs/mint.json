@@ -300,58 +300,147 @@
       "group": "Dots Endpoint (2.0.0)",
       "version": "v2",
       "pages": [
-        "api-reference/v2/introduction",
         {
-          "group": "User Routes",
+          "group": "users",
           "pages": [
-            "api-reference/v2/users/get-users",
-            "api-reference/v2/users/create-user",
-            "api-reference/v2/users/get-user-by-id",
-            "api-reference/v2/users/delete-user-by-id",
-            "api-reference/v2/users/send-verification-token",
-            "api-reference/v2/users/verify-user",
-            "api-reference/v2/users/get-payout-methods",
-            "api-reference/v2/users/add-payout-method",
-            "api-reference/v2/users/add-compliance-information"
+            "users\\list-all-users",
+            "users\\create-a-user",
+            "users\\retrieve-a-user",
+            "users\\delete-a-user",
+            "users\\update-a-user",
+            "users\\submit-compliance-information",
+            "users\\send-a-verification-token",
+            "users\\verify-a-user",
+            "users\\retrieve-a-payout-method",
+            "users\\add-a-payout-method"
           ]
         },
         {
-          "group": "Transfer Routes",
+          "group": "transfers",
           "pages": [
-            "api-reference/v2/transfers/get-transfers",
-            "api-reference/v2/transfers/create-transfer",
-            "api-reference/v2/transfers/get-transfer-by-id"
+            "transfers\\list-all-transfers",
+            "transfers\\create-a-transfer",
+            "transfers\\get-a-transfer",
+            "transfers\\list-all-organization-transfers",
+            "transfers\\create-an-organization-transfer",
+            "transfers\\get-a-transfer-1"
           ]
         },
         {
-          "group": "Flow Routes",
+          "group": "flows",
           "pages": [
-            "api-reference/v2/flows/get-flows",
-            "api-reference/v2/flows/create-flow",
-            "api-reference/v2/flows/get-flow-by-id"
+            "flows\\list-all-flows",
+            "flows\\create-a-flow",
+            "flows\\retrieve-a-flow"
           ]
         },
         {
-          "group": "Payout Link Routes",
+          "group": "payout-links",
           "pages": [
-            "api-reference/v2/payout-links/get-payout-links",
-            "api-reference/v2/payout-links/create-payout-link",
-            "api-reference/v2/payout-links/get-payout-link-by-id",
-            "api-reference/v2/payout-links/cancel-a-payout-link-by-id"
+            "payout-links\\list-all-payout-links",
+            "payout-links\\create-a-payout-link",
+            "payout-links\\retrieve-a-payout-link",
+            "payout-links\\delete-a-payout-link"
           ]
         },
         {
-          "group": "Payouts",
+          "group": "payouts",
           "pages": [
-            "api-reference/v2/payouts/create-payout",
-            "api-reference/v2/payouts/send-payout"
+            "payouts\\create-a-payout",
+            "payouts\\send-a-payout"
           ]
         },
         {
-          "group": "Transaction Routes",
+          "group": "payments",
           "pages": [
-            "api-reference/v2/transactions/get-transactions",
-            "api-reference/v2/transactions/get-transaction-by-id"
+            "payments\\create-a-payment"
+          ]
+        },
+        {
+          "group": "payout-requests",
+          "pages": [
+            "payout-requests\\list-all-payout-requests",
+            "payout-requests\\create-a-payout-request",
+            "payout-requests\\retrieve-a-payout-request"
+          ]
+        },
+        {
+          "group": "transactions",
+          "pages": [
+            "transactions\\list-all-transactions",
+            "transactions\\retrieve-a-transaction"
+          ]
+        },
+        {
+          "group": "payment-intents",
+          "pages": [
+            "payment-intents\\list-all-payment-intents",
+            "payment-intents\\create-a-payment-intent",
+            "payment-intents\\retrieve-a-payment-intent"
+          ]
+        },
+        "confirm-a-payment-intent",
+        {
+          "group": "transfer-batches",
+          "pages": [
+            "transfer-batches\\list-all-transfer-batches",
+            "transfer-batches\\create-a-transfer-batch",
+            "transfer-batches\\retrieve-a-transfer-batch"
+          ]
+        },
+        {
+          "group": "payment-customers",
+          "pages": [
+            "payment-customers\\list-all-payment-customers",
+            "payment-customers\\create-a-payment-customer",
+            "payment-customers\\retrieve-a-payment-customer"
+          ]
+        },
+        {
+          "group": "checkout-sessions",
+          "pages": [
+            "checkout-sessions\\list-all-checkout-sessions",
+            "checkout-sessions\\create-a-checkout-session",
+            "checkout-sessions\\retrieve-a-checkout-session"
+          ]
+        },
+        {
+          "group": "apps",
+          "pages": [
+            "apps\\list-all-apps",
+            "apps\\create-an-app",
+            "apps\\retrieve-an-app",
+            "apps\\retrieve-an-apps-compliance-information",
+            "apps\\update-an-apps-compliance-information",
+            "apps\\get-app-ach-account",
+            "apps\\add-app-ach-account",
+            "apps\\deposit-funds-into-app-wallet"
+          ]
+        },
+        {
+          "group": "payment-methods",
+          "pages": [
+            "payment-methods\\list-all-payment-methods-for-a-payment-customer",
+            "payment-methods\\retrieve-a-payment-method",
+            "payment-methods\\attach-a-payment-method-to-a-payment-customer",
+            "payment-methods\\detach-payment-method-from-a-payment-customer"
+          ]
+        },
+        {
+          "group": "disputes",
+          "pages": [
+            "disputes\\list-all-disputes",
+            "disputes\\retrieve-a-dispute",
+            "disputes\\add-evidence-to-a-dispute",
+            "disputes\\submit-a-dispute"
+          ]
+        },
+        {
+          "group": "refunds",
+          "pages": [
+            "refunds\\list-all-refunds",
+            "refunds\\create-a-refund",
+            "refunds\\retrieve-a-refund"
           ]
         }
       ]
