@@ -299,8 +299,7 @@
     {
       "group": "Dots Endpoint (2.0.0)",
       "version": "v2",
-      "pages": [
-        [
+      "pages":[
           {
             "group": "users",
             "pages": [
@@ -377,10 +376,10 @@
             "pages": [
               "api-reference/v2/payment-intents/list-all-payment-intents",
               "api-reference/v2/payment-intents/create-a-payment-intent",
-              "api-reference/v2/payment-intents/retrieve-a-payment-intent"
+              "api-reference/v2/payment-intents/retrieve-a-payment-intent",
+              "api-reference/v2/confirm-a-payment-intent"
             ]
           },
-          "api-reference/v2/confirm-a-payment-intent",
           {
             "group": "transfer-batches",
             "pages": [
@@ -445,7 +444,6 @@
             ]
           }
         ]
-      ]
     },
     {
       "group": "Dots Endpoint (1.0.0)",
