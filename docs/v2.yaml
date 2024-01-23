@@ -601,6 +601,12 @@ paths:
           in: query
           name: user_id
           description: Include only results with this user ID attached.
+        - schema:
+            type: boolean
+            default: false
+          in: query
+          name: reverse_order
+          description: Ordering of transfers are by time of creation. Defaults to `false`, which returns transfers in descending order. Setting to `true` will return transfers in ascending order.
       description: List all transfers.
     post:
       summary: Create a Transfer
