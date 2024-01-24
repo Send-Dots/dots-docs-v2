@@ -1866,6 +1866,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/checkout-session'
       description: Create a checkout session
       requestBody:
         content:
@@ -3227,6 +3231,9 @@ components:
           type: string
           format: uri
         cancel_url:
+          type: string
+          format: uri
+        checkout_session_url:
           type: string
           format: uri
         client_reference_id:
