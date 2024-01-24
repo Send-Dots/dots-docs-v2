@@ -1945,7 +1945,11 @@ paths:
                   maximum: 10800
                   default: 10800
                 metadata:
-                  type: string
+                  type: object
+              required:
+                - success_url
+                - line_items
+                - mode
       tags:
         - checkout-sessions
   '/v2/checkout-sessions/{checkout_session_id}':
