@@ -1136,7 +1136,7 @@ paths:
                       - account_id
                   - required:
                       - ach_info
-      description: 'Creates a transaction from a user or a payment customer to the app. User the `/users/{user_id}/payout-methods` route to get a user''s stored payment methods.'
+      description: "Creates a transaction from a user or a payment customer to the app. User the `/users/{user_id}/payout-methods` route to get a user's stored payment methods."
       tags:
         - payments
   /v2/payouts/send-payout:
@@ -2231,6 +2231,42 @@ paths:
                   type: string
                   x-stoplight:
                     id: q2foxf0xf9va2
+                  format: uuid
+                  description: Idempotency key in UUID format.
+              required:
+                - amount
+  '/v2/apps/{app_id}/withdraw':
+    parameters:
+      - schema:
+          type: string
+        name: app_id
+        in: path
+        required: true
+        description: The ID of the App.
+    post:
+      summary: Withdraw Funds From App Wallet
+      operationId: post-app-withdraw
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transfer'
+      tags:
+        - apps
+      description: Withdraw funds from app wallet into app bank account.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  description: The amount to deposit in cents.
+                idempotency_key:
+                  type: string
                   format: uuid
                   description: Idempotency key in UUID format.
               required:
