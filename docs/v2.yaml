@@ -1136,7 +1136,7 @@ paths:
                       - account_id
                   - required:
                       - ach_info
-      description: 'Creates a transaction from a user or a payment customer to the app. User the `/users/{user_id}/payout-methods` route to get a user''s stored payment methods.'
+      description: "Creates a transaction from a user or a payment customer to the app. User the `/users/{user_id}/payout-methods` route to get a user's stored payment methods."
       tags:
         - payments
   /v2/payouts/send-payout:
@@ -3283,6 +3283,15 @@ components:
       properties:
         company_info:
           type: object
+          required:
+            [
+              name,
+              website,
+              ein,
+              incorporation_type,
+              incorporation_state,
+              incorporation_date,
+            ]
           properties:
             dba:
               maxLength: 60
@@ -3314,44 +3323,59 @@ components:
               type: string
         contact_info:
           type: object
-          city:
-            maxLength: 100
-            minLength: 1
-            type: string
-          country:
-            maxLength: 60
-            minLength: 2
-            type: string
-          email:
-            format: email
-            maxLength: 100
-            minLength: 3
-            type: string
-          line1:
-            maxLength: 100
-            minLength: 1
-            type: string
-          line2:
-            maxLength: 100
-            minLength: 1
-            type: string
-          phone_number:
-            maxLength: 30
-            minLength: 3
-            type: string
-          state:
-            maxLength: 60
-            minLength: 2
-            type: string
-          zip:
-            maxLength: 20
-            minLength: 3
-            type: string
+          required: [email, phone_number, line1, city, zip, state, country]
+          properties:
+            city:
+              maxLength: 100
+              minLength: 1
+              type: string
+            country:
+              maxLength: 60
+              minLength: 2
+              type: string
+            email:
+              format: email
+              maxLength: 100
+              minLength: 3
+              type: string
+            line1:
+              maxLength: 100
+              minLength: 1
+              type: string
+            line2:
+              maxLength: 100
+              minLength: 1
+              type: string
+            phone_number:
+              maxLength: 30
+              minLength: 3
+              type: string
+            state:
+              maxLength: 60
+              minLength: 2
+              type: string
+            zip:
+              maxLength: 20
+              minLength: 3
+              type: string
         directors:
           items:
+            type: object
+            required:
+              [
+                first_name,
+                last_name,
+                title,
+                phone,
+                email,
+                dob,
+                ownership_percentage,
+                address,
+              ]
             properties:
               address:
                 type: object
+                required: [line1, city, zip, country]
                 properties:
                   city:
                     maxLength: 100
@@ -3405,18 +3429,19 @@ components:
                 maxLength: 60
                 minLength: 3
                 type: string
-            type: object
           type: array
         flow_of_funds:
           type: object
-          reasons:
-            maxLength: 400
-            minLength: 3
-            type: string
-          usage:
-            maxLength: 400
-            minLength: 3
-            type: string
+          required: [reasons, usage]
+          properties:
+            reasons:
+              maxLength: 400
+              minLength: 3
+              type: string
+            usage:
+              maxLength: 400
+              minLength: 3
+              type: string
       required: []
     dispute:
       title: dispute
