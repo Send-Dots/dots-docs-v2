@@ -86,7 +86,8 @@
             "apps/retrieve-compliance-information",
             "apps/add-ach-account",
             "apps/retrieve-ach-account",
-            "apps/deposit-into-app-wallet"
+            "apps/deposit-into-app-wallet",
+            "apps/withdraw-from-app-wallet"
           ]
         },
         {
@@ -299,151 +300,150 @@
     {
       "group": "Dots Endpoint (2.0.0)",
       "version": "v2",
-      "pages":[
-          {
-            "group": "users",
-            "pages": [
-              "api-reference/v2/users/list-all-users",
-              "api-reference/v2/users/create-a-user",
-              "api-reference/v2/users/retrieve-a-user",
-              "api-reference/v2/users/delete-a-user",
-              "api-reference/v2/users/update-a-user",
-              "api-reference/v2/users/submit-compliance-information",
-              "api-reference/v2/users/send-a-verification-token",
-              "api-reference/v2/users/verify-a-user",
-              "api-reference/v2/users/retrieve-a-payout-method",
-              "api-reference/v2/users/add-a-payout-method"
-            ]
-          },
-          {
-            "group": "transfers",
-            "pages": [
-              "api-reference/v2/transfers/list-all-transfers",
-              "api-reference/v2/transfers/create-a-transfer",
-              "api-reference/v2/transfers/get-a-transfer",
-              "api-reference/v2/transfers/list-all-organization-transfers",
-              "api-reference/v2/transfers/create-an-organization-transfer",
-              "api-reference/v2/transfers/get-a-transfer-1"
-            ]
-          },
-          {
-            "group": "flows",
-            "pages": [
-              "api-reference/v2/flows/list-all-flows",
-              "api-reference/v2/flows/create-a-flow",
-              "api-reference/v2/flows/retrieve-a-flow"
-            ]
-          },
-          {
-            "group": "payout-links",
-            "pages": [
-              "api-reference/v2/payout-links/list-all-payout-links",
-              "api-reference/v2/payout-links/create-a-payout-link",
-              "api-reference/v2/payout-links/retrieve-a-payout-link",
-              "api-reference/v2/payout-links/delete-a-payout-link"
-            ]
-          },
-          {
-            "group": "payouts",
-            "pages": [
-              "api-reference/v2/payouts/create-a-payout",
-              "api-reference/v2/payouts/send-a-payout"
-            ]
-          },
-          {
-            "group": "payments",
-            "pages": [
-              "api-reference/v2/payments/create-a-payment"
-            ]
-          },
-          {
-            "group": "payout-requests",
-            "pages": [
-              "api-reference/v2/payout-requests/list-all-payout-requests",
-              "api-reference/v2/payout-requests/create-a-payout-request",
-              "api-reference/v2/payout-requests/retrieve-a-payout-request"
-            ]
-          },
-          {
-            "group": "transactions",
-            "pages": [
-              "api-reference/v2/transactions/list-all-transactions",
-              "api-reference/v2/transactions/retrieve-a-transaction"
-            ]
-          },
-          {
-            "group": "payment-intents",
-            "pages": [
-              "api-reference/v2/payment-intents/list-all-payment-intents",
-              "api-reference/v2/payment-intents/create-a-payment-intent",
-              "api-reference/v2/payment-intents/retrieve-a-payment-intent",
-              "api-reference/v2/confirm-a-payment-intent"
-            ]
-          },
-          {
-            "group": "transfer-batches",
-            "pages": [
-              "api-reference/v2/transfer-batches/list-all-transfer-batches",
-              "api-reference/v2/transfer-batches/create-a-transfer-batch",
-              "api-reference/v2/transfer-batches/retrieve-a-transfer-batch"
-            ]
-          },
-          {
-            "group": "payment-customers",
-            "pages": [
-              "api-reference/v2/payment-customers/list-all-payment-customers",
-              "api-reference/v2/payment-customers/create-a-payment-customer",
-              "api-reference/v2/payment-customers/retrieve-a-payment-customer"
-            ]
-          },
-          {
-            "group": "checkout-sessions",
-            "pages": [
-              "api-reference/v2/checkout-sessions/list-all-checkout-sessions",
-              "api-reference/v2/checkout-sessions/create-a-checkout-session",
-              "api-reference/v2/checkout-sessions/retrieve-a-checkout-session"
-            ]
-          },
-          {
-            "group": "apps",
-            "pages": [
-              "api-reference/v2/apps/list-all-apps",
-              "api-reference/v2/apps/create-an-app",
-              "api-reference/v2/apps/retrieve-an-app",
-              "api-reference/v2/apps/retrieve-an-apps-compliance-information",
-              "api-reference/v2/apps/update-an-apps-compliance-information",
-              "api-reference/v2/apps/get-app-ach-account",
-              "api-reference/v2/apps/add-app-ach-account",
-              "api-reference/v2/apps/deposit-funds-into-app-wallet"
-            ]
-          },
-          {
-            "group": "payment-methods",
-            "pages": [
-              "api-reference/v2/payment-methods/list-all-payment-methods-for-a-payment-customer",
-              "api-reference/v2/payment-methods/retrieve-a-payment-method",
-              "api-reference/v2/payment-methods/attach-a-payment-method-to-a-payment-customer",
-              "api-reference/v2/payment-methods/detach-payment-method-from-a-payment-customer" 
-            ]
-          },
-          {
-            "group": "disputes",
-            "pages": [
-              "api-reference/v2/disputes/list-all-disputes",
-              "api-reference/v2/disputes/retrieve-a-dispute",
-              "api-reference/v2/disputes/add-evidence-to-a-dispute",
-              "api-reference/v2/disputes/submit-a-dispute"
-            ]
-          },
-          {
-            "group": "refunds",
-            "pages": [
-              "api-reference/v2/refunds/list-all-refunds",
-              "api-reference/v2/refunds/create-a-refund",
-              "api-reference/v2/refunds/retrieve-a-refund"
-            ]
-          }
-        ]
+      "pages": [
+        {
+          "group": "users",
+          "pages": [
+            "api-reference/v2/users/list-all-users",
+            "api-reference/v2/users/create-a-user",
+            "api-reference/v2/users/retrieve-a-user",
+            "api-reference/v2/users/delete-a-user",
+            "api-reference/v2/users/update-a-user",
+            "api-reference/v2/users/submit-compliance-information",
+            "api-reference/v2/users/send-a-verification-token",
+            "api-reference/v2/users/verify-a-user",
+            "api-reference/v2/users/retrieve-a-payout-method",
+            "api-reference/v2/users/add-a-payout-method"
+          ]
+        },
+        {
+          "group": "transfers",
+          "pages": [
+            "api-reference/v2/transfers/list-all-transfers",
+            "api-reference/v2/transfers/create-a-transfer",
+            "api-reference/v2/transfers/get-a-transfer",
+            "api-reference/v2/transfers/list-all-organization-transfers",
+            "api-reference/v2/transfers/create-an-organization-transfer",
+            "api-reference/v2/transfers/get-a-transfer-1"
+          ]
+        },
+        {
+          "group": "flows",
+          "pages": [
+            "api-reference/v2/flows/list-all-flows",
+            "api-reference/v2/flows/create-a-flow",
+            "api-reference/v2/flows/retrieve-a-flow"
+          ]
+        },
+        {
+          "group": "payout-links",
+          "pages": [
+            "api-reference/v2/payout-links/list-all-payout-links",
+            "api-reference/v2/payout-links/create-a-payout-link",
+            "api-reference/v2/payout-links/retrieve-a-payout-link",
+            "api-reference/v2/payout-links/delete-a-payout-link"
+          ]
+        },
+        {
+          "group": "payouts",
+          "pages": [
+            "api-reference/v2/payouts/create-a-payout",
+            "api-reference/v2/payouts/send-a-payout"
+          ]
+        },
+        {
+          "group": "payments",
+          "pages": ["api-reference/v2/payments/create-a-payment"]
+        },
+        {
+          "group": "payout-requests",
+          "pages": [
+            "api-reference/v2/payout-requests/list-all-payout-requests",
+            "api-reference/v2/payout-requests/create-a-payout-request",
+            "api-reference/v2/payout-requests/retrieve-a-payout-request"
+          ]
+        },
+        {
+          "group": "transactions",
+          "pages": [
+            "api-reference/v2/transactions/list-all-transactions",
+            "api-reference/v2/transactions/retrieve-a-transaction"
+          ]
+        },
+        {
+          "group": "payment-intents",
+          "pages": [
+            "api-reference/v2/payment-intents/list-all-payment-intents",
+            "api-reference/v2/payment-intents/create-a-payment-intent",
+            "api-reference/v2/payment-intents/retrieve-a-payment-intent",
+            "api-reference/v2/confirm-a-payment-intent"
+          ]
+        },
+        {
+          "group": "transfer-batches",
+          "pages": [
+            "api-reference/v2/transfer-batches/list-all-transfer-batches",
+            "api-reference/v2/transfer-batches/create-a-transfer-batch",
+            "api-reference/v2/transfer-batches/retrieve-a-transfer-batch"
+          ]
+        },
+        {
+          "group": "payment-customers",
+          "pages": [
+            "api-reference/v2/payment-customers/list-all-payment-customers",
+            "api-reference/v2/payment-customers/create-a-payment-customer",
+            "api-reference/v2/payment-customers/retrieve-a-payment-customer"
+          ]
+        },
+        {
+          "group": "checkout-sessions",
+          "pages": [
+            "api-reference/v2/checkout-sessions/list-all-checkout-sessions",
+            "api-reference/v2/checkout-sessions/create-a-checkout-session",
+            "api-reference/v2/checkout-sessions/retrieve-a-checkout-session"
+          ]
+        },
+        {
+          "group": "apps",
+          "pages": [
+            "api-reference/v2/apps/list-all-apps",
+            "api-reference/v2/apps/create-an-app",
+            "api-reference/v2/apps/retrieve-an-app",
+            "api-reference/v2/apps/retrieve-an-apps-compliance-information",
+            "api-reference/v2/apps/update-an-apps-compliance-information",
+            "api-reference/v2/apps/get-app-ach-account",
+            "api-reference/v2/apps/add-app-ach-account",
+            "api-reference/v2/apps/deposit-funds-into-app-wallet",
+            "api-reference/v2/apps/withdraw-from-app-wallet"
+          ]
+        },
+        {
+          "group": "payment-methods",
+          "pages": [
+            "api-reference/v2/payment-methods/list-all-payment-methods-for-a-payment-customer",
+            "api-reference/v2/payment-methods/retrieve-a-payment-method",
+            "api-reference/v2/payment-methods/attach-a-payment-method-to-a-payment-customer",
+            "api-reference/v2/payment-methods/detach-payment-method-from-a-payment-customer"
+          ]
+        },
+        {
+          "group": "disputes",
+          "pages": [
+            "api-reference/v2/disputes/list-all-disputes",
+            "api-reference/v2/disputes/retrieve-a-dispute",
+            "api-reference/v2/disputes/add-evidence-to-a-dispute",
+            "api-reference/v2/disputes/submit-a-dispute"
+          ]
+        },
+        {
+          "group": "refunds",
+          "pages": [
+            "api-reference/v2/refunds/list-all-refunds",
+            "api-reference/v2/refunds/create-a-refund",
+            "api-reference/v2/refunds/retrieve-a-refund"
+          ]
+        }
+      ]
     },
     {
       "group": "Dots Endpoint (1.0.0)",
