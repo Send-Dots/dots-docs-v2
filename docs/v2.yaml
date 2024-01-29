@@ -3327,6 +3327,7 @@ components:
       required: [id, name, metrics]
     business-compliance-info:
       type: object
+      required: [company_info, contact_info, directors, flow_of_funds]
       properties:
         company_info:
           type: object
@@ -3344,14 +3345,18 @@ components:
               maxLength: 60
               minLength: 1
               type: string
+              description: Company DBA (Doing Business As)
             ein:
               pattern: '[0-9]{9}'
               type: string
+              description: Federal Employer Identification Number
             incorporation_date:
               format: date
               type: string
+              description: Date of incorporation
             incorporation_state:
               type: string
+              description: State where incorporated
             incorporation_type:
               enum:
                 - sole_proprietorship
@@ -3360,14 +3365,17 @@ components:
                 - c_corporation
                 - s_corporation
               type: string
+              description: The legal classification of the company's incorporation
             name:
               maxLength: 100
               minLength: 3
               type: string
+              description: Company's legal name
             website:
               maxLength: 100
               minLength: 3
               type: string
+              description: Company web address
         contact_info:
           type: object
           required: [email, phone_number, line1, city, zip, state, country]
@@ -3380,19 +3388,23 @@ components:
               maxLength: 60
               minLength: 2
               type: string
+              description: Country name or country code
             email:
               format: email
               maxLength: 100
               minLength: 3
               type: string
+              description: Primary contact email address. Service emails will be sent to this address.
             line1:
               maxLength: 100
               minLength: 1
               type: string
+              description: Address line 1
             line2:
               maxLength: 100
               minLength: 1
               type: string
+              description: Address line 2
             phone_number:
               maxLength: 30
               minLength: 3
@@ -3401,10 +3413,12 @@ components:
               maxLength: 60
               minLength: 2
               type: string
+              description: State when applicable
             zip:
               maxLength: 20
               minLength: 3
               type: string
+              description: ZIP or postal code
         directors:
           items:
             type: object
@@ -3451,11 +3465,13 @@ components:
               dob:
                 format: date
                 type: string
+                description: Date of birth
               email:
                 format: email
                 maxLength: 100
                 minLength: 3
                 type: string
+                description: Contact email, needs to be verifiable
               first_name:
                 maxLength: 60
                 minLength: 1
@@ -3468,6 +3484,7 @@ components:
                 max: 100
                 min: 0
                 type: number
+                description: Percentage of company owned by this person
               phone:
                 maxLength: 30
                 minLength: 3
@@ -3476,6 +3493,7 @@ components:
                 maxLength: 60
                 minLength: 3
                 type: string
+                description: Employee title or ownership role
           type: array
         flow_of_funds:
           type: object
@@ -3485,11 +3503,18 @@ components:
               maxLength: 400
               minLength: 3
               type: string
+              description: Flow of funds
+              examples:
+                - Payments are processed via credit card, deposited to Dots, and paid to sellers.
+                - Funds will be loaded from our bank account and paid out via Dots.
             usage:
               maxLength: 400
               minLength: 3
               type: string
-      required: []
+              description: Description of the business
+              examples:
+                - We are a market place for teddy bears.
+                - We provide a platform for influencers to get paid for posting.
     dispute:
       title: dispute
       x-stoplight:
