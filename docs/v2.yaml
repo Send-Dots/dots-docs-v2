@@ -465,7 +465,7 @@ paths:
         required: true
         description: Id of the user to fetch
     get:
-      summary: Retrieve a Payout Method
+      summary: List Payout Methods
       tags:
         - users
       responses:
