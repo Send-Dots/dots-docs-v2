@@ -420,6 +420,16 @@ paths:
       responses:
         '202':
           description: Accepted
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                use_voice:
+                  type: boolean
+                  description: Defaults to `false` which sends token via SMS. Set `true` to receive via call instead.
+                  default: false
       description: Send a user a verification token.
       tags:
         - users
