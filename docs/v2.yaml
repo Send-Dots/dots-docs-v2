@@ -3321,6 +3321,11 @@ components:
           format: uuid
         name:
           type: string
+        status:
+          type: string
+          enum: [created, in_review, approved]
+          description: App verification status. Some Dots use cases
+            require newly created apps to pass KYB review.
         metrics:
           type: object
           properties:
