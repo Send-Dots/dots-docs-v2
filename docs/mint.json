@@ -13,7 +13,9 @@
       "method": "basic",
       "name": "client_id:api_key"
     },
-    "hidePlayground": true
+    "playground": {
+      "mode": "hide"
+    }
   },
   "favicon": "/favicon.png",
   "colors": {
