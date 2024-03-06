@@ -1050,6 +1050,8 @@ paths:
                     - ach
                     - bank_transfer
                     - cash_app
+                    - payoneer
+                    - airtm
                     - default
                   description: "Platform that you are paying out the `user` through,"
                 account_id:
@@ -3099,6 +3101,8 @@ components:
                 - intl_bank
                 - intl_transfer
                 - bank_transfer
+                - payoneer
+                - airtm
         transactions:
           type: array
           items:
