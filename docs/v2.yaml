@@ -218,6 +218,8 @@ paths:
                     - cash_app
                     - ach
                     - intl_bank
+                    - airtm
+                    - payoneer
                   description: Configures the user's default payout method. Must be a payout method already configured by the user.
                 auto_payout_enabled:
                   type: boolean
@@ -3154,6 +3156,20 @@ components:
               type: boolean
             id_verified:
               type: boolean
+        default_payout_method:
+          type: string
+          enum:
+            - paypal
+            - venmo
+            - cash_app
+            - ach
+            - intl_bank
+            - airtm
+            - payoneer
+          description: Configures the user's default payout method. Must be a payout method already configured by the user.
+        auto_payout_enabled:
+          type: boolean
+          description: Enables auto payout for the user whenever a default payout method is defined
         metadata:
           type:
             - string
