@@ -18,6 +18,8 @@ The `authentication` and `onboarding` step are automatically added to the start 
 
 Adding the `compliance` step to your flow will force the collection of a user's SSN, date of birth, and address if based in the US. Otherwise, the `compliance` step will be added automatically based on local tax laws.
 
+**In sandbox**: The compliance step will always be shown even if tax information has already been collected for the user. This allows testing the form without creating a new user.
+
 ### ID Verification
 
 Adding the `id-verification` step to your flow will force the collection and verification of user's government-issued ID and matching of their facial scan to that ID.

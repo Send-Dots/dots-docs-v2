@@ -218,6 +218,8 @@ paths:
                     - cash_app
                     - ach
                     - intl_bank
+                    - airtm
+                    - payoneer
                   description: Configures the user's default payout method. Must be a payout method already configured by the user.
                 auto_payout_enabled:
                   type: boolean
@@ -975,6 +977,21 @@ paths:
                       - manage-payouts
                       - payout
                       - redirect
+                description:
+                  type: string
+                  description: Description of the transaction displayed in the
+                    dashboard and in accounting software.
+                accounting_data:
+                  type: object
+                  description: Optional data used by accounting software
+                    integrations.
+                  properties:
+                    quickbooks_account_id:
+                      type: integer
+                      description:
+                        ID of the Quickbooks Online account to sync this
+                        transaction to, overriding the defaults configured
+                        in the dashboard.
               required:
                 - amount
       description: Create a Payout Link.
@@ -1241,6 +1258,21 @@ paths:
                     - user
                     - platform
                   description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
+                description:
+                  type: string
+                  description: Description of the transaction displayed in the
+                    dashboard and in accounting software.
+                accounting_data:
+                  type: object
+                  description: Optional data used by accounting software
+                    integrations.
+                  properties:
+                    quickbooks_account_id:
+                      type: integer
+                      description:
+                        ID of the Quickbooks Online account to sync this
+                        transaction to, overriding the defaults configured
+                        in the dashboard.
               required:
                 - amount
       description: "Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds."
@@ -2975,6 +3007,21 @@ components:
           type: string
           format: uuid
           description: ID of the payout flow UI that is sent to the user.
+        description:
+          type: string
+          description: Description of the transaction displayed in the
+            dashboard and in accounting software.
+        accounting_data:
+          type: object
+          description: Optional data used by accounting software
+            integrations.
+          properties:
+            quickbooks_account_id:
+              type: integer
+              description:
+                ID of the Quickbooks Online account to sync this
+                transaction to, overriding the defaults configured
+                in the dashboard.
         metadata:
           type:
             - string
@@ -3154,6 +3201,20 @@ components:
               type: boolean
             id_verified:
               type: boolean
+        default_payout_method:
+          type: string
+          enum:
+            - paypal
+            - venmo
+            - cash_app
+            - ach
+            - intl_bank
+            - airtm
+            - payoneer
+          description: Configures the user's default payout method. Must be a payout method already configured by the user.
+        auto_payout_enabled:
+          type: boolean
+          description: Enables auto payout for the user whenever a default payout method is defined
         metadata:
           type:
             - string
