@@ -92,7 +92,7 @@ Dots' pre built components can be used to verify the user. Information on flows 
 <CodeGroup>
 
 ```bash cURL
-> curl https://pls.senddotssandbox.com/api/v2/users/\{user_id\}/send-verification-token \
+> curl https://pls.senddotssandbox.com/api/v2/users/{user_id}/send-verification-token \
   -X POST \
   -u "CLIENT_ID:API_KEY" \
 ```
@@ -104,7 +104,7 @@ Dots' pre built components can be used to verify the user. Information on flows 
 <CodeGroup>
 
 ```bash cURL
-curl https://pls.senddotssandbox.com/api/v2/users/\{user_id\}/verify \
+curl https://pls.senddotssandbox.com/api/v2/users/{user_id}/verify \
   -X POST \
   -u "CLIENT_ID:API_KEY" \
   -H "Content-Type: application/json" \

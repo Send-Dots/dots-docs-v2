@@ -12,6 +12,9 @@
     "auth": {
       "method": "basic",
       "name": "client_id:api_key"
+    },
+    "playground": {
+      "mode": "hide"
     }
   },
   "favicon": "/favicon.png",
@@ -312,7 +315,7 @@
             "api-reference/v2/users/submit-compliance-information",
             "api-reference/v2/users/send-a-verification-token",
             "api-reference/v2/users/verify-a-user",
-            "api-reference/v2/users/retrieve-a-payout-method",
+            "api-reference/v2/users/list-payout-methods",
             "api-reference/v2/users/add-a-payout-method"
           ]
         },
@@ -375,10 +378,10 @@
           "pages": [
             "api-reference/v2/payment-intents/list-all-payment-intents",
             "api-reference/v2/payment-intents/create-a-payment-intent",
-            "api-reference/v2/payment-intents/retrieve-a-payment-intent",
-            "api-reference/v2/confirm-a-payment-intent"
+            "api-reference/v2/payment-intents/retrieve-a-payment-intent"
           ]
         },
+        "api-reference/v2/confirm-a-payment-intent",
         {
           "group": "transfer-batches",
           "pages": [
@@ -414,7 +417,7 @@
             "api-reference/v2/apps/get-app-ach-account",
             "api-reference/v2/apps/add-app-ach-account",
             "api-reference/v2/apps/deposit-funds-into-app-wallet",
-            "api-reference/v2/apps/withdraw-from-app-wallet"
+            "api-reference/v2/apps/withdraw-funds-from-app-wallet"
           ]
         },
         {

@@ -1,18 +1,18 @@
 openapi: 3.1.0
 info:
   title: dots api
-  version: '1.0'
+  version: "1.0"
   summary: Dots Payout API
   description: Scalable and Flexible Payouts Infrastructure
   contact:
     name: Kartikye Mittal
-    url: 'https://dots.dev'
+    url: "https://dots.dev"
     email: info@dots.dev
   license:
     name: MIT
-    url: 'https://opensource.org/license/mit/'
+    url: "https://opensource.org/license/mit/"
 servers:
-  - url: 'https://api.dots.dev/api'
+  - url: "https://api.dots.dev/api"
     description: Production
 tags:
   - name: apps
@@ -54,7 +54,7 @@ paths:
       tags:
         - users
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -65,10 +65,10 @@ paths:
                     type: array
                     description: Array of `user` objects.
                     items:
-                      $ref: '#/components/schemas/user'
+                      $ref: "#/components/schemas/user"
                   has_more:
                     type: boolean
-                    description: '`true` if there are more objects.'
+                    description: "`true` if there are more objects."
       operationId: get-users
       parameters:
         - schema:
@@ -76,29 +76,29 @@ paths:
             format: uuid
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: integer
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
             format: uuid
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
       description: List all users connected to your application.
     post:
       summary: Create a User
       operationId: create-user
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: "#/components/schemas/user"
                 description: The created `user` object.
       requestBody:
         content:
@@ -144,16 +144,16 @@ paths:
                   first_name: Bob
                   last_name: Loblaw
                   email: bob@bobloblaw.com
-                  country_code: '1'
-                  phone_number: '4154332334'
+                  country_code: "1"
+                  phone_number: "4154332334"
                   metadata:
                     internal_id: user_121344
-        description: ''
+        description: ""
       description: Create a user.
       tags:
         - users
     parameters: []
-  '/v2/users/{user_id}':
+  "/v2/users/{user_id}":
     parameters:
       - schema:
           type: string
@@ -167,12 +167,12 @@ paths:
       tags:
         - users
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: "#/components/schemas/user"
                 description: The `user` object.
       operationId: get-user
       description: Get a user by their id.
@@ -180,12 +180,12 @@ paths:
       summary: Delete a User
       operationId: delete-user
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: "#/components/schemas/user"
                 description: The `user` object.
       description: Delete a user.
       tags:
@@ -197,12 +197,12 @@ paths:
       tags:
         - users
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: "#/components/schemas/user"
                 description: The `user` object.
       requestBody:
         content:
@@ -218,13 +218,15 @@ paths:
                     - cash_app
                     - ach
                     - intl_bank
+                    - airtm
+                    - payoneer
                   description: Configures the user's default payout method. Must be a payout method already configured by the user.
                 auto_payout_enabled:
                   type: boolean
                   description: Enables auto payout for the user whenever a default payout method is defined
                 metadata:
                   description: Arbitrary metadata
-  '/v2/users/{user_id}/compliance':
+  "/v2/users/{user_id}/compliance":
     parameters:
       - schema:
           type: string
@@ -236,7 +238,7 @@ paths:
       summary: Submit Compliance Information
       operationId: submit-compliance
       responses:
-        '200':
+        "200":
           description: OK
       description: Add Compliance information to a user.
       requestBody:
@@ -254,7 +256,7 @@ paths:
                       enum:
                         - individual
                         - business
-                      description: 'Type of entity filling out the W-9, `business` or `individual`.'
+                      description: "Type of entity filling out the W-9, `business` or `individual`."
                     business_name:
                       type: string
                       description: Legal bussiness name. Required if `entity_type` is `business`.
@@ -334,7 +336,7 @@ paths:
                       description: The article and paragraph of the citation claimed for tax treaty purposes.
                     tax_treaty_rate:
                       type: number
-                      description: 'The withholding rate claimed for tax treaty purposes. For example, a 15% rate would be represented as 0.15.'
+                      description: "The withholding rate claimed for tax treaty purposes. For example, a 15% rate would be represented as 0.15."
                     tax_treaty_income_type:
                       type: string
                       enum:
@@ -406,7 +408,7 @@ paths:
                     - signature
       tags:
         - users
-  '/v2/users/{user_id}/send-verification-token':
+  "/v2/users/{user_id}/send-verification-token":
     parameters:
       - schema:
           type: string
@@ -418,12 +420,22 @@ paths:
       summary: Send a Verification Token
       operationId: send-verification-token
       responses:
-        '202':
+        "202":
           description: Accepted
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                use_voice:
+                  type: boolean
+                  description: Defaults to `false` which sends token via SMS. Set `true` to receive via call instead.
+                  default: false
       description: Send a user a verification token.
       tags:
         - users
-  '/v2/users/{user_id}/verify':
+  "/v2/users/{user_id}/verify":
     parameters:
       - schema:
           type: string
@@ -436,9 +448,9 @@ paths:
       summary: Verify a User
       operationId: verify
       responses:
-        '200':
+        "200":
           description: OK
-        '400':
+        "400":
           description: Incorrect token
       requestBody:
         content:
@@ -455,7 +467,7 @@ paths:
       description: Verify a user with a token.
       tags:
         - users
-  '/v2/users/{user_id}/payout-methods':
+  "/v2/users/{user_id}/payout-methods":
     parameters:
       - schema:
           type: string
@@ -469,7 +481,7 @@ paths:
       tags:
         - users
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -477,19 +489,19 @@ paths:
                 type: array
                 description: Array of payout methods registered to the user.
                 items:
-                  $ref: '#/components/schemas/payment-method'
+                  $ref: "#/components/schemas/payment-method"
       operationId: get-payout-methods
       description: Get a user's connected payout methods.
     put:
       summary: Add a Payout Method
       operationId: add-payout-method
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payment-method'
+                $ref: "#/components/schemas/payment-method"
                 description: The payout method.
       requestBody:
         content:
@@ -535,8 +547,8 @@ paths:
               Bank Account:
                 value:
                   platform: ach
-                  routing_number: '123456789'
-                  account_number: '123456789'
+                  routing_number: "123456789"
+                  account_number: "123456789"
                   account_type: checking
               PayPal:
                 value:
@@ -545,14 +557,14 @@ paths:
               Venmo:
                 value:
                   platform: venmo
-                  phone_number: '4158934432'
+                  phone_number: "4158934432"
               Cash App:
                 value:
                   platform: cash_app
-                  routing_number: '123456789'
-                  account_number: '123456789'
+                  routing_number: "123456789"
+                  account_number: "123456789"
                   cash_tag: $cash_tag
-      description: 'Add a payout method to the user. Payout method can be one of `paypal`, `venmo`, `ach`, or `cash_app`. Each method has different required parameters.'
+      description: "Add a payout method to the user. Payout method can be one of `paypal`, `venmo`, `ach`, or `cash_app`. Each method has different required parameters."
       tags:
         - users
   /v2/transfers:
@@ -561,7 +573,7 @@ paths:
       tags:
         - transfers
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -570,31 +582,31 @@ paths:
                 properties:
                   has_more:
                     type: boolean
-                    description: '`true` if there are more `transfers`.'
+                    description: "`true` if there are more `transfers`."
                   data:
                     type: array
                     description: Array of `transfers`.
                     items:
-                      $ref: '#/components/schemas/transfer'
+                      $ref: "#/components/schemas/transfer"
       operationId: get-transfers
       parameters:
         - schema:
             type: integer
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
             format: uuid
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
             format: uuid
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
         - schema:
             type: string
             format: uuid
@@ -606,12 +618,12 @@ paths:
       summary: Create a Transfer
       operationId: create-transfer
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transfer'
+                $ref: "#/components/schemas/transfer"
                 description: The `transfer` object.
       requestBody:
         content:
@@ -629,19 +641,19 @@ paths:
                 tax_exempt:
                   type:
                     - boolean
-                    - 'null'
+                    - "null"
                   description: Transfers marked as `tax_exempt` will not be counted towards the 1099 threshold.
                 idempotency_key:
                   type:
                     - string
-                    - 'null'
+                    - "null"
                   format: uuid
                   description: UUID that will be used to idempotently handle requests. Transfers with existing idempotency keys will be rejected.
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
+                    - "null"
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - amount
@@ -655,12 +667,12 @@ paths:
                 value:
                   amount: -1000
                   user_id: a169451c-8525-4352-b8ca-070dd449a1a5
-        description: ''
+        description: ""
       description: Create a transfer.
       tags:
         - transfers
     parameters: []
-  '/v2/transfers/{transfer_id}':
+  "/v2/transfers/{transfer_id}":
     parameters:
       - schema:
           type: string
@@ -674,12 +686,12 @@ paths:
       tags:
         - transfers
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transfer'
+                $ref: "#/components/schemas/transfer"
                 description: The `transfer` object.
       operationId: get-transfer
       description: Get a transfer by its id.
@@ -689,7 +701,7 @@ paths:
       tags:
         - flows
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -698,42 +710,42 @@ paths:
                 properties:
                   has_more:
                     type: boolean
-                    description: '`true` if there are more `flows`.'
+                    description: "`true` if there are more `flows`."
                   data:
                     type: array
                     description: Array of `flow` objects.
                     items:
-                      $ref: '#/components/schemas/flow'
+                      $ref: "#/components/schemas/flow"
       operationId: get-flows
       parameters:
         - schema:
             type: integer
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
             format: uuid
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
             format: uuid
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
       description: List all Flows.
     post:
       summary: Create a Flow
       operationId: create-flow
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/flow'
+                $ref: "#/components/schemas/flow"
       requestBody:
         content:
           application/json:
@@ -800,7 +812,7 @@ paths:
       description: Create a new Flow.
       tags:
         - flows
-  '/v2/flows/{flow_id}':
+  "/v2/flows/{flow_id}":
     parameters:
       - schema:
           type: string
@@ -814,12 +826,12 @@ paths:
       tags:
         - flows
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/flow'
+                $ref: "#/components/schemas/flow"
                 description: The `flow` object.
       operationId: get-flow
       description: Get a Flow by its id.
@@ -829,7 +841,7 @@ paths:
       tags:
         - payout-links
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -838,42 +850,42 @@ paths:
                 properties:
                   has_more:
                     type: boolean
-                    description: '`true` if there are more `payout-links`.'
+                    description: "`true` if there are more `payout-links`."
                   data:
                     type: array
                     description: Array of `payout-links`.
                     items:
-                      $ref: '#/components/schemas/payout-link'
+                      $ref: "#/components/schemas/payout-link"
       operationId: get-payout-links
       parameters:
         - schema:
             type: integer
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
             format: uuid
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
             format: uuid
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
       description: List all created Payout Links.
     post:
       summary: Create a Payout Link
       operationId: create-payout-link
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payout-link'
+                $ref: "#/components/schemas/payout-link"
                 description: The `payout-link` object.
       requestBody:
         content:
@@ -921,7 +933,7 @@ paths:
                         - link
                         - email
                         - all
-                      description: 'Delivery method. `sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`. `all` will deliver to all the methods supplied in the payee object (e.g., `all` with empty `payee` has the same effect as `link`, and `all` with `payee.email` has the same effect as `email`).'
+                      description: "Delivery method. `sms` requires `payee.country_code` and `payee.phone_number`, `email` required `payee.email`. `all` will deliver to all the methods supplied in the payee object (e.g., `all` with empty `payee` has the same effect as `link`, and `all` with `payee.email` has the same effect as `email`)."
                 force_collect_compliance_information:
                   type: boolean
                   default: false
@@ -940,13 +952,13 @@ paths:
                 idempotency_key:
                   type:
                     - string
-                    - 'null'
+                    - "null"
                   format: uuid
-                  description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
+                  description: "Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead."
                 payout_fee_party:
                   type:
                     - string
-                    - 'null'
+                    - "null"
                   format: uuid
                   enum:
                     - user
@@ -965,12 +977,27 @@ paths:
                       - manage-payouts
                       - payout
                       - redirect
+                description:
+                  type: string
+                  description: Description of the transaction displayed in the
+                    dashboard and in accounting software.
+                accounting_data:
+                  type: object
+                  description: Optional data used by accounting software
+                    integrations.
+                  properties:
+                    quickbooks_account_id:
+                      type: integer
+                      description:
+                        ID of the Quickbooks Online account to sync this
+                        transaction to, overriding the defaults configured
+                        in the dashboard.
               required:
                 - amount
       description: Create a Payout Link.
       tags:
         - payout-links
-  '/v2/payout-links/{payout_link_id}':
+  "/v2/payout-links/{payout_link_id}":
     parameters:
       - schema:
           type: string
@@ -983,12 +1010,12 @@ paths:
       tags:
         - payout-links
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payout-link'
+                $ref: "#/components/schemas/payout-link"
                 description: The `payout-link` object.
       operationId: get-payout-link
       description: Get a payout link by its id.
@@ -996,12 +1023,12 @@ paths:
       summary: Delete a Payout Link
       operationId: delete-payout-link
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payout-link'
+                $ref: "#/components/schemas/payout-link"
                 description: The `payout-link` object.
       description: Cancel a payout link
       tags:
@@ -1011,12 +1038,12 @@ paths:
       summary: Create a Payout
       operationId: create-payout
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transfer'
+                $ref: "#/components/schemas/transfer"
                 description: The `transfer` object.
       requestBody:
         content:
@@ -1040,8 +1067,10 @@ paths:
                     - ach
                     - bank_transfer
                     - cash_app
+                    - payoneer
+                    - airtm
                     - default
-                  description: 'Platform that you are paying out the `user` through,'
+                  description: "Platform that you are paying out the `user` through,"
                 account_id:
                   type: string
                   description: The bank account ID you are paying to. Required for `ach` and `intl_bank`.
@@ -1061,7 +1090,7 @@ paths:
                 - user_id
                 - amount
                 - platform
-        description: ''
+        description: ""
       description: Create a payout for an existing user that has a payout method saved to their account.
       tags:
         - payouts
@@ -1070,12 +1099,12 @@ paths:
       summary: Create a Payment
       operationId: create-payment
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transfer'
+                $ref: "#/components/schemas/transfer"
                 description: The `transfer` object.
       requestBody:
         content:
@@ -1101,10 +1130,10 @@ paths:
                   properties:
                     account_number:
                       type: string
-                      pattern: '[0-9]{7,17}'
+                      pattern: "[0-9]{7,17}"
                     routing_number:
                       type: string
-                      pattern: '[0-9]{9}'
+                      pattern: "[0-9]{9}"
                     account_type:
                       type: string
                       enum:
@@ -1145,12 +1174,12 @@ paths:
       summary: Send a Payout
       operationId: send-payout
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payout-link'
+                $ref: "#/components/schemas/payout-link"
                 description: The `payout-link` object.
       requestBody:
         content:
@@ -1217,21 +1246,36 @@ paths:
                 idempotency_key:
                   type:
                     - string
-                    - 'null'
+                    - "null"
                   format: uuid
-                  description: 'Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead.'
+                  description: "Unique UUID key that prevents duplicate requests from being processed. If a payout link with the idempotency key exists, a new link will not be created and the existing link will be returned instead."
                 payout_fee_party:
                   type:
                     - string
-                    - 'null'
+                    - "null"
                   format: uuid
                   enum:
                     - user
                     - platform
                   description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
+                description:
+                  type: string
+                  description: Description of the transaction displayed in the
+                    dashboard and in accounting software.
+                accounting_data:
+                  type: object
+                  description: Optional data used by accounting software
+                    integrations.
+                  properties:
+                    quickbooks_account_id:
+                      type: integer
+                      description:
+                        ID of the Quickbooks Online account to sync this
+                        transaction to, overriding the defaults configured
+                        in the dashboard.
               required:
                 - amount
-      description: 'Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds.'
+      description: "Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds."
       tags:
         - payouts
   /v2/payout-requests:
@@ -1240,12 +1284,12 @@ paths:
       summary: Create a Payout Request
       operationId: create-payouts-request
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payout-request'
+                $ref: "#/components/schemas/payout-request"
                 description: The `payout-request` id.
       requestBody:
         content:
@@ -1285,7 +1329,7 @@ paths:
                   description: Add a memo to payout request
               required:
                 - amount
-      description: 'Submit a payout request from a person when you know their phone number or user id. Once the payout request is approved, they will be sent a Payout Link to onboard and recieve funds.'
+      description: "Submit a payout request from a person when you know their phone number or user id. Once the payout request is approved, they will be sent a Payout Link to onboard and recieve funds."
       tags:
         - payout-requests
     get:
@@ -1293,7 +1337,7 @@ paths:
       tags:
         - payout-requests
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1302,33 +1346,33 @@ paths:
                 properties:
                   has_more:
                     type: boolean
-                    description: '`true` if there are more `payout-requests`.'
+                    description: "`true` if there are more `payout-requests`."
                   data:
                     type: array
                     description: Array of `payout-request`.
                     items:
-                      $ref: '#/components/schemas/payout-request'
+                      $ref: "#/components/schemas/payout-request"
       operationId: get-payout-requests
       parameters:
         - schema:
             type: integer
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
             format: uuid
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
             format: uuid
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
       description: List all payout requests.
-  '/v2/payout-requests/{payout_request_id}':
+  "/v2/payout-requests/{payout_request_id}":
     parameters:
       - schema:
           type: string
@@ -1341,12 +1385,12 @@ paths:
       tags:
         - payout-requests
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payout-request'
+                $ref: "#/components/schemas/payout-request"
                 description: The `payout-request` id.
       operationId: get-payout-request
       description: Get a payout request by its id.
@@ -1356,7 +1400,7 @@ paths:
       tags:
         - transactions
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1365,33 +1409,33 @@ paths:
                 properties:
                   has_more:
                     type: boolean
-                    description: '`true` if there are more `transactions`.'
+                    description: "`true` if there are more `transactions`."
                   data:
                     type: array
                     description: Array of `transactions`.
                     items:
-                      $ref: '#/components/schemas/transaction'
+                      $ref: "#/components/schemas/transaction"
       operationId: get-transactions
       parameters:
         - schema:
             type: integer
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
             format: uuid
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
             format: uuid
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
       description: List all transactions.
-  '/v2/transactions/{transaction_id}':
+  "/v2/transactions/{transaction_id}":
     parameters:
       - schema:
           type: string
@@ -1404,12 +1448,12 @@ paths:
       tags:
         - transactions
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transaction'
+                $ref: "#/components/schemas/transaction"
                 description: The `transaction` object.
       operationId: get-transaction
       description: Get a transaction by its id.
@@ -1419,7 +1463,7 @@ paths:
       tags:
         - payment-intents
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1427,19 +1471,19 @@ paths:
                 type: array
                 description: Array of `payment-intents`.
                 items:
-                  $ref: '#/components/schemas/payment-intent'
+                  $ref: "#/components/schemas/payment-intent"
       operationId: get-payment-intents
       description: Get all payment intents
     post:
       summary: Create a Payment Intent
       operationId: create-payment-intent
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payment-intent'
+                $ref: "#/components/schemas/payment-intent"
                 description: The `payment-intent` object.
       description: Create a Payment Intent
       requestBody:
@@ -1506,7 +1550,7 @@ paths:
                 - currency
       tags:
         - payment-intents
-  '/v2/payment-intents/{payment_intent_id}':
+  "/v2/payment-intents/{payment_intent_id}":
     parameters:
       - schema:
           type: string
@@ -1519,14 +1563,14 @@ paths:
       tags:
         - payment-intents
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payment-intent'
+                $ref: "#/components/schemas/payment-intent"
                 description: The `payment-intent` object.
-        '404':
+        "404":
           description: Not Found
           content:
             application/json:
@@ -1540,7 +1584,7 @@ paths:
       operationId: get-payment-intent
       description: Retrieve a payment intent by its ID.
       parameters: []
-  '/v2/payment-intents/{payment_intent_id}/confirm':
+  "/v2/payment-intents/{payment_intent_id}/confirm":
     parameters:
       - schema:
           type: string
@@ -1552,14 +1596,14 @@ paths:
       summary: Confirm a Payment Intent
       operationId: confirm-payment-intent
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payment-intent'
+                $ref: "#/components/schemas/payment-intent"
       x-stoplight:
-        id: 2soatvkijdanh
+        id: cui3559ytwoaa
       description: Confirm a payment intent that has not been confirmed yet.
       requestBody:
         content:
@@ -1570,7 +1614,7 @@ paths:
                 payment_method_id:
                   type: string
                   x-stoplight:
-                    id: 3oqz4dbxihicg
+                    id: zi4bm7qnkmn6i
                   description: ID of the payment method to confirm the intent with.
               required:
                 - payment_method_id
@@ -1580,7 +1624,7 @@ paths:
       tags:
         - transfer-batches
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1605,36 +1649,36 @@ paths:
                         items:
                           type: array
                           items:
-                            $ref: '#/components/schemas/transfer-batch-item'
+                            $ref: "#/components/schemas/transfer-batch-item"
                   has_more:
                     type: boolean
-                    description: '`true` if there are more objects.'
+                    description: "`true` if there are more objects."
       operationId: get-transfer-batches
       description: Get a transfer batch
       requestBody:
         content: {}
-        description: ''
+        description: ""
       parameters:
         - schema:
             type: string
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
     post:
       summary: Create a Transfer Batch
       operationId: create-transfer-batch
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1654,7 +1698,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/transfer-batch-item'
+                      $ref: "#/components/schemas/transfer-batch-item"
       description: Create a transfer batch
       requestBody:
         content:
@@ -1693,7 +1737,7 @@ paths:
       tags:
         - transfer-batches
     parameters: []
-  '/v2/transfer-batches/{transfer_batch_id}':
+  "/v2/transfer-batches/{transfer_batch_id}":
     parameters:
       - schema:
           type: string
@@ -1706,7 +1750,7 @@ paths:
       tags:
         - transfer-batches
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1726,7 +1770,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/transfer-batch-item'
+                      $ref: "#/components/schemas/transfer-batch-item"
       operationId: get-transfer-batch
       description: Get a transfer batch by id
   /v2/payment-customers:
@@ -1735,7 +1779,7 @@ paths:
       tags:
         - payment-customers
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1745,27 +1789,27 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/payment-customer'
+                      $ref: "#/components/schemas/payment-customer"
                   has_more:
                     type: boolean
-                    description: '`true` if there are more objects.'
+                    description: "`true` if there are more objects."
       operationId: get-payment-customers
       parameters:
         - schema:
             type: string
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
       requestBody:
         content: {}
       description: List all payment customers
@@ -1773,7 +1817,7 @@ paths:
       summary: Create a Payment Customer
       operationId: create-payment-customers
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1798,10 +1842,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/payment-customer'
+              $ref: "#/components/schemas/payment-customer"
       tags:
         - payment-customers
-  '/v2/payment-customers/{payment_customer_id}':
+  "/v2/payment-customers/{payment_customer_id}":
     parameters:
       - schema:
           type: string
@@ -1812,12 +1856,12 @@ paths:
     get:
       summary: Retrieve a Payment Customer
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payment-customer'
+                $ref: "#/components/schemas/payment-customer"
       operationId: get-payment-customer
       description: Get a payment customer by ID.
       tags:
@@ -1828,7 +1872,7 @@ paths:
       tags:
         - checkout-sessions
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1837,11 +1881,11 @@ paths:
                 properties:
                   has_more:
                     type: boolean
-                    description: '`true` if there are more objects.'
+                    description: "`true` if there are more objects."
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/checkout-session'
+                      $ref: "#/components/schemas/checkout-session"
       operationId: get-checkout-sessions
       description: List all checkout sessions
       parameters:
@@ -1849,27 +1893,27 @@ paths:
             type: string
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
     post:
       summary: Create a Checkout Session
       operationId: create-checkout-session
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/checkout-session'
+                $ref: "#/components/schemas/checkout-session"
       description: Create a checkout session
       requestBody:
         content:
@@ -1956,7 +2000,7 @@ paths:
                 - mode
       tags:
         - checkout-sessions
-  '/v2/checkout-sessions/{checkout_session_id}':
+  "/v2/checkout-sessions/{checkout_session_id}":
     parameters:
       - schema:
           type: string
@@ -1969,12 +2013,12 @@ paths:
       tags:
         - checkout-sessions
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/checkout-session'
+                $ref: "#/components/schemas/checkout-session"
       operationId: get-checkout-session
       description: Retrieve a checkout session by an ID
   /v2/apps:
@@ -2008,14 +2052,14 @@ paths:
           required: false
           description: ID of last app to retrieve
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/app'
+                  $ref: "#/components/schemas/app"
     post:
       summary: Create an App
       description: Create an app in your organization
@@ -2027,24 +2071,31 @@ paths:
           application/json:
             schema:
               type: object
-              parameters:
-                name:
-                  description: The name of the Application
-                  type: string
-                  minLength: 3
-                  maxLength: 60
               required:
                 - name
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: yxeyh7kr44vob
+                  description: The name of the application.
+                  minLength: 3
+                  maxLength: 60
+                metadata:
+                  type:
+                    - object
+                    - string
+                  x-stoplight:
+                    id: zv0zi3c333dvg
+                  description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/app'
-  '/v2/apps/{app_id}':
+                $ref: "#/components/schemas/app"
+  "/v2/apps/{app_id}":
     parameters:
       - schema:
           type: string
@@ -2060,15 +2111,15 @@ paths:
       tags:
         - apps
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/app'
-        '404':
+                $ref: "#/components/schemas/app"
+        "404":
           description: Not found
-  '/v2/apps/{app_id}/compliance':
+  "/v2/apps/{app_id}/compliance":
     parameters:
       - schema:
           type: string
@@ -2084,13 +2135,13 @@ paths:
       tags:
         - apps
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/business-compliance-info'
-        '404':
+                $ref: "#/components/schemas/business-compliance-info"
+        "404":
           description: Not found
     put:
       summary: Update an App's Compliance Information
@@ -2102,17 +2153,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/business-compliance-info'
+              $ref: "#/components/schemas/business-compliance-info"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/business-compliance-info'
-        '404':
+                $ref: "#/components/schemas/business-compliance-info"
+        "404":
           description: Not found
-  '/v2/apps/{app_id}/ach-account':
+  "/v2/apps/{app_id}/ach-account":
     parameters:
       - schema:
           type: string
@@ -2124,7 +2175,7 @@ paths:
       summary: Get App ACH Account
       operationId: get-app-ach-account
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2134,15 +2185,15 @@ paths:
                   mask:
                     type: string
                     x-stoplight:
-                      id: hlyj9w7ttj9me
+                      id: 1m2ie10baxulo
                     description: The last four digits of the bank account number.
                   name:
                     type: string
                     x-stoplight:
-                      id: vxvlypfvlw141
+                      id: lkkkghd75ookg
                     description: The name of the bank account.
       x-stoplight:
-        id: ejgu5yo941dmk
+        id: 2oxyh99r8zbio
       tags:
         - apps
       description: Get the App's ach account information.
@@ -2150,7 +2201,7 @@ paths:
       summary: Add App ACH Account
       operationId: add-app-ach-account
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2160,15 +2211,15 @@ paths:
                   mask:
                     type: string
                     x-stoplight:
-                      id: mfnd8eu6rsyjc
+                      id: rt2gwtq9a5lem
                     description: The last four digits of the bank account number.
                   name:
                     type: string
                     x-stoplight:
-                      id: oyr6rjwf1yeq1
+                      id: cf8wn1nuin80v
                     description: The name of the bank account.
       x-stoplight:
-        id: va0mzm2r02e6q
+        id: s91dfrmyrzo6s
       description: Add an ACH account to an app. The account's owner must match the compliance information submitted.
       requestBody:
         content:
@@ -2179,18 +2230,18 @@ paths:
                 account_number:
                   type: string
                   x-stoplight:
-                    id: g3cgr0hwgn2dy
-                  pattern: '[0-9]{7,20}'
+                    id: il8jsqrfkjtw8
+                  pattern: "[0-9]{7,20}"
                   description: The bank account number.
                 routing_number:
                   type: string
                   x-stoplight:
-                    id: e7xui0y7ql1sp
-                  pattern: '[0-9]{9}'
+                    id: pshq2c7pk7p6w
+                  pattern: "[0-9]{9}"
                   description: The bank's ABA routing number.
                 account_type:
                   x-stoplight:
-                    id: ywt12hhd1txc8
+                    id: ngkifj36w2fn2
                   enum:
                     - checking
                     - savings
@@ -2201,7 +2252,7 @@ paths:
                 - account_type
       tags:
         - apps
-  '/v2/apps/{app_id}/deposit':
+  "/v2/apps/{app_id}/deposit":
     parameters:
       - schema:
           type: string
@@ -2213,14 +2264,14 @@ paths:
       summary: Deposit Funds into App Wallet
       operationId: post-app-deposit
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transfer'
+                $ref: "#/components/schemas/transfer"
       x-stoplight:
-        id: ufdr97pun6qda
+        id: su69v6je8ftwp
       tags:
         - apps
       description: Deposit funds into App wallet by endpoint.
@@ -2233,19 +2284,19 @@ paths:
                 amount:
                   type: integer
                   x-stoplight:
-                    id: vt3ka9fjg7ju0
+                    id: x8ifasn0a26bk
                   description: The amount to deposit in cents.
                 idempotency_key:
                   type: string
                   x-stoplight:
-                    id: q2foxf0xf9va2
+                    id: x3s7qvqawo1qb
                   format: uuid
                   description: Idempotency key in UUID format.
                 metadata:
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - amount
-  '/v2/apps/{app_id}/withdraw':
+  "/v2/apps/{app_id}/withdraw":
     parameters:
       - schema:
           type: string
@@ -2257,12 +2308,12 @@ paths:
       summary: Withdraw Funds From App Wallet
       operationId: post-app-withdraw
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transfer'
+                $ref: "#/components/schemas/transfer"
       tags:
         - apps
       description: Withdraw funds from app wallet into app bank account.
@@ -2289,7 +2340,7 @@ paths:
       tags:
         - payment-methods
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2299,19 +2350,19 @@ paths:
                   data:
                     type: array
                     x-stoplight:
-                      id: yjgjs9e2pghml
+                      id: 94rcge4a2wqdo
                     description: List of payment methods.
                     items:
-                      $ref: '#/components/schemas/payment-method'
+                      $ref: "#/components/schemas/payment-method"
                       x-stoplight:
-                        id: b52eafc2yduf1
+                        id: j086q459o72zm
                   has_more:
                     type: boolean
                     x-stoplight:
-                      id: u8fnatmi0uz21
+                      id: rwtvo5wcuw1tv
       operationId: get-payment-methods
       x-stoplight:
-        id: 19knovx665k86
+        id: 8nz38kl6i46x0
       requestBody:
         content: {}
       description: Get the payment methods for a payment customer
@@ -2327,7 +2378,7 @@ paths:
           name: limit
           description: Number or payment methods to return
     parameters: []
-  '/v2/payment-methods/{payment_method_id}':
+  "/v2/payment-methods/{payment_method_id}":
     parameters:
       - schema:
           type: string
@@ -2340,19 +2391,19 @@ paths:
       tags:
         - payment-methods
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payment-method'
+                $ref: "#/components/schemas/payment-method"
       operationId: get-payment-method
       x-stoplight:
-        id: 53zlewzupxrhz
+        id: hfkiotu86njxm
       description: Get a payment method by its ID.
       requestBody:
         content: {}
-  '/v2/payment-methods/{payment_method_id}/attach':
+  "/v2/payment-methods/{payment_method_id}/attach":
     parameters:
       - schema:
           type: string
@@ -2364,14 +2415,14 @@ paths:
       summary: Attach a Payment Method to a Payment Customer
       operationId: attach-payment-method
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payment-method'
+                $ref: "#/components/schemas/payment-method"
       x-stoplight:
-        id: l4fodkhk6wuck
+        id: m5sk0vytfig41
       tags:
         - payment-methods
       requestBody:
@@ -2383,12 +2434,12 @@ paths:
                 customer_id:
                   type: string
                   x-stoplight:
-                    id: 9plat5cq77pbs
+                    id: 4uj7v7zpfc96f
                   description: ID of the payment customer
               required:
                 - customer_id
       description: Attach a payment method to a payment customer for future usage.
-  '/v2/payment-methods/{payment_method_id}/detach':
+  "/v2/payment-methods/{payment_method_id}/detach":
     parameters:
       - schema:
           type: string
@@ -2400,14 +2451,14 @@ paths:
       summary: Detach Payment Method from a Payment Customer
       operationId: detach-payment-method
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payment-method'
+                $ref: "#/components/schemas/payment-method"
       x-stoplight:
-        id: i72b29exwefnx
+        id: 52v2h32hk0vyd
       tags:
         - payment-methods
       description: Detach a payment method from a payment customer
@@ -2421,7 +2472,7 @@ paths:
                 customer_id:
                   type: string
                   x-stoplight:
-                    id: ffiwceyvtta4r
+                    id: udd5vmbp33cwe
                   description: ID of the payment customer to detach the payment method from.
   /v2/disputes:
     get:
@@ -2429,7 +2480,7 @@ paths:
       tags:
         - disputes
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2438,37 +2489,37 @@ paths:
                 properties:
                   has_more:
                     x-stoplight:
-                      id: yacg6uszu292t
+                      id: y725pkv20qk98
                     type: boolean
                   data:
                     type: array
                     x-stoplight:
-                      id: jvigiwmivun1o
+                      id: 5sfqy95seqf2u
                     items:
-                      $ref: '#/components/schemas/dispute'
+                      $ref: "#/components/schemas/dispute"
                       x-stoplight:
-                        id: jshrwzy47dlng
+                        id: c7b9po5utwheb
       operationId: list-disputes
       x-stoplight:
-        id: izgnyhzsnik89
+        id: xcdsqvbvhy6mz
       parameters:
         - schema:
             type: string
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
       description: List all disputes
-  '/v2/disputes/{dispute_id}':
+  "/v2/disputes/{dispute_id}":
     parameters:
       - schema:
           type: string
@@ -2481,17 +2532,17 @@ paths:
       tags:
         - disputes
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/dispute'
+                $ref: "#/components/schemas/dispute"
       operationId: get-dispute
       x-stoplight:
-        id: n1tjhq1784koz
+        id: 4geqmcz7edxrq
       description: Retreieve a dispute by its ID
-  '/v2/disputes/{dispute_id}/evidence':
+  "/v2/disputes/{dispute_id}/evidence":
     parameters:
       - schema:
           type: string
@@ -2503,11 +2554,11 @@ paths:
       summary: Add Evidence to a Dispute
       operationId: post-dispute-evidence
       responses:
-        '201':
+        "201":
           description: Created
           content: {}
       x-stoplight:
-        id: gpwsyzsgkcx35
+        id: dkjf9e1kvu9r7
       tags:
         - disputes
       description: Add an evidence file to the dispute
@@ -2519,7 +2570,7 @@ paths:
               properties:
                 type:
                   x-stoplight:
-                    id: v87ch3577ypg5
+                    id: duy0d05akb9c2
                   enum:
                     - customer_communications
                     - refund_policy
@@ -2533,9 +2584,9 @@ paths:
                 content:
                   type: string
                   x-stoplight:
-                    id: chsagvdtv1y1y
-        description: ''
-  '/v2/disputes/{dispute_id}/submit':
+                    id: eluu5effho7x5
+        description: ""
+  "/v2/disputes/{dispute_id}/submit":
     parameters:
       - schema:
           type: string
@@ -2547,10 +2598,10 @@ paths:
       summary: Submit a Dispute
       operationId: post-dispute-submit
       responses:
-        '200':
+        "200":
           description: OK
       x-stoplight:
-        id: yrg3bnbsriaxp
+        id: 5j1hrb4qfvdx6
       tags:
         - disputes
       description: Submit a dispute
@@ -2563,7 +2614,7 @@ paths:
                 description:
                   type: string
                   x-stoplight:
-                    id: 7o95275f861zg
+                    id: u40t07qa6e0hb
               required:
                 - description
   /v2/refunds:
@@ -2572,7 +2623,7 @@ paths:
       tags:
         - refunds
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2581,46 +2632,46 @@ paths:
                 properties:
                   has_more:
                     x-stoplight:
-                      id: 47qrdxira3ppp
+                      id: w0z8u5slzutnp
                     type: boolean
                   data:
                     type: array
                     x-stoplight:
-                      id: 7ylu884vj50kw
+                      id: uangvijaw6vgu
                     items:
-                      $ref: '#/components/schemas/refund'
+                      $ref: "#/components/schemas/refund"
                       x-stoplight:
-                        id: 1f0yg9o6gkn9o
+                        id: 2r2dty7ckymvd
       operationId: list-refunds
       x-stoplight:
-        id: 0defh0xfdpx66
+        id: uhiklv82eudst
       parameters:
         - schema:
             type: string
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
       description: List all refunds
     post:
       summary: Create a Refund
       operationId: create-refund
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/refund'
+                $ref: "#/components/schemas/refund"
                 description: The `refund` object.
       description: Create a Refund
       requestBody:
@@ -2652,7 +2703,7 @@ paths:
                 - payment_intent_id
       tags:
         - refunds
-  '/v2/refunds/{refund_id}':
+  "/v2/refunds/{refund_id}":
     parameters:
       - schema:
           type: string
@@ -2665,15 +2716,15 @@ paths:
       tags:
         - refunds
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/refund'
+                $ref: "#/components/schemas/refund"
       operationId: get-refund
       x-stoplight:
-        id: kdeej40mom6fh
+        id: psj0f257s405v
       description: Retreieve a refund by its ID
   /v2/organization-transfers:
     get:
@@ -2681,7 +2732,7 @@ paths:
       tags:
         - transfers
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2690,31 +2741,31 @@ paths:
                 properties:
                   has_more:
                     type: boolean
-                    description: '`true` if there are more `transfers`.'
+                    description: "`true` if there are more `transfers`."
                   data:
                     type: array
                     description: Array of `transfers`.
                     items:
-                      $ref: '#/components/schemas/transfer'
+                      $ref: "#/components/schemas/transfer"
       operationId: list-organization-transfers
       parameters:
         - schema:
             type: integer
           in: query
           name: limit
-          description: 'A limit on the number of objects to be returned, between 1 and 100.'
+          description: "A limit on the number of objects to be returned, between 1 and 100."
         - schema:
             type: string
             format: uuid
           in: query
           name: starting_after
-          description: 'A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list.'
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
         - schema:
             type: string
             format: uuid
           in: query
           name: ending_before
-          description: 'A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list.'
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
         - schema:
             type: string
             format: uuid
@@ -2726,12 +2777,12 @@ paths:
       summary: Create an Organization Transfer
       operationId: create-organization-transfer
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transfer'
+                $ref: "#/components/schemas/transfer"
                 description: The `transfer` object.
       requestBody:
         content:
@@ -2745,19 +2796,19 @@ paths:
                 api_app_id:
                   type: string
                   x-stoplight:
-                    id: 3a3wt5oecf6i0
+                    id: g8a7zc7z7uoxl
                   format: uuid
                   description: API App ID to transact with.
                 idempotency_key:
                   type: string
                   x-stoplight:
-                    id: tf80qcai6uqab
+                    id: 212khhchum63l
                   format: uuid
                 metadata:
                   type:
                     - string
                     - object
-                    - 'null'
+                    - "null"
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - amount
@@ -2775,7 +2826,7 @@ paths:
       description: Create a transfer between the organization's wallet and an API app.
       tags:
         - transfers
-  '/v2/organization-transfers/{transfer_id}':
+  "/v2/organization-transfers/{transfer_id}":
     parameters:
       - schema:
           type: string
@@ -2788,12 +2839,12 @@ paths:
       tags:
         - transfers
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transfer'
+                $ref: "#/components/schemas/transfer"
                 description: The `transfer` object.
       operationId: get-organization-transfer
       description: Get an organization transfer by its id.
@@ -2813,7 +2864,7 @@ components:
         user_id:
           type:
             - string
-            - 'null'
+            - "null"
           format: uuid
           description: ID of the `user` that has claimed the `flow`.
         steps:
@@ -2850,7 +2901,7 @@ components:
           type:
             - string
             - object
-            - 'null'
+            - "null"
           description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     payment-method:
       type: object
@@ -2959,11 +3010,26 @@ components:
           type: string
           format: uuid
           description: ID of the payout flow UI that is sent to the user.
+        description:
+          type: string
+          description: Description of the transaction displayed in the
+            dashboard and in accounting software.
+        accounting_data:
+          type: object
+          description: Optional data used by accounting software
+            integrations.
+          properties:
+            quickbooks_account_id:
+              type: integer
+              description:
+                ID of the Quickbooks Online account to sync this
+                transaction to, overriding the defaults configured
+                in the dashboard.
         metadata:
           type:
             - string
             - object
-            - 'null'
+            - "null"
           description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     payout-request:
       type: object
@@ -2994,16 +3060,16 @@ components:
             phone_number:
               type: string
         payout-link:
-          $ref: '#/components/schemas/payout-link'
-          description: 'The `payout-link` that was sent when the `payout-request` was approved. '
+          $ref: "#/components/schemas/payout-link"
+          description: "The `payout-link` that was sent when the `payout-request` was approved. "
         user:
-          $ref: '#/components/schemas/user'
+          $ref: "#/components/schemas/user"
           description: The `user` that requested the payout.
         metadata:
           type:
             - string
             - object
-            - 'null'
+            - "null"
           description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         memo:
           type:
@@ -3036,7 +3102,7 @@ components:
           type:
             - string
             - object
-            - 'null'
+            - "null"
           description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     transfer:
       type: object
@@ -3085,15 +3151,17 @@ components:
                 - intl_bank
                 - intl_transfer
                 - bank_transfer
+                - payoneer
+                - airtm
         transactions:
           type: array
           items:
-            $ref: '#/components/schemas/transaction'
+            $ref: "#/components/schemas/transaction"
         metadata:
           type:
             - string
             - object
-            - 'null'
+            - "null"
           description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     user:
       type: object
@@ -3116,7 +3184,7 @@ components:
             phone_number:
               type: string
         wallet:
-          $ref: '#/components/schemas/wallet'
+          $ref: "#/components/schemas/wallet"
         compliance:
           type: object
           properties:
@@ -3136,11 +3204,25 @@ components:
               type: boolean
             id_verified:
               type: boolean
+        default_payout_method:
+          type: string
+          enum:
+            - paypal
+            - venmo
+            - cash_app
+            - ach
+            - intl_bank
+            - airtm
+            - payoneer
+          description: Configures the user's default payout method. Must be a payout method already configured by the user.
+        auto_payout_enabled:
+          type: boolean
+          description: Enables auto payout for the user whenever a default payout method is defined
         metadata:
           type:
             - string
             - object
-            - 'null'
+            - "null"
           description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     wallet:
       type: object
@@ -3300,7 +3382,7 @@ components:
         customer_id:
           type: string
           format: uuid
-          description: '`payment-customer` ID'
+          description: "`payment-customer` ID"
         customer_email:
           type: string
           format: email
@@ -3314,6 +3396,13 @@ components:
           format: uuid
         name:
           type: string
+        status:
+          type: string
+          enum:
+            - created
+            - in_review
+            - approved
+          description: App verification status. Some Dots use cases require newly created apps to pass KYB review.
         metrics:
           type: object
           properties:
@@ -3326,23 +3415,36 @@ components:
             connected_users:
               type: integer
               min: 0
-          required: [wallet_balance, money_out, connected_users]
-      required: [id, name, metrics]
+          required:
+            - wallet_balance
+            - money_out
+            - connected_users
+        metadata:
+          description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+          type:
+            - string
+            - object
+      required:
+        - id
+        - name
+        - metrics
     business-compliance-info:
       type: object
-      required: [company_info, contact_info, directors, flow_of_funds]
+      required:
+        - company_info
+        - contact_info
+        - directors
+        - flow_of_funds
       properties:
         company_info:
           type: object
           required:
-            [
-              name,
-              website,
-              ein,
-              incorporation_type,
-              incorporation_state,
-              incorporation_date,
-            ]
+            - name
+            - website
+            - ein
+            - incorporation_type
+            - incorporation_state
+            - incorporation_date
           properties:
             dba:
               maxLength: 60
@@ -3350,7 +3452,7 @@ components:
               type: string
               description: Company DBA (Doing Business As)
             ein:
-              pattern: '[0-9]{9}'
+              pattern: "[0-9]{9}"
               type: string
               description: Federal Employer Identification Number
             incorporation_date:
@@ -3381,7 +3483,14 @@ components:
               description: Company web address
         contact_info:
           type: object
-          required: [email, phone_number, line1, city, zip, state, country]
+          required:
+            - email
+            - phone_number
+            - line1
+            - city
+            - zip
+            - state
+            - country
           properties:
             city:
               maxLength: 100
@@ -3426,20 +3535,22 @@ components:
           items:
             type: object
             required:
-              [
-                first_name,
-                last_name,
-                title,
-                phone,
-                email,
-                dob,
-                ownership_percentage,
-                address,
-              ]
+              - first_name
+              - last_name
+              - title
+              - phone
+              - email
+              - dob
+              - ownership_percentage
+              - address
             properties:
               address:
                 type: object
-                required: [line1, city, zip, country]
+                required:
+                  - line1
+                  - city
+                  - zip
+                  - country
                 properties:
                   city:
                     maxLength: 100
@@ -3474,7 +3585,7 @@ components:
                 maxLength: 100
                 minLength: 3
                 type: string
-                description: Contact email, needs to be verifiable
+                description: "Contact email, needs to be verifiable"
               first_name:
                 maxLength: 60
                 minLength: 1
@@ -3500,7 +3611,9 @@ components:
           type: array
         flow_of_funds:
           type: object
-          required: [reasons, usage]
+          required:
+            - reasons
+            - usage
           properties:
             reasons:
               maxLength: 400
@@ -3508,7 +3621,7 @@ components:
               type: string
               description: Flow of funds
               examples:
-                - Payments are processed via credit card, deposited to Dots, and paid to sellers.
+                - "Payments are processed via credit card, deposited to Dots, and paid to sellers."
                 - Funds will be loaded from our bank account and paid out via Dots.
             usage:
               maxLength: 400
@@ -3521,22 +3634,22 @@ components:
     dispute:
       title: dispute
       x-stoplight:
-        id: jvcim5q80y0oq
+        id: jcb2z9r96n1zi
       type: object
       properties:
         id:
           type: string
           x-stoplight:
-            id: bbmqxq1jdkxxq
+            id: 7qvkx4zjierd7
           format: uuid
         payment_intent_id:
           type: string
           x-stoplight:
-            id: hb6019jjt1f2d
+            id: fcyb62tz9e6c9
           format: uuid
         status:
           x-stoplight:
-            id: 7ny7vmhr7u5zo
+            id: 8kb60u39sbolh
           enum:
             - needs_response
             - under_review
@@ -3549,20 +3662,20 @@ components:
         evidence:
           type: array
           x-stoplight:
-            id: hr7dg4jk0jifz
+            id: fha0n910f7m91
           items:
-            $ref: '#/components/schemas/dispute-file'
+            $ref: "#/components/schemas/dispute-file"
             x-stoplight:
-              id: rvb10lrw48ao7
+              id: n4kqrtq0rm5wm
     dispute-file:
       title: dispute-file
       x-stoplight:
-        id: 4bxiba0r5p3sf
+        id: b6apls98z9e1l
       type: object
       properties:
         type:
           x-stoplight:
-            id: zgim7cr85geby
+            id: 58jv6ehzztbxk
           enum:
             - customer_communications
             - refund_policy
@@ -3576,7 +3689,7 @@ components:
         url:
           type: string
           x-stoplight:
-            id: 4ijqsrjxpjck9
+            id: 616hb78dc3vyn
           format: uri
     refund:
       title: refund
