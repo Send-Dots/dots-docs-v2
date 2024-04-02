@@ -2292,6 +2292,8 @@ paths:
                     id: x3s7qvqawo1qb
                   format: uuid
                   description: Idempotency key in UUID format.
+                metadata:
+                  description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - amount
   "/v2/apps/{app_id}/withdraw":
@@ -2328,6 +2330,8 @@ paths:
                   type: string
                   format: uuid
                   description: Idempotency key in UUID format.
+                metadata:
+                  description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - amount
   /v2/payment-methods:
@@ -2693,7 +2697,6 @@ paths:
                     - expired_uncaptured_charge
                     - partial_capture
                 metadata:
-                  type: boolean
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
               required:
                 - amount
@@ -2819,8 +2822,8 @@ paths:
                 value:
                   amount: -1000
                   api_app_id: a169451c-8525-4352-b8ca-070dd449a1a5
-        description: ""
-      description: Create a transfer for the organization's wallet to an api app.
+        description: ''
+      description: Create a transfer between the organization's wallet and an API app.
       tags:
         - transfers
   "/v2/organization-transfers/{transfer_id}":
@@ -2832,7 +2835,7 @@ paths:
         required: true
         description: ID of the transfer to retrieve
     get:
-      summary: Get a Transfer
+      summary: Get an Organization Transfer
       tags:
         - transfers
       responses:
@@ -2844,7 +2847,7 @@ paths:
                 $ref: "#/components/schemas/transfer"
                 description: The `transfer` object.
       operationId: get-organization-transfer
-      description: Get a transfer by its id.
+      description: Get an organization transfer by its id.
 components:
   schemas:
     flow:
