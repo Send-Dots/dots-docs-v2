@@ -1805,6 +1805,14 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/payment-customer"
+              required:
+                - address
+              oneOf:
+                - required:
+                    - first_name
+                    - last_name
+                - required:
+                    - business_name
       tags:
         - payment-customers
   "/v2/payment-customers/{payment_customer_id}":
@@ -3217,6 +3225,29 @@ components:
           type: string
         last_name:
           type: string
+        business_name:
+          type: string
+        address:
+          type: object
+          properties:
+            country:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            postcode:
+              type: string
+            line_1:
+              type: string
+            line_2:
+              type: string
+          required:
+            - country
+            - city
+            - state
+            - postcode
+            - line_1
         metadata:
           type: object
         created:
