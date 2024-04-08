@@ -2737,7 +2737,7 @@ paths:
         description: "The ID of the user"
     put:
       summary: Add User Address
-      descriptions: Add an address to the user
+      description: Add an address to the user
       tags:
         - users
       responses:
