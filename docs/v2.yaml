@@ -1805,8 +1805,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/payment-customer"
-              required:
-                - address
               oneOf:
                 - required:
                     - first_name
