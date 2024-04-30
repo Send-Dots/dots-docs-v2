@@ -379,7 +379,7 @@
             "api-reference/v2/payment-intents/list-all-payment-intents",
             "api-reference/v2/payment-intents/create-a-payment-intent",
             "api-reference/v2/payment-intents/retrieve-a-payment-intent",
-            "api-reference/v2/confirm-a-payment-intent"
+            "api-reference/v2/payment-intents/confirm-a-payment-intent"
           ]
         },
         {
