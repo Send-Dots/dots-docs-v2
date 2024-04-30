@@ -3338,6 +3338,7 @@ components:
             - incorporation_type
             - incorporation_state
             - incorporation_date
+            - ubo_count
           properties:
             dba:
               maxLength: 60
@@ -3374,6 +3375,10 @@ components:
               minLength: 3
               type: string
               description: Company web address
+            ubo_count:
+              type: integer
+              minimum: 1
+              description: Number of Ultimate Benficial Owners (UBOs). This must be the same as the length of the `directors` array.
         contact_info:
           type: object
           required:
