@@ -611,6 +611,28 @@ paths:
           in: query
           name: user_id
           description: Include only results with this user ID attached.
+        - schema:
+            type: string
+          in: query
+          name: type
+          description: Filter transfers by type.
+        - schema:
+            type: string
+          in: query
+          name: status
+          description: Filter transfers by status.
+        - schema:
+            type: string
+            format: date-time
+          in: query
+          name: start_date
+          description: Filter transfers by start date.
+        - schema:
+            type: string
+            format: date-time
+          in: query
+          name: end_date
+          description: Filter transfers by end date.
       description: List all transfers.
     post:
       summary: Create a Transfer
