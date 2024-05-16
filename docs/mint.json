@@ -90,7 +90,8 @@
             "apps/add-ach-account",
             "apps/retrieve-ach-account",
             "apps/deposit-into-app-wallet",
-            "apps/withdraw-from-app-wallet"
+            "apps/withdraw-from-app-wallet",
+            "apps/refresh-compliance-flow"
           ]
         },
         {
@@ -417,7 +418,8 @@
             "api-reference/v2/apps/get-app-ach-account",
             "api-reference/v2/apps/add-app-ach-account",
             "api-reference/v2/apps/deposit-funds-into-app-wallet",
-            "api-reference/v2/apps/withdraw-funds-from-app-wallet"
+            "api-reference/v2/apps/withdraw-funds-from-app-wallet",
+            "api-reference/v2/apps/refresh-compliance-flow"
           ]
         },
         {
