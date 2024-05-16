@@ -2292,6 +2292,32 @@ paths:
                   description: Idempotency key in UUID format.
               required:
                 - amount
+  "/v2/apps/{app_id}/compliance-flow":
+    parameters:
+      - schema:
+          type: string
+        name: app_id
+        in: path
+        required: true
+        description: The ID of the App.
+    post:
+      summary: Refresh compliance flow
+      operationId: post-app-compliance-flow
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - apps
+      description: Refresh the app's KYB compliance flow. Returns a URL
+        that can be shared or embedded to allow the app's owners to
+        submit mandatory onboarding information about their business.
+
+        The flow URL will expire after 72 hours. Refreshing the flow
+        will also expire the old URL.
   /v2/payment-methods:
     get:
       summary: List all Payment Methods for a Payment Customer
