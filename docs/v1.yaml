@@ -920,6 +920,11 @@ paths:
                     Pays the payout amount to the user before creating the
                     payout. The funds are returned if the payout does not
                     succeed.
+                tax_exempt:
+                  type: boolean
+                  description: >-
+                    Payouts marked as `tax_exempt` will not be counted towards the 1099 
+                    threshold. Can be `true` only if `fund` is `true`.
               required:
                 - user_id
                 - amount
