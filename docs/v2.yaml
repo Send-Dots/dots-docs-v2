@@ -2934,12 +2934,15 @@ components:
         status:
           type: string
           enum:
-            - sent
-            - claimed
+            - created
             - delivery_pending
             - delivery_failed
+            - sent
             - delivered
+            - claimed
+            - reversed
             - canceled
+            - expired
           description: Status of the `payout-link`.
         payee:
           type: object
@@ -3086,6 +3089,8 @@ components:
             - pending
             - failed
             - completed
+            - reversed
+            - canceled
             - flagged
         type:
           type: string
