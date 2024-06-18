@@ -52,13 +52,28 @@
     }
   ],
   "versions": ["v2", "v1"],
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
   "navigation": [
     {
       "version": "v2",
       "group": "Overview",
       "pages": [
         "overview/introduction",
-        "overview/core-concepts",
+        
+        {
+          "group": " Core Concepts ",
+          "pages": ["overview/core-concepts/overview",
+        "overview/core-concepts/multitenancy",
+    "overview/core-concepts/payout"
+
+  ]
+        
+      },
         "overview/environments",
         "overview/authentication",
         "overview/error-codes",

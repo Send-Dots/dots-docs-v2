@@ -1,0 +1,49 @@
+---
+title: 'Overview'
+---
+
+The Dots API simplifies integrating fintech infrastructure directly into your application, essential to understanding and leveraging the system's full potential. 
+
+These core concepts are crucial as they form the foundation upon which the entire system operates, allowing for easy integration of the fintech infrastructure. 
+
+Understanding these core concepts is essential for effectively harnessing the capabilities of the Dots API within your application.
+
+
+Here's a quick overview of Dots' core concepts.
+
+<CardGroup cols={2}>
+  <Card title="Users"  icon="user">
+   Represent individuals or businesses registered on Dots. 
+You can create users through the API or dashboard, with phone verification mandatory for payouts. 
+Each user has a wallet for storing funds and transacting. 
+User objects also hold compliance information like tax details and KYC verification.
+  </Card>
+  <Card title="Applications" icon="browser">
+  The primary way to interact with Dots. 
+Each application has a unique API key and secret for authentication. 
+You can create multiple applications, each managing its users. 
+Applications let you configure webhook endpoints and track transaction history.
+  </Card>
+  <Card title="Transfers" icon="money-bill-transfer">
+    Represent money movement on the Dots platform. 
+A transfer can consist of multiple transactions, like moving funds from your app's wallet to a user's wallet or covering payout and payment fees. 
+Transfers handle internal (wallet-to-wallet) and external movements (payouts and payments). 
+Each transfer has a lifecycle that can be tracked.
+  </Card>
+  <Card title="Transactions" icon="wallet">
+   Individual entries on the Dots ledger represent money movement between wallets. 
+   Transactions cannot be created directly; they're generated as part of a transfer.
+  </Card>
+   <Card title="Payout Links" icon="link">
+  A simplified way to send money without user creation or transfers. 
+You provide basic information (phone number or email), and Dots handles the onboarding complexities. 
+Once claimed, the payout link becomes associated with a user, allowing future payouts.
+  </Card>
+   <Card title="Flows" icon="arrow-progress">
+  User interface components provided by Dots. 
+Each flow guides users through the onboarding process with a series of steps. 
+You can customize flows to match your brand and embed them directly in your application. 
+Flows can be created in either pre-authenticated (automatically logged-in user) or unauthenticated (user login or account creation required) states.
+
+  </Card>
+</CardGroup>
