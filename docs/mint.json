@@ -345,7 +345,8 @@
             "api-reference/v2/payout-links/list-all-payout-links",
             "api-reference/v2/payout-links/create-a-payout-link",
             "api-reference/v2/payout-links/retrieve-a-payout-link",
-            "api-reference/v2/payout-links/delete-a-payout-link"
+            "api-reference/v2/payout-links/delete-a-payout-link",
+            "api-reference/v2/payout-links/redeliver-a-payout-link"
           ]
         },
         {
