@@ -1038,6 +1038,29 @@ paths:
       description: Cancel a payout link
       tags:
         - payout-links
+  "/v2/payout-links/{payout_link_id}/redeliver":
+    parameters:
+      - schema:
+          type: string
+        name: payout_link_id
+        in: path
+        required: true
+        description: Id of the payout link
+    post:
+      summary: Redeliver Payout Link
+      operationId: redeliver-payout-link
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payout-link"
+                description: The `payout-link` object.
+      description: Redeliver a payout link. Payout links will be delivered
+        up to 5 times.
+      tags:
+        - payout-links
   /v2/payouts:
     post:
       summary: Create a Payout
