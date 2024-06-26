@@ -1038,6 +1038,29 @@ paths:
       description: Cancel a payout link
       tags:
         - payout-links
+  "/v2/payout-links/{payout_link_id}/redeliver":
+    parameters:
+      - schema:
+          type: string
+        name: payout_link_id
+        in: path
+        required: true
+        description: Id of the payout link
+    post:
+      summary: Redeliver Payout Link
+      operationId: redeliver-payout-link
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payout-link"
+                description: The `payout-link` object.
+      description: Redeliver a payout link. Payout links will be delivered
+        up to 5 times.
+      tags:
+        - payout-links
   /v2/payouts:
     post:
       summary: Create a Payout
@@ -1827,6 +1850,12 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/payment-customer"
+              oneOf:
+                - required:
+                    - first_name
+                    - last_name
+                - required:
+                    - business_name
       tags:
         - payment-customers
   "/v2/payment-customers/{payment_customer_id}":
@@ -2286,6 +2315,32 @@ paths:
                   description: Idempotency key in UUID format.
               required:
                 - amount
+  "/v2/apps/{app_id}/compliance-flow":
+    parameters:
+      - schema:
+          type: string
+        name: app_id
+        in: path
+        required: true
+        description: The ID of the App.
+    post:
+      summary: Refresh compliance flow
+      operationId: post-app-compliance-flow
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - apps
+      description: Refresh the app's KYB compliance flow. Returns a URL
+        that can be shared or embedded to allow the app's owners to
+        submit mandatory onboarding information about their business.
+
+        The flow URL will expire after 72 hours. Refreshing the flow
+        will also expire the old URL.
   /v2/payment-methods:
     get:
       summary: List all Payment Methods for a Payment Customer
@@ -2759,7 +2814,7 @@ paths:
         description: "The ID of the user"
     put:
       summary: Add User Address
-      descriptions: Add an address to the user
+      description: Add an address to the user
       tags:
         - users
       responses:
@@ -2912,12 +2967,15 @@ components:
         status:
           type: string
           enum:
-            - sent
-            - claimed
+            - created
             - delivery_pending
             - delivery_failed
+            - sent
             - delivered
+            - claimed
+            - reversed
             - canceled
+            - expired
           description: Status of the `payout-link`.
         payee:
           type: object
@@ -3064,6 +3122,8 @@ components:
             - pending
             - failed
             - completed
+            - reversed
+            - canceled
             - flagged
         type:
           type: string
@@ -3256,6 +3316,29 @@ components:
           type: string
         last_name:
           type: string
+        business_name:
+          type: string
+        address:
+          type: object
+          properties:
+            country:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            postcode:
+              type: string
+            line_1:
+              type: string
+            line_2:
+              type: string
+          required:
+            - country
+            - city
+            - state
+            - postcode
+            - line_1
         metadata:
           type: object
         created:
