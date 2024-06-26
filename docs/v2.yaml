@@ -2796,6 +2796,16 @@ paths:
                   type: string
 components:
   schemas:
+    rail:
+      type: string
+      enum:
+        - ach
+        - paypal
+        - venmo
+        - cash_app
+        - intl_bank
+        - airtm
+        - payoneer
     flow:
       type: object
       properties:
@@ -3112,6 +3122,13 @@ components:
               type: string
             phone_number:
               type: string
+        default_payout_method:
+          $ref: "#/components/schemas/rail"
+        default_payout_method_details:
+          type: object
+          properties:
+            platform:
+              $ref: "#/components/schemas/rail"
         wallet:
           $ref: "#/components/schemas/wallet"
         compliance:
