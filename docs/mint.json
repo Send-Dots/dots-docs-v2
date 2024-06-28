@@ -40,19 +40,23 @@
     "name": "Get Started",
     "url": "https://dashboard.dots.dev/signup"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference",
-      "icon": "rectangle-terminal"
-    },
+  "anchors": [
     {
       "name": "GitHub",
       "icon": "github",
       "url": "https://github.com/Send-Dots"
     }
   ],
-  "versions": ["v2"],
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference",
+      "icon": "rectangle-terminal"
+    }
+  ],
+  "versions": [
+    "v2"
+  ],
   "navigation": [
     {
       "version": "v2",
@@ -124,7 +128,9 @@
         },
         {
           "group": "Payout Requests",
-          "pages": ["payout-requests/create-a-payout-request"]
+          "pages": [
+            "payout-requests/create-a-payout-request"
+          ]
         },
         {
           "group": "Transfers",
@@ -167,7 +173,10 @@
     {
       "version": "v2",
       "group": "Other Information",
-      "pages": ["country_support/introduction", "webhooks/webhooks"]
+      "pages": [
+        "country_support/introduction",
+        "webhooks/webhooks"
+      ]
     },
     {
       "group": "API Reference",
@@ -227,7 +236,9 @@
         },
         {
           "group": "payments",
-          "pages": ["api-reference/payments/create-a-payment"]
+          "pages": [
+            "api-reference/payments/create-a-payment"
+          ]
         },
         {
           "group": "payout-requests",
