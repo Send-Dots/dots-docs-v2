@@ -127,6 +127,14 @@ paths:
                   minLength: 1
                   maxLength: 50
                   description: Username to assign the user.
+                date_of_birth:
+                  type: string
+                  format: date
+                  description: User's date of birth.
+                1099_adjustment_2024:
+                  type: integer
+                  minimum: 1
+                  description: Income paid outside of the Dots platform in 2024.
                 metadata:
                   type:
                     - string
@@ -222,6 +230,14 @@ paths:
                 auto_payout_enabled:
                   type: boolean
                   description: Enables auto payout for the user whenever a default payout method is defined
+                date_of_birth:
+                  type: string
+                  format: date
+                  description: User's date of birth.
+                1099_adjustment_2024:
+                  type: integer
+                  minimum: 1
+                  description: Income paid outside of the Dots platform in 2024.
                 metadata:
                   description: Arbitrary metadata
   "/v2/users/{user_id}/compliance":
@@ -499,8 +515,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/payment-method"
-                description: The payout method.
+                type: object
+                properties:
+                  platform:
+                    enum:
+                      - ach
+                      - paypal
+                      - venmo
+                      - cash_app
+                      - airtm
+                      - payoneer
+                    type: string
+                    description: The type of account to add.
+                  handle:
+                    type: string
+                    description: Handle for Venmo accounts.
+                  email:
+                    type: string
+                    description: Email for PayPal and Payoneer accounts.
+                  phone_number:
+                    type: string
+                    description: Phone number for Venmo accounts.
+                  cash_tag:
+                    type: string
+                    description: Cash tag for Cash App accounts.
+                  account_number:
+                    type: string
+                    description: ACH account number.
+                  routing_number:
+                    type: string
+                    description: ACH routing number.
+                  account_type:
+                    type: string
+                    enum: [checking, savings]
+                    description: ACH account type, either "checking" or "savings".
+                  is_default:
+                    type: [boolean, 'null']
+                    description: When true, the newly added payment method will
+                      be set as the user's default payout method.
+                  auto_payout_enabled:
+                    type: [boolean, 'null']
+                    description: When specified, enables or disables auto payout
+                      for this user.
+                required:
+                  - platform
       requestBody:
         content:
           application/json:
@@ -2927,6 +2985,8 @@ components:
             - venmo
             - cash_app
             - intl_transfer
+            - airtm
+            - payoneer
           type: string
         description:
           type: string
