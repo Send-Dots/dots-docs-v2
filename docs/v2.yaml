@@ -3251,7 +3251,7 @@ components:
           type: object
           properties:
             platform:
-              $ref: "#/components/schemas/rail"
+              $ref: "#/components/schemas/payment-method"
         wallet:
           $ref: "#/components/schemas/wallet"
         compliance:
