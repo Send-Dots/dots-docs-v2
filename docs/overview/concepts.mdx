@@ -1,0 +1,87 @@
+---
+title: 'Concepts'
+---
+
+The Dots solutions simplify the process of making payouts. To understand Dots workflows, it's crucial to grasp some key concepts:
+
+<CardGroup cols={3}>
+  <Card
+    title='Users'
+    href='#users'
+  />
+  <Card
+    title='Applications'
+    href='#applications'
+  />
+  <Card
+    title='Transactions'
+    href='#transactions'
+  />
+  <Card
+    title='Transfers'
+    href='#transfers'
+  />
+  <Card
+    title='Payout Links'
+    href='#payout-links'
+  />
+  <Card
+    title='Flows'
+    href='#flows'
+  />
+
+</CardGroup>
+
+## Users
+Users represent individuals or businesses onboarded onto Dots, either through your application or another platform.
+
+- **Creation**: You can create users via the Dashboard or API.
+- **Verification**: Dots requires the created user to verify its authenticity through a phone number verification before the payout execution.
+- **Wallets**: When you create a user, Dots automatically attaches a wallet to the user account, which can be used to store funds or create payins or payouts transactions.
+- **Compliance**: Dots store all user compliance information, such as tax data, KYC, and ID verification, into an object you can access. 
+
+## Applications
+
+Applications are your main interface with the Dots API. You can create as many applications as necessary to manage different user groups and logically separate instances of the Dots platform. They're handy for multi-tenancy scenarios where you want to separate funds and users on your platform.
+
+- **API Authentication**: Each application has a unique API key and secret for authentication. Every time you create a new application, you will have access to the respective authentication information.
+- **User Management**: Use applications to manage different user groups. You can add as many users as you need to each application.
+- **Transaction History**: This option allows you to access each application's transaction history, making it easier to audit and track transactions.
+- **Webhooks**: You can configure different webhook endpoints for each application, enabling you to process the notification distinctly if necessary.
+
+## Transactions
+Transactions are the individual records on the Dots ledger, representing money movements between wallets.
+
+- **Creation**: You can't create transactions. Transactions are always created as part of a [transfer](#transfers). 
+- **Function**: Transactions are used to document wallet-to-wallet fund movements. 
+
+## Transfers
+
+Transfers represent the actual movement of money on the Dots platform.
+
+- **Transfer Components**: One transfer can consist of multiple transactions, including the movement of funds from the application's wallet to the user's wallet or fees for a payout or payment. 
+- **Transfer Types**: There are three types of transfers:
+  - **Balance Transfer**: Moves funds between an application's wallet and a user's wallet.
+  - **Payout Transfer**: Moves funds from a user's account to their external account.
+  - **Refill Transfer**: Moves funds from a bank account to a user's wallet.
+- **Tracking Money**: You can use transfer to track the flow of funds within your application.
+- **Transfer Lifecycle**: Each transfer goes through a standard lifecycle and can be tracked from creation to completion.
+
+<Note>Transfers can only be created to move funds between a user's wallet and your application's wallet in both directions. Direct user-to-user transfers aren't allowed.</Note>
+
+## Payout Links
+
+Payout Links is one of the Dots solutions, which provides a straightforward way to send money without requiring you to create a user or a transfer.
+
+- **Simplicity**: Requires only basic information (phone number or email).
+- **Onboarding**: You only need to share the payout. Dots will automatically handle the onboarding process.
+- **Reusability**: When a Payout Link is claimed, it's updated with user IDs, allowing you to perform new payouts for the same users in the future
+
+## Flows
+
+Flows are customizable UI components provided by Dots to guide users through the onboarding process.
+
+- **Components**: Flows provide step-by-step guidance for user onboarding.
+- **Customization**: You can tailor Flows to fit your brand and application design, maintaining brand consistency. 
+- **Embedding**: You can embed Flows directly into your application. Thus, users don't need to access another page to execute the onboarding process.
+- **Authentication States**: Support both pre-authenticated states, where the user is automatically logged in, and unauthenticated states, where the user must log in or create an account before continuing.

@@ -63,7 +63,7 @@
       "group": "Overview",
       "pages": [
         "overview/introduction",
-        "overview/core-concepts",
+        "overview/concepts",
         "overview/environments",
         "overview/authentication",
         "overview/error-codes",
