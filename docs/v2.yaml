@@ -549,14 +549,6 @@ paths:
                     type: string
                     enum: [checking, savings]
                     description: ACH account type, either "checking" or "savings".
-                  is_default:
-                    type: [boolean, 'null']
-                    description: When true, the newly added payment method will
-                      be set as the user's default payout method.
-                  auto_payout_enabled:
-                    type: [boolean, 'null']
-                    description: When specified, enables or disables auto payout
-                      for this user.
                 required:
                   - platform
       requestBody:
@@ -597,6 +589,14 @@ paths:
                 cash_tag:
                   type: string
                   description: Cash App Cash Tag. Required if `platform` = `cash_app`.
+                is_default:
+                  type: [boolean, 'null']
+                  description: When true, the newly added payment method will
+                    be set as the user's default payout method.
+                auto_payout_enabled:
+                  type: [boolean, 'null']
+                  description: When specified, enables or disables auto payout
+                    for this user.
               required:
                 - platform
             examples:
