@@ -3248,10 +3248,7 @@ components:
         default_payout_method:
           $ref: "#/components/schemas/rail"
         default_payout_method_details:
-          type: object
-          properties:
-            platform:
-              $ref: "#/components/schemas/payment-method"
+          $ref: "#/components/schemas/payment-method"
         wallet:
           $ref: "#/components/schemas/wallet"
         compliance:
