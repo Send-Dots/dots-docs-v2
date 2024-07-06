@@ -42,6 +42,11 @@
   },
   "anchors": [
     {
+      "name": "Dashboard",
+      "icon": "chalkboard",
+      "url": "https://dashboard.dots.dev/"
+    },
+    {
       "name": "GitHub",
       "icon": "github",
       "url": "https://github.com/Send-Dots"
@@ -63,6 +68,7 @@
       "group": "Overview",
       "pages": [
         "overview/introduction",
+        "overview/how-dots-works",
         "overview/concepts",
         "overview/environments",
         "overview/authentication",

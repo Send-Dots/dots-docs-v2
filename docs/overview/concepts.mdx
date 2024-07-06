@@ -11,7 +11,7 @@ The Dots solutions simplify the process of making payouts. To understand Dots wo
   />
   <Card
     title='Applications'
-    href='#applications'
+    href='#applications-apps'
   />
   <Card
     title='Transactions'
@@ -40,14 +40,17 @@ Users represent individuals or businesses onboarded onto Dots, either through yo
 - **Wallets**: When you create a user, Dots automatically attaches a wallet to the user account, which can be used to store funds or create payins or payouts transactions.
 - **Compliance**: Dots store all user compliance information, such as tax data, KYC, and ID verification, into an object you can access. 
 
-## Applications
+## Applications (Apps)
 
-Applications are your main interface with the Dots API. You can create as many applications as necessary to manage different user groups and logically separate instances of the Dots platform. They're handy for multi-tenancy scenarios where you want to separate funds and users on your platform.
+Applications, also called Apps, are logically separated instances of the Dots platform and are your main interface with the Dots API. You can create as many Apps as necessary to manage different user groups and logically separate instances of the Dots platform. 
 
-- **API Authentication**: Each application has a unique API key and secret for authentication. Every time you create a new application, you will have access to the respective authentication information.
-- **User Management**: Use applications to manage different user groups. You can add as many users as you need to each application.
-- **Transaction History**: This option allows you to access each application's transaction history, making it easier to audit and track transactions.
-- **Webhooks**: You can configure different webhook endpoints for each application, enabling you to process the notification distinctly if necessary.
+Apps are useful for multi-tenancy scenarios where you want to separate funds and users on your platform. For example, if your platform has customers with different balances, bank accounts, and users, you can create an app for each customer.
+
+- **Creation**: You can create Apps through Dots API or using the [Dots dashboard](https://dashboard.dots.dev/).
+- **API Authentication**: Each App has a unique API key and secret for authentication. Every time you create a new App, you will have access to the respective authentication information. Access [API Authentication](/overview/authentication) for more information.
+- **User Management**: Use Apps to manage different user groups. You can add as many users as you need to each App.
+- **Transaction History**: This option allows you to access each App's transaction history, making it easier to audit and track transactions.
+- **Webhooks**: You can configure different webhook endpoints for each App, enabling you to process the notification distinctly if necessary.
 
 ## Transactions
 Transactions are the individual records on the Dots ledger, representing money movements between wallets.

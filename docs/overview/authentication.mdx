@@ -1,42 +1,79 @@
 ---
-title: "Authentication"
+title: "API Authentication"
 description: "How to authenticate requests to the API."
 ---
 
-Requests are authorized with a Basic token which requires a `client_id` and an `api_key`.
+The Dots API uses a Basic token approach to authorize requests. When you perform an API request, you must inform the token created using your `client_id` and `api_key`.
 
-The Basic token is the URL-safe Base64 encoding of a string which contains your `client_id` followed by a `:` for client side requests and your `client_id` and your `api_key` separated by a colon for server side requests.
+<Warning>Do not share your secret API keys in public places like Github or Gitlab, since this opens space for malicious API calls.</Warning>
 
-Header format:
+When working with Apps, the authorization process changes. See the [Authorization When Working With Apps](#authorization-when-working-with-apps) section to learn the differences.
 
-```javascript
+## Basic Token Format
+
+The Basic token is a URL-safe Base64 encoding of a string that contains your `client_id` and optionally your `api_key`. Depending if your request comes from a server or the client, the token will contain different information.
+
+| Origin            | Token composition |
+|-------------|-------|
+| Client side | `BASE64_ENCODE({client_id}:)` |
+| Server side | `BASE64_ENCODE({client_id}:{api_key})`  |
+
+<Note>You should include `:` after your `client_id` when generating the token from the client side</Note>
+
+Suppose your `cliend_id = ABC123` and `api_key = DEF456`, you would have the following resulting tokens:
+
+<CodeGroup>
+
+```javascript Client side
+ABC123: -> QUJDMTIzOg==
+```
+
+```javascript Server side
+ABC123:DEF456 -> QUJDMTIzOkRFRjQ1Ng==
+```
+</CodeGroup>
+
+To authenticate your requests, you'll send the token through the header of your request, following the structure presented below:
+
+```javascript Header format
 Authorization: Basic {token}
 ```
 
-### Client Side Requests
+## Authorization When Working With Apps
 
-Token format:
+Dots enables you to create and use [applications (Apps)](/overview/concepts#applications-apps), which are useful for multi-tenancy applications, where you want to logically separate funds and users on your platform. 
 
-```javascript
-BASE64_ENCODE({client_id}):
+When working with Apps, you will need to inform the organization-level API key to authorize your requests. You will use the organization-level API key to create, update, and delete apps in addition to performing operations related to payout management. 
+
+<Note> To have access to the organization-level API key email info@dots.dev. </Note>
+
+ Organization-level API keys can be used just like App-level keys. However, instead of informing as Authorization in the header, you should follow the structure presented below:
+
+
+
+
+## Getting Organization Level API Keys
+
+To work with Apps you will need an organization level API key. You can request organization level API keys by emailing info@dots.dev.
+
+## Using Organization Level API Keys
+
+Organization level API keys are used to create, update, and delete apps. They are also used to act on behalf of the Apps. Organization level keys can be used just like App level keys as described in the [Authentication](/overview/authentication) section. To act on behalf of an App, you must pass in the `Api-App-Id` header with the App's ID as the value.
+
 ```
-
-Example:
-
-```javascript
-ABC123 -> QUJDMTIzOg==
-```
-
-### Server Side Requests
-
-Token format:
-
-```javascript
-BASE64_ENCODE({client_id}:{api_key})
-```
-
-Example:
-
-```javascript
-ABC123:DEF456 -> QUJDMTIzOkRFRjQ1Ng==
+https://pls.senddotssandbox.com/api/v2/payouts/send-payout \
+-X POST \
+-u "CLIENT_ID:API_KEY" \
+-H "Content-Type: application/json" \
+-H "Api-App-Id: APP_ID" \
+-d "{
+      "delivery": {
+        "message": "My first payout"
+      },
+      "amount": 1000,
+      "payee": {
+        "country_code": "1",
+        "phone_number": "2025550139"
+      }
+    }"
 ```

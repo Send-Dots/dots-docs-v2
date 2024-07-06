@@ -1,0 +1,22 @@
+---
+title: 'How Dots Works'
+---
+
+A payout is essentially a transfer of funds from a user's Dots wallet to an external account, such as a bank account. There are several ways to initiate a payout:
+
+Payout Link: This is the easiest method to send a payout. A Payout Link is a URL that allows a user to onboard onto Dots and withdraw their funds through their preferred method. The platform can create a Payout Link and send it to the recipient via email or SMS.
+
+iFrame Payout: The platform can request a link from Dots through an API call and show it to the user embedded in an iFrame or WebView. This link is tied to a specific user and is valid for 15 minutes.
+
+API Payout: If the platform has already provided information about the payout method using the add_payout_method endpoint, they can initiate a payout directly through the API.
+
+Flow Payouts: Dots provides UI components called Flows that can guide users through the payout process.
+
+When creating a payout, you typically need to specify:
+
+The amount to be paid out
+The recipient's information (such as phone number or user ID)
+Any additional steps or compliance information required
+Here's a basic example of creating a Payout Link using the API:
+
+Once the payout is initiated, the status can be tracked. If the user already has a Dots account, the funds will be delivered according to their saved preferences. If they're new to Dots, they'll receive a link to onboard and receive their funds.
