@@ -21,11 +21,11 @@ Organization keys are used to authenticate all your Dots operations. You can use
 
 ```curl Create App
 curl --request POST \
- --url https://api.dots.dev/api/v2/apps \
- --header 'Authorization: Basic <token>' \
- --header 'Content-Type: application/json' \
- --data '{
- "name": "<app name>",
+--url https://api.dots.dev/api/v2/apps \
+--header 'Authorization: Basic <token>' \
+--header 'Content-Type: application/json' \
+--data '{
+  "name": "<app name>",
 }'
 ```
 
@@ -36,15 +36,15 @@ https://pls.senddotssandbox.com/api/v2/payouts/send-payout \
 -H "Content-Type: application/json" \
 -H "Api-App-Id: <app id>" \
 -d "{
- "delivery": {
- "message": "My first payout"
- },
- "amount": 1000,
- "payee": {
- "country_code": "1",
- "phone_number": "2025550139"
- }
- }"
+    "delivery": {
+    "message": "My first payout"
+    },
+    "amount": 1000,
+    "payee": {
+      "country_code": "1",
+      "phone_number": "2025550139"
+    }
+  }"
 ```
 </CodeGroup>
 
@@ -65,13 +65,13 @@ Every new App has its own App Keys, which you can use to authenticate all operat
 
 To access your App key, access the [Dots dashboard](https://dashboard.dots.dev/), select the desired App through the sidebar selector, and then select **API Management**.
 
-![Organization keys](../images/app-keys.png)
+![App keys](../images/app-keys.png)
 
 ## Basic Token Format
 
 The Basic token is a URL-safe Base64 encoding of a string that contains your `client_id` and optionally your `api_key`. Depending on whether your request comes from a server or the client side, the token will contain different information, as described in the following table.
 
-| Origin            | Token composition |
+| Origin      | Token composition |
 |-------------|-------|
 | Client side | `BASE64_ENCODE({client_id}:)` |
 | Server side | `BASE64_ENCODE({client_id}:{api_key})` |
