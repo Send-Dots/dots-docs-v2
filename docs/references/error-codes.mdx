@@ -3,30 +3,50 @@ title: "Error Codes"
 description: "Error codes returned by the Dots API."
 ---
 
-The following error codes are returned by the API:
+This document provides a detailed list of error codes returned by the Dots API, including descriptions to help you troubleshoot issues effectively.
 
-## Authentication
+## Authentication Errors
 
 | Code                                  | Description                                                                                                                    |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| auth-email-already-exists             | That email is already in use                                                                                                   |
-| auth-username-already-exists          | That username is already in use                                                                                                |
-| invalid-input                         | Invalid input                                                                                                                  |
-| invalid-ssn                           | Invalid SSN                                                                                                                    |
-| invalid-username                      | Username is invalid. Usernames may only contain letters, digits and '-'. They must not contain swear words or protected words. |
-| invalid-phone-number                  | Invalid phone number                                                                                                           |
-| invalid-email                         | Invalid email address                                                                                                          |
-| invalid-phone-number-voip             | VOIP phone number not allowed                                                                                                  |
-| invalid-invoice-requested-information | Invalid value for requested_information                                                                                        |
-| invalid-invoice-breakdown             | Invalid invoice breakdown                                                                                                      |
-| invalid-invoice-item                  | Invalid invoice item                                                                                                           |
-| invalid-invoice-item-total            | Item totals add up incorrectly                                                                                                 |
-| invalid-transaction                   | Invalid transaction                                                                                                            |
-| service-unavailable                   | A service was unavailable                                                                                                      |
-| user-info-missing                     | User has missing or invalid info                                                                                               |
-| user-info-missing-cash-app            | User missing Cash App account info                                                                                             |
-| user-info-missing-contact             | User missing contact info                                                                                                      |
-| user-info-missing-card                | User missing credit card info                                                                                                  |
-| app-info-missing                      | App has missing or invalid info                                                                                                |
-| transaction-insufficient-funds        | Not enough funds in wallet                                                                                                     |
-| resource-busy                         | This is unavailable because one or more previous requests are still being processed.                                           |
+| `auth-email-already-exists`           | The provided email address is already in use.                                                                                  |
+| `auth-username-already-exists`        | The provided username is already in use.                                                                                       |
+| `invalid-input`                       | The input provided is invalid.                                                                                                 |
+| `invalid-ssn`                         | The provided Social Security Number (SSN) is invalid.                                                                          |
+| `invalid-username`                    | The username is invalid. Usernames may only contain letters, digits, and hyphens (`-`). They must not contain swear words or protected words. |
+| `invalid-phone-number`                | The phone number provided is invalid.                                                                                          |
+| `invalid-email`                       | The email address provided is invalid.                                                                                         |
+| `invalid-phone-number-voip`           | VOIP phone numbers are not allowed.                                                                                            |
+
+## Invoice Errors
+
+| Code                                  | Description                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `invalid-invoice-requested-information` | The value for requested information in the invoice is invalid.                                                                  |
+| `invalid-invoice-breakdown`           | The breakdown of the invoice is invalid.                                                                                       |
+| `invalid-invoice-item`                | The invoice item is invalid.                                                                                                   |
+| `invalid-invoice-item-total`          | The totals of the invoice items are incorrect.                                                                                 |
+
+## Transaction Errors
+
+| Code                                  | Description                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `invalid-transaction`                 | The transaction is invalid.                                                                                                    |
+| `transaction-insufficient-funds`      | There are insufficient funds in the wallet.                                                                                    |
+
+## User Information Errors
+
+| Code                                  | Description                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `user-info-missing`                   | The user has missing or invalid information.                                                                                   |
+| `user-info-missing-cash-app`          | The user is missing Cash App account information.                                                                              |
+| `user-info-missing-contact`           | The user is missing contact information.                                                                                       |
+| `user-info-missing-card`              | The user is missing credit card information.                                                                                   |
+| `app-info-missing`                    | The app has missing or invalid information.                                                                                    |
+
+## Service Errors
+
+| Code                                  | Description                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `service-unavailable`                 | A service was unavailable.                                                                                                     |
+| `resource-busy`                       | The resource is unavailable because one or more previous requests are still being processed.                                   |
