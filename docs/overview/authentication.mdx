@@ -5,31 +5,89 @@ description: "How to authenticate requests to the API."
 
 The Dots API uses a Basic token approach to authorize requests. When you perform an API request, you must inform the token created using your `client_id` and `api_key`.
 
-<Warning>Do not share your secret API keys in public places like Github or Gitlab, since this opens space for malicious API calls.</Warning>
+<Warning>Do not share your secret API keys in public places like Github or Gitlab since this opens space for malicious API calls.</Warning>
 
-When working with Apps, the authorization process changes. See the [Authorization When Working With Apps](#authorization-when-working-with-apps) section to learn the differences.
+## Dots Keys
+
+When working with Dots, you have access to organization and App keys, which you will use in different scenarios to authenticate your requests to the Dots API.
+
+<Note>Your organization and App keys change when you toggle between the Sandbox and Production environments. See the [Environments](/overview/environments) page for more information. Therefore, if you're changing from the Sandbox to the Production environment, remember to change the keys in your code.</Note>
+
+### Organization Keys
+
+Organization keys are used to authenticate all your Dots operations. You can use them to create, update, and delete apps and act on behalf of Apps. When using organization keys to execute App operations, you must inform the organization key and the `Api-App-Id` to identify the App. The following code block presents how to use the organization key to create an App and send a payout. 
+
+<CodeGroup>
+
+```curl Create App
+curl --request POST \
+ --url https://api.dots.dev/api/v2/apps \
+ --header 'Authorization: Basic <token>' \
+ --header 'Content-Type: application/json' \
+ --data '{
+ "name": "<app name>",
+}'
+```
+
+```curl Send Payout
+https://pls.senddotssandbox.com/api/v2/payouts/send-payout \
+-X POST \
+-u "CLIENT_ID: <organization key>" \
+-H "Content-Type: application/json" \
+-H "Api-App-Id: <app id>" \
+-d "{
+ "delivery": {
+ "message": "My first payout"
+ },
+ "amount": 1000,
+ "payee": {
+ "country_code": "1",
+ "phone_number": "2025550139"
+ }
+ }"
+```
+</CodeGroup>
+
+
+Notice that you will always inform your authentication key in a token format when using the Dots API. See [Basic Token Format](#basic-token-format) on this page to learn how to generate the token before sending your requests.
+
+To access your organization keys, you can email info@dots.dev, or you can access the [Dots dashboard](https://dashboard.dots.dev/), select **Organization** on the sidebar, and then select **API Management**.
+
+![Organization keys](../images/organization-keys.png)
+
+If you're using the organization key to authenticate actions on an App's behalf, you have to inform the App Id, which you receive when you create the App. However, you can use the [List All Apps](/api-reference/users/list-all-users) endpoint or the [dashboard](https://dashboard.dots.dev/) to access to recover the App Id.
+
+### App Keys
+
+Dots enables you to create and use [applications (Apps)](/overview/concepts#applications-apps), which is helpful for multi-tenancy applications where you want to logically separate funds and users on your platform. 
+
+Every new App has its own App Keys, which you can use to authenticate all operations related to that App. As with the organization key, you will always inform your App key in a token format when using the Dots API. See [Basic Token Format](#basic-token-format) to learn how to generate the token before sending your requests.
+
+To access your App key, access the [Dots dashboard](https://dashboard.dots.dev/), select the desired App through the sidebar selector, and then select **API Management**.
+
+![Organization keys](../images/app-keys.png)
 
 ## Basic Token Format
 
-The Basic token is a URL-safe Base64 encoding of a string that contains your `client_id` and optionally your `api_key`. Depending if your request comes from a server or the client, the token will contain different information.
+The Basic token is a URL-safe Base64 encoding of a string that contains your `client_id` and optionally your `api_key`. Depending on whether your request comes from a server or the client side, the token will contain different information, as described in the following table.
 
-| Origin            | Token composition |
+| Origin            | Token composition |
 |-------------|-------|
 | Client side | `BASE64_ENCODE({client_id}:)` |
-| Server side | `BASE64_ENCODE({client_id}:{api_key})`  |
+| Server side | `BASE64_ENCODE({client_id}:{api_key})` |
 
-<Note>You should include `:` after your `client_id` when generating the token from the client side</Note>
+<Note>You should include `:` after your `client_id` when generating the token from the client side.</Note>
 
 Suppose your `cliend_id = ABC123` and `api_key = DEF456`, you would have the following resulting tokens:
 
 <CodeGroup>
 
 ```javascript Client side
-ABC123: -> QUJDMTIzOg==
+BASE64_ENCODE(ABC123:) -> QUJDMTIzOg==
 ```
 
 ```javascript Server side
-ABC123:DEF456 -> QUJDMTIzOkRFRjQ1Ng==
+BASE64_ENCODE(ABC123:DEF456) -> QUJDMTIzOkRFRjQ1Ng==
 ```
 </CodeGroup>
 
@@ -37,43 +95,4 @@ To authenticate your requests, you'll send the token through the header of your 
 
 ```javascript Header format
 Authorization: Basic {token}
-```
-
-## Authorization When Working With Apps
-
-Dots enables you to create and use [applications (Apps)](/overview/concepts#applications-apps), which are useful for multi-tenancy applications, where you want to logically separate funds and users on your platform. 
-
-When working with Apps, you will need to inform the organization-level API key to authorize your requests. You will use the organization-level API key to create, update, and delete apps in addition to performing operations related to payout management. 
-
-<Note> To have access to the organization-level API key email info@dots.dev. </Note>
-
- Organization-level API keys can be used just like App-level keys. However, instead of informing as Authorization in the header, you should follow the structure presented below:
-
-
-
-
-## Getting Organization Level API Keys
-
-To work with Apps you will need an organization level API key. You can request organization level API keys by emailing info@dots.dev.
-
-## Using Organization Level API Keys
-
-Organization level API keys are used to create, update, and delete apps. They are also used to act on behalf of the Apps. Organization level keys can be used just like App level keys as described in the [Authentication](/overview/authentication) section. To act on behalf of an App, you must pass in the `Api-App-Id` header with the App's ID as the value.
-
-```
-https://pls.senddotssandbox.com/api/v2/payouts/send-payout \
--X POST \
--u "CLIENT_ID:API_KEY" \
--H "Content-Type: application/json" \
--H "Api-App-Id: APP_ID" \
--d "{
-      "delivery": {
-        "message": "My first payout"
-      },
-      "amount": 1000,
-      "payee": {
-        "country_code": "1",
-        "phone_number": "2025550139"
-      }
-    }"
 ```
