@@ -71,9 +71,7 @@
         "overview/how-dots-works",
         "overview/concepts",
         "overview/environments",
-        "overview/authentication",
-        "overview/error-codes",
-        "overview/metadata"
+        "overview/authentication"
       ]
     },
     {
@@ -83,6 +81,17 @@
         "guides/your-first-payout",
         "guides/dots-flows",
         "guides/accept-card-payments"
+      ]
+    },
+    {
+      "version": "v2",
+      "group": "References",
+      "pages": [
+        "references/error-codes",
+        "references/idempotency",
+        "references/metadata",
+        "references/supported-countries",
+        "references/webhooks"
       ]
     },
     {
@@ -174,14 +183,6 @@
             "users/add-payout-methods"
           ]
         }
-      ]
-    },
-    {
-      "version": "v2",
-      "group": "Other Information",
-      "pages": [
-        "country_support/introduction",
-        "webhooks/webhooks"
       ]
     },
     {
