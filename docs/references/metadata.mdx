@@ -10,7 +10,7 @@ Metadata in the Dots API is an object that you can include in the body of your r
 
 ## How to Use Metadata
 
-You can include a metadata object in your API request with up to 50 key-value pairs. Each key can be up to 40 characters long, and each value can be up to 500 characters long. This metadata is returned in the response to your request. The following example demonstrates a request to create a user where the metadata is used to store the user's internal_id.
+You can include a metadata object in your API request and the metadata is returned in the response to your request. The following example demonstrates a request to create a user where the `metadata` is used to store the user's `internal_id`.
 
 ```curl
 curl --request POST \
@@ -40,7 +40,7 @@ You're completely free to use the metadata feature in the way best fits your bus
 - **Expense Categories**: Tag payments with expense categories for better financial reporting and analysis.
 - **Service Levels**: Tag payouts with service level agreements (SLAs) or priority levels for monitoring and reporting.
 
-The following code block presents a `metadata` example for a iphotetical payment for a vendor related to a sale.
+The following code block presents a `metadata` example for a hypothetical payment for a vendor related to a sale.
 
 ```json
 {
