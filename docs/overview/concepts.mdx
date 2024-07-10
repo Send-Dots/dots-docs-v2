@@ -4,7 +4,7 @@ title: 'Concepts'
 
 The Dots solutions simplify the process of making payouts. To understand Dots workflows, it's crucial to grasp some key concepts:
 
-<CardGroup cols={3}>
+<CardGroup cols={4}>
   <Card
     title='Users'
     href='#users'
@@ -20,6 +20,10 @@ The Dots solutions simplify the process of making payouts. To understand Dots wo
   <Card
     title='Transfers'
     href='#transfers'
+  />
+  <Card
+    title='Payouts'
+    href='#payouts'
   />
   <Card
     title='Payout Links'
@@ -50,7 +54,7 @@ Apps are useful for multi-tenancy scenarios where you want to separate funds and
 - **API Authentication**: Each App has a unique API key and secret for authentication. Every time you create a new App, you will have access to the respective authentication information. Access [API Authentication](/overview/authentication) for more information.
 - **User Management**: Use Apps to manage different user groups. You can add as many users as you need to each App.
 - **Transaction History**: This option allows you to access each App's transaction history, making it easier to audit and track transactions.
-- **Webhooks**: You can configure different webhook endpoints for each App, enabling you to process the notification distinctly if necessary.
+- **Webhooks**: You can configure different [webhook endpoints](/references/webhooks) for each App, enabling you to process the notification distinctly if necessary.
 
 ## Transactions
 Transactions are the individual records on the Dots ledger, representing money movements between wallets.
@@ -72,16 +76,16 @@ Transfers represent the actual movement of money on the Dots platform.
 
 <Note>Transfers can only be created to move funds between a user's wallet and your application's wallet in both directions. Direct user-to-user transfers aren't allowed.</Note>
 
-## Payout
+## Payouts
 
 A payout is a transfer of funds from your account to a user's external account.
 
 - **Creation**: Payouts can be initiated through the Dots API or Dashboard. Dots provides three option to create payouts:
   - [Payout Links](#payout-links)
   - [Flows](#flows)
-  - API
-- **Processing**: Once initiated, Dots processes the payout and ensures the funds are transferred to the user's external account after the
-    Tracking: You can track the status of payouts in real-time through the Dots Dashboard or API.
+  - API (Whitelabel)
+- **Processing**: Once initiated, Dots processes the payout and ensures the funds are transferred to the user's account using their prefered payment method.
+- **Tracking**: You can track the status of payouts in real-time through the Dots Dashboard, API, or using [webhooks](/references/webhooks).
 
 ## Payout Links
 

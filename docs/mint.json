@@ -78,7 +78,7 @@
       "version": "v2",
       "group": "Guides",
       "pages": [
-        "guides/your-first-payout",
+        "guides/payout-links",
         "guides/dots-flows",
         "guides/accept-card-payments"
       ]
@@ -101,75 +101,32 @@
         {
           "group": "Apps",
           "pages": [
-            "apps/overview",
-            "apps/create-an-app",
-            "apps/retrieve-an-app",
-            "apps/list-all-apps",
-            "apps/add-compliance-information",
-            "apps/retrieve-compliance-information",
-            "apps/add-ach-account",
-            "apps/retrieve-ach-account",
-            "apps/deposit-into-app-wallet",
-            "apps/withdraw-from-app-wallet",
-            "apps/refresh-compliance-flow"
+            "apps/overview"
           ]
         },
         {
           "group": "Flows",
           "pages": [
             "flows/overview",
-            "flows/styles",
-            "flows/create-a-flow",
-            "flows/retrieve-a-flow"
+            "flows/styles"
           ]
         },
         {
           "group": "Payouts",
           "pages": [
-            "payouts/overview",
-            "payouts/send-payout",
-            "payouts/create-a-payout"
+            "payouts/overview"
           ]
         },
         {
           "group": "Payout Links",
           "pages": [
-            "payout-links/overview",
-            "payout-links/create-a-payout-link",
-            "payout-links/retrieve-a-payout-link",
-            "payout-links/list-all-payout-links",
-            "payout-links/cancel-a-payout-link"
-          ]
-        },
-        {
-          "group": "Payout Requests",
-          "pages": [
-            "payout-requests/create-a-payout-request"
+            "payout-links/overview"
           ]
         },
         {
           "group": "Transfers",
           "pages": [
-            "transfers/overview",
-            "transfers/create-a-transfer",
-            "transfers/retrieve-a-transfer",
-            "transfers/list-all-transfers"
-          ]
-        },
-        {
-          "group": "Transfer Batches",
-          "pages": [
-            "transfer-batches/create-a-transfer-batch",
-            "transfer-batches/retrieve-a-transfer-batch",
-            "transfer-batches/list-all-transfer-batches"
-          ]
-        },
-        {
-          "group": "Transactions",
-          "pages": [
-            "transactions/overview",
-            "transactions/retrieve-a-transaction",
-            "transactions/list-all-transactions"
+            "transfers/overview"
           ]
         },
         {
@@ -177,9 +134,6 @@
           "pages": [
             "users/overview",
             "users/create-a-user",
-            "users/retrieve-a-user",
-            "users/list-all-users",
-            "users/add-compliance-information",
             "users/add-payout-methods"
           ]
         }
