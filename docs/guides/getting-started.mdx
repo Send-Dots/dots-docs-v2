@@ -1,0 +1,89 @@
+---
+title: "Getting Started"
+# description: ""
+---
+
+To start using one of Dots payout solutions you have to perform two basic steps:
+
+- Create a Dots account.
+- Create an App.
+
+This page will walk you through the steps.
+
+<Note>If you aren't familiar with the App concept in Dots, see the Applications section on the [Concepts](/overview/concepts#applications-apps) page.</Note>
+
+## 1. Creating an Account
+
+To create a Dots account, follow the steps presented below:
+
+1. Visit the [Dots signup page](https://dashboard.dots.dev/signup) and fill out the required information to create your account.
+2. Register a phone number to receive the verification code.
+3. Use the verification code received on your phone to activate your account.
+4. Once verified, log in to the Dots dashboard to find your credentials. For more information on how to access your credentials, see the [API Authentication](/overview/authentication) page.
+
+## 2. Creating an App
+
+After setting up your Dots account, the next step is to create an App. You can create an app through the Dots Dashboard or using the API. Below, you find the steps to create the App using both options:
+
+<Tabs>
+  <Tab title="Dashboard">
+    1. Access and log in to the [Dashboard](https://dashboard.dots.dev/).
+    2. Click **+ Create New** on the sidebar to create a new App. 
+    3. Choose the **Organization**, provide an **App name**, and click **Create**.
+
+    <Note>If you use the Sandbox environment, the new App will be created with a wallet balance of $1,000,000.00. This enables you to test the payout features provided by Dots.</Note>
+
+    The new App will be available on the sidebar selector. The App ID will be available right below the selector.
+
+    <Frame>
+        ![App keys](../images/create-app.png)
+    </Frame>
+  </Tab>
+  <Tab title="API">
+    First, you need to have your credentials. Then, you'll use the Organization API key to create an app.
+    
+    <Tip>Access the [API Authentication](/overview/authentication) page to learn how to authenticate your requests.</Tip>
+
+    1. Access and log in to the [Dashboard](https://dashboard.dots.dev/).
+    2. Select **Organization** on the sidebar, and then select **API Management** to have access to your **Client ID** and **API Key**. 
+    3. Create an App using the [Create an App](/api-reference/apps/create-an-app). You have to use your **Client ID** and **API Key** to authenticate the request, as described in the [API Authentication](/overview/authentication). The following code block presents request and response examples.
+
+    <CodeGroup>
+    ```sh Request
+    curl --request POST \
+    --url https://pls.senddotssandbox.com/api/v2/apps \
+    --header 'Authorization: Basic <token>' \
+    --header 'Content-Type: application/json' \
+    --data '{
+    "name": "PayoutApp",
+    }'
+    ```
+
+    ```json Response
+    {
+      "id": "73d5a2c2-020c-4db8-adad-de8f42f10774",
+      "metadata": null,
+      "metrics": {
+        "connected_users": 0,
+        "money_out": "0",
+        "wallet_balance": "100000000"
+      },
+      "name": "PayoutApp",
+      "status": "approved"
+    }
+    ```
+    </CodeGroup>
+
+    The response will provide the App `id`, which you'll use to create the Payout Link.
+
+    <Note>If you use the Sandbox environment, the new App will be created with a wallet balance of $1,000,000.00. This enables you to test the payout features provided by Dots.</Note>
+  </Tab>
+</Tabs>
+
+## What's Next?
+
+Now that you have a Dots account and have created an App, you can try one of the payout solutions provided by Dots:
+
+- [Payout Links](/guides/payout-links)
+- [Flow Payouts](/guides/flow-payouts)
+- [White-labeled Payouts](/guides/white-labeled-payouts)

@@ -78,9 +78,10 @@
       "version": "v2",
       "group": "Guides",
       "pages": [
+        "guides/getting-started",
         "guides/payout-links",
-        "guides/dots-flows",
-        "guides/accept-card-payments"
+        "guides/flow-payouts",
+        "guides/white-labeled-payouts"
       ]
     },
     {
