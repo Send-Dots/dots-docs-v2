@@ -42,7 +42,7 @@ After setting up your Dots account, the next step is to create an App. You can c
     3. Create an App using the [Create an App](/api-reference/apps/create-an-app). You have to use your **Client ID** and **API Key** to authenticate the request, as described in the [API Authentication](/overview/authentication). The following code block presents request and response examples.
 
     <CodeGroup>
-    ```cURL Request
+    ```sh Request
     curl --request POST \
     --url https://pls.senddotssandbox.com/api/v2/apps \
     --header 'Authorization: Basic <token>' \
@@ -114,7 +114,7 @@ You can create a Payout Link using the Dashboard or the API. Below you will find
     The following code block presents request and response examples of creating a Payout Link using the [Create a Payout Link](/api-reference/payout-links/create-a-payout-link) endpoint. 
 
     <CodeGroup>
-    ```cURL Request
+    ```sh Request
     curl --request POST \
     --url https://pls.senddotssandbox.com/api/v2/payout-links \
     --header 'Authorization: Basic <token>' \
