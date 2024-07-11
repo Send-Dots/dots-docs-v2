@@ -12,7 +12,9 @@ Metadata in the Dots API is an object that you can include in the body of your r
 
 You can include a metadata object in your API request and the metadata is returned in the response to your request. The following example demonstrates a request to create a user where the `metadata` is used to store the user's `internal_id`.
 
-```curl
+<Note>Dots team recommends you avoid storing sensitive information such as bank account numbers, card details, or personal identification numbers in metadata.</Note>
+
+```sh
 curl --request POST \
   --url https://api.dots.dev/api/v2/users \
   --header 'Authorization: <authorization>' \
@@ -29,12 +31,9 @@ curl --request POST \
 }'
 ```
 
-<Note>Dots team recommends you avoid storing sensitive information such as bank account numbers, card details, or personal identification numbers in metadata.</Note>
-
-
 ## Sample Use Cases
 
-You're completely free to use the metadata feature in the way best fits your business. Below are described some possible use cases for metadata. 
+You're completely free to use the metadata feature in the way it best fits your business. Below are described some possible use cases for metadata. 
 
 - **Project ID**: Attach a project ID to each payout to track payments associated with specific projects.
 - **Expense Categories**: Tag payments with expense categories for better financial reporting and analysis.

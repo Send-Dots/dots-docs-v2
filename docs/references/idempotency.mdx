@@ -1,6 +1,6 @@
 ---
 title: "Idempotency"
-description: "Learn how Dots API uses idempotency keys."
+# description: "Learn how Dots API uses idempotency keys."
 ---
 
 Dots API uses idempotency keys to ensure the reliability and integrity of your requests. Adopting idempotency keys ensures you can retry API requests without the risk of performing the same operation multiple times, which is especially important when performing funds transfers related to payout operations.
@@ -11,7 +11,11 @@ An idempotency key is a unique identifier in your API request to guarantee that 
 
 When making an API request to the Dots API, you should include an `idempotency_key` in the body request. This key should be a UUID for every request that you generate on your end. The code block below presents an example of using the idempotency key to create a payout.
 
-```curl
+<Note>
+  If you send multiple requests with different body content using the same idempotency key, Dots API will provide only one response, considering the content from the first received request.
+</Note>
+
+```sh
 curl --request POST \
   --url https://api.dots.dev/api/v2/payouts \
   --header 'Authorization: Basic <token>' \
@@ -27,10 +31,6 @@ curl --request POST \
   "metadata": "<string>"
 }'
 ```
-
-<Note>
-  If you send multiple requests with different body content using the same idempotency key, Dots API will provide only one response, considering the content from the first received request.
-</Note>
 
 ## Idempotency Keys Persistence
 
