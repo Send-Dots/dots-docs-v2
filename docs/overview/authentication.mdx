@@ -7,6 +7,37 @@ The Dots API uses a Basic token approach to authorize requests. When you perform
 
 <Warning>Do not share your secret API keys in public places like Github or Gitlab since this opens space for malicious API calls.</Warning>
 
+
+## Basic Token Format
+
+The Basic token is a URL-safe Base64 encoding of a string that contains your `client_id` and optionally your `api_key`. Depending on whether your request comes from a server or the client side, the token will contain different information, as described in the following table.
+
+| Origin      | Token composition |
+|-------------|-------|
+| Client side | `BASE64_ENCODE({client_id}:)` |
+| Server side | `BASE64_ENCODE({client_id}:{api_key})` |
+
+<Note>You should include `:` after your `client_id` when generating the token from the client side.</Note>
+
+Suppose your `cliend_id = ABC123` and `api_key = DEF456`, you would have the following resulting tokens:
+
+<CodeGroup>
+
+```javascript Client side
+BASE64_ENCODE(ABC123:) -> QUJDMTIzOg==
+```
+
+```javascript Server side
+BASE64_ENCODE(ABC123:DEF456) -> QUJDMTIzOkRFRjQ1Ng==
+```
+</CodeGroup>
+
+To authenticate your requests, you'll send the token through the header of your request, following the structure presented below:
+
+```javascript Header format
+Authorization: Basic {token}
+```
+
 ## Dots Keys
 
 When working with Dots, you have access to organization and App keys, which you will use in different scenarios to authenticate your requests to the Dots API.
@@ -75,33 +106,3 @@ To access your App key, access the [Dots dashboard](https://dashboard.dots.dev/)
 <Frame>
 ![App keys](../images/app-keys.png)
 </Frame>
-
-## Basic Token Format
-
-The Basic token is a URL-safe Base64 encoding of a string that contains your `client_id` and optionally your `api_key`. Depending on whether your request comes from a server or the client side, the token will contain different information, as described in the following table.
-
-| Origin      | Token composition |
-|-------------|-------|
-| Client side | `BASE64_ENCODE({client_id}:)` |
-| Server side | `BASE64_ENCODE({client_id}:{api_key})` |
-
-<Note>You should include `:` after your `client_id` when generating the token from the client side.</Note>
-
-Suppose your `cliend_id = ABC123` and `api_key = DEF456`, you would have the following resulting tokens:
-
-<CodeGroup>
-
-```javascript Client side
-BASE64_ENCODE(ABC123:) -> QUJDMTIzOg==
-```
-
-```javascript Server side
-BASE64_ENCODE(ABC123:DEF456) -> QUJDMTIzOkRFRjQ1Ng==
-```
-</CodeGroup>
-
-To authenticate your requests, you'll send the token through the header of your request, following the structure presented below:
-
-```javascript Header format
-Authorization: Basic {token}
-```

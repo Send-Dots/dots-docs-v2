@@ -41,7 +41,7 @@ Users represent individuals or businesses onboarded onto Dots, either through yo
 
 - **Creation**: You can create users via the Dashboard or API.
 - **Verification**: Dots requires the created user to verify its authenticity through a phone number verification before the payout execution.
-- **Wallets**: When you create a user, Dots automatically attaches a wallet to the user account, which can be used to store funds or create payins or payouts transactions.
+- **Wallets**: When you create a user, Dots automatically attaches a wallet to the user account, which can be used to store funds or create payins or payout transactions.
 - **Compliance**: Dots store all user compliance information, such as tax data, KYC, and ID verification, into an object you can access. 
 
 ## Applications (Apps)
@@ -76,15 +76,33 @@ Transfers represent the actual movement of money on the Dots platform.
 
 <Note>Transfers can only be created to move funds between a user's wallet and your application's wallet in both directions. Direct user-to-user transfers aren't allowed.</Note>
 
+The following diagram illustrates all possible statuses a transfer can have throughout its lifecycle. The transfer will always have the `Created` status after its creation.
+
+<Frame>
+  <img src="/images/transfer-lifecycle.png" />
+</Frame>
+
+The following table presents the description for all possible statuses.
+
+| **Status**  | **Description**                                                                                          |
+|-------------|----------------------------------------------------------------------------------------------------------|
+| **Created** | The payout transfer has been created but has not yet been processed.                                               |
+| **Flagged** | The payout transfer has been flagged for review due to potential issues or discrepancies.                 |
+| **Pending** | The payout transfer is currently being processed and is waiting for completion.                           |
+| **Completed**| The payout transfer has been successfully processed and completed.                                       |
+| **Failed**  | The payout transfer has failed to process due to an error or issue.                                       |
+| **Reversed**| The payout transfer has been manually reversed. This action undoes the payout, typically for correction. |
+| **Canceled**| The payout transfer has been manually canceled. This action stops the payout, typically for prevention.  |
+
 ## Payouts
 
 A payout is a transfer of funds from your account to a user's external account.
 
-- **Creation**: Payouts can be initiated through the Dots API or Dashboard. Dots provides three option to create payouts:
+- **Creation**: Payouts can be initiated through the Dots API or Dashboard. Dots provides three options to create payouts:
   - [Payout Links](#payout-links)
   - [Flows](#flows)
   - API (Whitelabel)
-- **Processing**: Once initiated, Dots processes the payout and ensures the funds are transferred to the user's account using their prefered payment method.
+- **Processing**: Once initiated, Dots processes the payout and ensures the funds are transferred to the user's account using their preferred payment method.
 - **Tracking**: You can track the status of payouts in real-time through the Dots Dashboard, API, or using [webhooks](/references/webhooks).
 
 ## Payout Links
