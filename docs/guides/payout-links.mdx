@@ -1,6 +1,6 @@
 ---
 title: "Payout Links"
-description: "Learn how to send your first payout using Dots."
+# description: "Learn how to send your first payout using Dots."
 ---
 
 Payout Links is the most straightforward solution offered by Dots, allowing you to send money without the need to create a user or transfer manually. This guide will walk you through the steps to create a Dots account, set up an App, and use the Payout Links solution to send a payout.
@@ -26,7 +26,7 @@ After setting up your Dots account, the next step is to create an App. You can c
     2. Click **+ Create New** on the sidebar to create a new App. 
     3. Choose the **Organization**, provide an **App name**, and click **Create**.
 
-    <Note>If you use the Sandbox environment, the new App will be created with a wallet balance of $1,000,000.00. It enables you to test the payout features provided by Dots.</Note>
+    <Note>If you use the Sandbox environment, the new App will be created with a wallet balance of $1,000,000.00. This enables you to test the payout features provided by Dots.</Note>
 
     The new App will be available on the sidebar selector. The App ID will be available right below the selector.
 
@@ -35,7 +35,9 @@ After setting up your Dots account, the next step is to create an App. You can c
     </Frame>
   </Tab>
   <Tab title="API">
-    First, you need to have your credentials. Then, you'll use the Organization API key to create an app. Access the [API Authentication](/overview/authentication) documentation for more information.
+    First, you need to have your credentials. Then, you'll use the Organization API key to create an app.
+    
+    <Tip>Access the [API Authentication](/overview/authentication) page to learn how to authenticate your requests.</Tip>
 
     1. Access and log in to the [Dashboard](https://dashboard.dots.dev/).
     2. Select **Organization** on the sidebar, and then select **API Management** to have access to your **Client ID** and **API Key**. 
@@ -69,11 +71,11 @@ After setting up your Dots account, the next step is to create an App. You can c
 
     The response will provide the App `id`, which you'll use to create the Payout Link.
 
-    <Note>If you use the Sandbox environment, the new App will be created with a wallet balance of $1,000,000.00. It enables you to test the payout features provided by Dots.</Note>
+    <Note>If you use the Sandbox environment, the new App will be created with a wallet balance of $1,000,000.00. This enables you to test the payout features provided by Dots.</Note>
   </Tab>
 </Tabs>
 
-## Creating a Payout Link
+## 3. Creating a Payout Link
 
 You can create a Payout Link using the Dashboard or the API. Below you will find the steps to create a Payout Link using each of these options:
 
@@ -163,7 +165,7 @@ You can create a Payout Link using the Dashboard or the API. Below you will find
   </Tab>
 </Tabs>
 
-## Using the Payout Link
+## 4. Using the Payout Link
 
 When the payee receives and uses the Payout Link, they'll be redirected to the Dots portal. The payees will be guided through a quick onboarding process. The payee will complete the following steps:
 
