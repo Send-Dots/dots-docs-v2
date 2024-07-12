@@ -68,7 +68,6 @@
       "group": "Overview",
       "pages": [
         "overview/introduction",
-        "overview/how-dots-works",
         "overview/concepts",
         "overview/environments",
         "overview/authentication"
@@ -100,51 +99,6 @@
         "references/metadata",
         "references/supported-countries",
         "references/webhooks"
-      ]
-    },
-    {
-      "version": "v2",
-      "group": "Core Resources",
-      "pages": [
-        {
-          "group": "Apps",
-          "pages": [
-            "apps/overview"
-          ]
-        },
-        {
-          "group": "Flows",
-          "pages": [
-            "flows/overview",
-            "flows/styles"
-          ]
-        },
-        {
-          "group": "Payouts",
-          "pages": [
-            "payouts/overview"
-          ]
-        },
-        {
-          "group": "Payout Links",
-          "pages": [
-            "payout-links/overview"
-          ]
-        },
-        {
-          "group": "Transfers",
-          "pages": [
-            "transfers/overview"
-          ]
-        },
-        {
-          "group": "Users",
-          "pages": [
-            "users/overview",
-            "users/create-a-user",
-            "users/add-payout-methods"
-          ]
-        }
       ]
     },
     {
