@@ -1,426 +1,158 @@
 ---
 title: 'White-Labeled Payouts'
-#sidebarTitle: 'Accept Card Payment'
 ---
 
-This guide shows how to build a card form to take a payment using the [Payment Intents API](/payments/create-a-payment), [Dots Elements](https://github.com/Send-Dots/react-dots-js) and React. You can also clone the [example project](https://github.com/Send-Dots/react-elements-payment-app) and run it locally.
+All Dots solutions are available through its API. If you're a business with a developer team who want full control over the payout process and prefer to use your UI, the white-label approach based on the Dots API is the best option. This page presents a guide with all the steps to create payouts using the Dots API.
 
-## 1. Setup your Dots Account <span style={{fontSize: 16, paddingLeft: 10}}>`server-side`</span>
+## Requirements
 
-First, [create a Dots account](https://dashboard.dots.dev/signup) or [sign in](https://dashboard.dots.dev/login).
+Before creating a payout using Dots API, you must have:
 
-## 2. Create a Payment Customer <span style={{fontSize: 16, paddingLeft: 10}}>`server-side`</span> <span style={{fontSize: 16, paddingLeft: 10}}>`optional`</span>
+- A Dots account.
+- Created an App.
 
-<Note>
-  You may skip this step if you do not intend to integrate payment method reusability for your customers.
-</Note>
+If you still need to complete one of these steps, access the [Getting Started](/guides/getting-started) before continuing.
 
-When a payment is created, a payment method is generated and saved to the [PaymentIntent](/payment-intents/create-a-payment-intent) object. This payment method is only capable of being used once (i.e. single-use) unless it is attached to a [PaymentCustomer](/payment-customers/create-a-payment-customer), in which case it becomes reusable.
+## 1. Capture User Information and Create a User
 
-Therefore, to setup future usage, create a [PaymentCustomer](/payment-customers/create-a-payment-customer) object on your server before creating the payment and save the `id` to your database. This will used in the following step. An alternative is to create a [Dots User](/users/overview) which will automatically back populates a payment customer on Dots end and use the `user.id` instead of `payment_customer.id`. 
+The first step to create a payout is to create a user in Dots. To create a user, you must first capture user information through your system. This will include details such as first name, last name, email, country code, and phone number.
 
-```bash cURL
-https://pls.senddotssandbox.com/api/v2/payment-customers/ \
--X POST \
--u "CLIENT_ID:API_KEY" \
--H "Content-Type: application/json" \
--d "{
-      "first_name": "John",
-      "last_name": "Hardy",
-      "email": "john_hardy@gmail.com",
-      ...
-    }"
+After capturing the user information, you can create a user in Dots using the [Create a User](/api-reference/users/create-a-user) endpoint. Following, you will find the list of required parameters:
 
-> {
-  "id": "0e835300-5555-4ba1-816a-0abaa8609a83",
-  ...
-}
-```
+- `first_name`
+- `last_name`
+- `email`
+- `country_code`
+- `phone_number`
 
-## 3. Create a Payment Intent <span style={{fontSize: 16, paddingLeft: 10}}>`server-side`</span>
+You can add additional information when creating the user or use metadata to provide complementary information that may be useful for your system, such as an internal `id`. For additional information, see the [Metadata](/references/metadata) documentation page. In addition, you can later update the user account using the [Update a User](/api-reference/users/update-a-user) endpoint.
 
-Dots uses a [PaymentIntent](/payment-intents/create-a-payment-intent) object to represent your intent to collect payment from a customer, tracking charge attempts and payment state changes throughout the process.
-
-Create a PaymentIntent on your server with an amount and currency. Always decide how much to charge on the server side, a trusted environment, as opposed to the client. This prevents malicious customers from being able to choose their own prices.
-
-<Info>
-  If you intend to save the payment method captured by this payment intent for future usage, you must pass in the `customer_id` or `user_id` below and set `setup_future_usage` to `on_session`.
-</Info>
+The following code block presents request and response examples of creating a user.
 
 <CodeGroup>
-```bash Single-use payment
-https://pls.senddotssandbox.com/api/v2/payment-intents/ \
--X POST \
--u "CLIENT_ID:API_KEY" \
--H "Content-Type: application/json" \
--d "{
-      "amount": 1000,
-      "currency": "usd",
-      "transfer_data": {
-        "destination_user_id": "0a7d51ec-04df-4eb8-a2c8-d066f6d3bb81"
-      },
-      "application_fee_amount": 100 //fee to be paid to the platform
-    }"
-
-> {
-  "client_secret": "...",
-  "id": "0e835300-5555-4ba1-816a-0abaa8609a83",
-  ...
-}
-```
-```bash Reusable payment
-https://pls.senddotssandbox.com/api/v2/payment-intents/ \
--X POST \
--u "CLIENT_ID:API_KEY" \
--H "Content-Type: application/json" \
--d "{
-      "amount": 1000,
-      "currency": "usd",
-      "customer_id": "0e835300-5555-4ba1-816a-0abaa8609a83", // or use "user_id"
-      "setup_future_usage": "on_session",
-      "transfer_data": {
-        "destination_user_id": "0a7d51ec-04df-4eb8-a2c8-d066f6d3bb81"
-      },
-      "application_fee_amount": 100 //fee to be paid to the platform
-    }"
-
-> {
-  "client_secret": "...",
-  "id": "0e835300-5555-4ba1-816a-0abaa8609a83",
-  ...
-}
+```sh Request
+curl --request POST \
+  --url https://pls.senddotssandbox.com/api/v2/users \
+  --header 'Authorization: Basic cGtfZGV2X3lpYXF0aXkwOGdIb3gzR3pvUEo2RlFsaURkSDRnOnNrX2Rldl9nUDBHQjZCd1FmZmt3S2FEVkh0UmdTd0NPT2RNVA==' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "first_name": "Bob",
+  "last_name": "Loblaw",
+  "email": "bob@bobloblaw.com",
+  "country_code": "1",
+  "phone_number": "4154332334",
+  "metadata": {
+    "internal_id": "user_121344"
+  }
+}'
 ```
 
-</CodeGroup>
-
-The returned PaymentIntent includes a client secret. The client side uses the client secret to securely complete the payment process instead of passing the entire PaymentIntent object. There are different approaches that you can use to pass the client secret to the client side.
-
-You can retrieve the client secret from an endpoint on your server using the browser’s fetch function on the client side. This approach is generally most suitable when your client side is a single-page application, particularly one built with a modern frontend framework such as React. The following example shows how to create the server endpoint that serves the client secret:
-
-```typescript server.ts
-app.post('/create-payment-intent', async (req, res) => {
-  const body = req.body;
-
-  const response = await axios.post(
-    process.env.DOTS_API_URL + '/v2/payment-intents',
-    {
-      currency: 'usd',
-      amount: body.amount,
-    },
-    {
-      withCredentials: true,
-      auth: {
-        username: process.env.DOTS_CLIENT_ID,
-        password: process.env.DOTS_CLIENT_SECRET,
-      },
-    }
-  );
-  res.json(response.data);
-});
-```
-
-This example demonstrates how to fetch the client secret with TypeScript on the client side:
-
-```typescript app.ts
-const createPaymentIntent = async (amount: number) => {
-  const res = await axios.post('/create-payment-intent', {
-    currency: 'usd',
-    amount,
-  });
-
-  return res.data.client_secret;
-};
-```
-
-## 4. Collect card details <span style={{fontSize: 16, paddingLeft: 10}}>`client-side`</span>
-
-You’re ready to collect card information on the client with [Dots Elements](https://github.com/Send-Dots/react-dots-js). Elements is a set of prebuilt UI components for collecting and validating card number and expiration date.
-
-### Setup Dots Elements
-
-Install [React Dots.js](https://www.npmjs.com/package/@dots.dev/react-dots-js) and the [Dots.js loader](https://www.npmjs.com/package/@dots.dev/dots-js) from the npm public registry.
-
-```bash Terminal
-npm install --save @dots.dev/react-dots-js @dots.dev/dots-js
-```
-
-### Add Dots.js and Elements to your page
-
-To use Element components, wrap the root of your React app in an Elements provider. Call loadDots with your publishable key and pass the returned Promise to the Elements provider.
-
-```typescript app.ts
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { loadDots } from '@dots.dev/dots-js';
-import { Elements } from '@dots.dev/react-dots-js';
-
-import CheckoutForm from './CheckoutForm';
-
-// Make sure to call `loadDots` outside of a component’s render to avoid
-// recreating the `Dots` object on every render.
-
-const dotsPromise = loadDots(
-  'pk_prod_pMpPyn6IRnwibuUqqHaFS938RiLMj',
-  'sandbox'
-);
-
-function App() {
-  return (
-    <Elements dots={dotsPromise}>
-      <CheckoutForm />
-    </Elements>
-  );
-}
-
-ReactDOM.render(<App />, document.getElementById('root'));
-```
-
-Add and configure a PaymentElement component
-
-<CodeGroup>
-```typescript CheckoutForm.ts
-import { PaymentElement, useDots, useElements } from '@dots.dev/react-dots-js';
-import countryList from 'react-select-country-list';
-import React, { useEffect, useMemo, useState } from 'react';
-
-export default function CheckoutForm() {
-  ...
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm();
-
-  const countryOptions = useMemo(() => countryList().getData(), []);
-
-  const renderForm = () => {
-    const fieldOptions = {
-      styles: {
-        base: {
-          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-          fontSmoothing: 'antialiased',
-          color: '#32325d',
-          fontWeight: '400',
-          fontSize: '16px',
-        },
-        invalid: {
-          ':hover': {
-            textDecoration: 'underline dotted red',
-          },
-          color: '#fa755a',
-        },
-        valid: {
-          color: '#32CD32',
-        },
-      },
-    };
-
-    return (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <h1>
-          USD $
-          {(amount / 100).toLocaleString(navigator.language, {
-            minimumFractionDigits: 2,
-          })}{' '}
-        </h1>
-        <br />
-        <PaymentElement options={fieldOptions} />
-        <div className="sr-combo-inputs">
-          <div className="sr-combo-inputs-row">
-            <input
-              type="text"
-              placeholder="Full Name"
-              autoComplete="name"
-              className="sr-input"
-              {...register('name', { required: true })}
-            />
-            <input
-              type="text"
-              placeholder="12345"
-              autoComplete="postal-code"
-              className="sr-input"
-              {...register('zip', { required: true })}
-            />
-
-            <select
-              defaultValue="US"
-              className="sr-select"
-              {...register('country', { required: true })}
-            >
-              {countryOptions.map((country: any, index: number) => (
-                <option key={index.toString()} value={country.value}>
-                  {country.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {error && <div className="message sr-field-error">{error}</div>}
-
-        <button className="btn" disabled={processing}>
-          {processing ? 'Processing…' : 'Pay'}
-        </button>
-      </form>
-    );
-  };
-  ...
-}
-```
-
-```css CheckoutForm.css
-.sr-combo-inputs {
-  margin: 20px 0;
-}
-input {
-  box-shadow: none;
-}
-
-.sr-input,
-.sr-select {
-  font-size: 16px;
-}
-
-.sr-card-element {
-  padding-top: 12px;
-}
-
-.btn {
-  font-size: 16px;
-}
-.checkout-form {
-  display: flex;
-  max-width: 20rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.sr-combo-inputs-row {
-  gap: 1rem;
-  display: flex;
-  flex-direction: column;
+```json Response
+{
+  "email": "test@example.com",
+  "first_name": "Bob",
+  "id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4",
+  "last_name": "Loblaw",
+  "metadata": {
+    "internal_id": "user_121344"
+  },
+  "phone_number": {
+    "country_code": "55",
+    "phone_number": "49933801774"
+  },
+  "status": "unverified",
+  "verified": false
 }
 ```
 </CodeGroup>
 
-Elements are completely customizable. You can style Elements to match the look and feel of your site, providing a seamless checkout experience for your customers. It’s also possible to style various input states, for example when the Element has focus.
+You will receive the user `id` in the response upon successful creation.
 
-<Info>
-  Always collect a postal code to increase card acceptance rates and reduce
-  fraud.
-</Info>
+## 2. Submit Compliance Information 
 
-## 5. Submit payments to Dots <span style={{fontSize: 16, paddingLeft: 10}}>`client-side`</span>
+Depending on the user's location, you may need to capture and submit their compliance information:
 
-Rather than sending the entire PaymentIntent object to the client, use its client secret from [step 3](#3-create-a-payment-intent). After you create the PaymentIntent, the API returns a unique client secret for it (the client secret is different from the secret key you use to make Dots API requests).
+- For users based in the United States, you must provide the W-9 equivalent form.
+- For foreign payees, you must provide the W8-BEN form.
 
-The client secret can complete a charge, so handle it with discretion. Don’t log it, embed it in URLs, or expose it to anyone but the customer.
+To submit the compliance information to Dots, use the [Submit Compliance Information](/api-reference/users/submit-compliance-information) endpoint. You must inform the `user_id`, which is the same `id` received in step 1.
 
-To complete the payment when the user clicks, retrieve the client secret from the PaymentIntent you created in step two and call dots.confirmCardPayment with the client secret and the Element. Pass additional billing details, such as the cardholder name and address, to the billing_details hash.
+## 3. Verify the User
 
-To call `dots.confirmCardPayment` from your payment form component, use the useDots and useElements hooks.
+Next, you need to verify the user. First, send a verification code to the user's phone using the [Send a Verification Token](/api-reference/users/send-a-verification-token) endpoint. The user will receive a verification code in the registered phone number used to create their account in step 1. The [Send a Verification Token](/api-reference/users/send-a-verification-token) endpoint will return a 202 HTTP response for successful requests. 
 
-```typescript CheckoutForm.ts
-import React, { useEffect, useMemo, useState } from 'react';
-import { PaymentElement, useDots, useElements } from '@dots.dev/react-dots-js';
-import './CheckoutForm.css';
+After sending the verification code, you have to provide a UI for the user to enter the verification code they receive. Capture the code and use the code shared by the user to verify their account using the [Verify a User](/api-reference/users/verify-a-user) endpoint. Successful requests will return a 200 HTTP response.
 
-export default function CheckoutForm() {
-  const [error, setError] = useState(null);
-  const [metadata, setMetadata] = useState<any | null>();
-  const [succeeded, setSucceeded] = useState(false);
-  const [processing, setProcessing] = useState(false);
-  const dots = useDots();
-  const elements = useElements();
-  ...
+## 4. Transfer Funds to User Account
 
-  const onSubmit = async (data: any) => {
-    if (!dots || !elements) return;
-    setProcessing(true);
+Now that the user has a verified account, you can transfer funds to their account using the [Create a Transfer](/api-reference/users/verify-a-user) endpoint.   You must provide at least the following information:
 
-    try {
-      const payload = await dots.confirmCardPayment('{CLIENT_SECRET}', {
-        payment_method: {
-          element: elements?.getElement('payment')!,
-          billing_details: {
-            name: data.name, // not required
-            address: {
-              country: data.country,
-              zip: data.zip,
-            },
-          },
-        },
-      });
-      setSucceeded(true);
-      setMetadata(payload);
-    } catch (error: any) {
-      setError(error.toString());
-    } finally {
-      setProcessing(false);
+- `amount` in cents, using a negative value to transfer funds to the user.
+- `user_id`
+
+The following code block presents request and response examples of transferring funds to a user's account.
+
+<CodeGroup>
+```sh Request
+curl --request POST \
+  --url https://api.dots.dev/api/v2/transfers \
+  --header 'Authorization: Basic cGtfZGV2X3lpYXF0aXkwOGdIb3gzR3pvUEo2RlFsaURkSDRnOnNrX2Rldl9nUDBHQjZCd1FmZmt3S2FEVkh0UmdTd0NPT2RNVA==' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "amount": -1000,
+  "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4"
+}'
+```
+```json Response
+{
+  "amount": "-1000",
+  "created": "2024-07-12T11:07:42.842008",
+  "external_data": {},
+  "id": "c9ce3235-2a9d-474d-a6ac-0ebd95d66aa0",
+  "metadata": null,
+  "status": "completed",
+  "status_history": [
+    {
+      "status": "completed",
+      "timestamp": "Fri, 12 Jul 2024 11:07:42 GMT"
     }
-  };
-
-  const renderForm = () => {...};
-
-  return (
-    <div className="checkout-form">
-      <div className="sr-payment-form">
-        <div className="sr-form-row" />
-        {renderForm()}
-      </div>
-    </div>
-  );
+  ],
+  "transactions": [
+    {
+      "amount": "1000.0000000000",
+      "created": "2024-07-12T11:07:42.828513",
+      "destination_name": "enamored-education",
+      "id": 767408,
+      "metadata": null,
+      "source_name": "TestWriteChoiceApp",
+      "type": "balance"
+    }
+  ],
+  "type": "balance",
+  "user_id": "f33919ae-6793-41bd-b512-1ad3c19f4ecb"
 }
 ```
+</CodeGroup>
 
-When the payment completes successfully, the value of the returned PaymentIntent’s status property is succeeded. Check the status of a PaymentIntent in the Dashboard or by inspecting the status property on the object. If the payment isn’t successful, inspect the returned error to determine the cause.\
+Once completed, the funds will be available in the user’s account.
 
-## 6. Create future payments with reusable payment method. <span style={{fontSize: 16, paddingLeft: 10}}>`optional`</span>
+## 5. Add a Payout Method
 
-You can create an `off_session` payment by creating and confirming the same payment intent in single API call.
-
-### Save the reusable payment method
-
-When a customer completed the first payment, a payment method will be saved to that payment intent. You can listen to the webhook event `payment_intent.updated`, and [retrieve the payment intent](/payment-intents/retrieve-a-payment-intent) object to find the `payment_method_id`. Save that id to your user on your database. 
-
-### Create off session payments
-
-Follow [step 3](#3-create-a-payment-intent) to create a payment intent. Instead of passing in `customer_id` or `user_id`, pass in the `payment_method_id` and set `confirm` to `True`. This creates and confirm the payments immediately. 
-
-```bash Off session payment
-https://pls.senddotssandbox.com/api/v2/payment-intents/ \
--X POST \
--u "CLIENT_ID:API_KEY" \
--H "Content-Type: application/json" \
--d "{
-      "amount": 1000,
-      "currency": "usd",
-      "confirm": True
-      "payment_method_id": "u5835300-5555-4ba1-816a-0abaa8609a42",
-      "transfer_data": {
-        "destination_user_id": "0a7d51ec-04df-4eb8-a2c8-d066f6d3bb81"
-      },
-      "application_fee_amount": 100 //fee to be paid to the platform
-    }"
-
-> {
-  "id": "0e835300-5555-4ba1-816a-0abaa8609a83",
-  "status": "succeeded",
-  ...
-}
-```
+To enable users to withdraw their transferred funds, follow these steps:
 
 
-## 7. Test the integration
+1. Present the available payout methods so users can choose their preferred one. All available payout methods by country are available on the [Supported Countries](/references/supported-countries) page. Present these options to the user and capture their selection.
+2. Capture the payout method information based on the user's selection and gather all necessary information for the chosen payout method.
+3. Register the payout method using the [Add a Payout Method](/api-reference/users/add-a-payout-method) endpoint to add it to the user’s account. Provide the `user_id` and the required payout method information, which varies depending on the selected method.
 
-<Note>This information only applies to the sandbox environment</Note>
+## 6. Create a Payout
 
-| Number                | Brand            | CVC          | DATE             |
-| --------------------- | ---------------- | ------------ | ---------------- |
-| `4111 1111 1111 1111` | Visa (Credit)    | Any 3 digits | Any future dates |
-| `4900 7700 0000 0001` | Visa (Debit)     | Any 3 digits | Any future dates |
-| `5100 4000 0000 0000` | Mastercard       | Any 3 digits | Any future dates |
-| `6011 2345 6789 0123` | Discover         | Any 3 digits | Any future dates |
-| `3701 234567 89017`   | American Express | Any 3 digits | Any future dates |
+As the final step, with the payout method added, you can now create the payout to enable the user to withdraw their funds. Use the [Create a Payout](/api-reference/users/verify-a-user) endpoint, providing the `user_id`, the `amount` using the same as the one used in the transfer in step 4, and the `platform` associated with the payout method. The response will include the transaction data and status, allowing you to verify if the payout was successful.
+
+## What's Next?
+
+You can configure webhooks to stay up to date with all updates related to users, transfers, and payouts. To do so, access the [Webhooks](/references/webhooks) documentation page in Dots.
+
+If you're facing errors while using the Dots API, check the complete list of [error codes](/references/error-codes) you can receive.
+
+
