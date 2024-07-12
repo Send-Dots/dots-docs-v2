@@ -80,7 +80,14 @@
       "pages": [
         "guides/getting-started",
         "guides/payout-links",
-        "guides/flow-payouts",
+        {
+          "version": "v2",
+          "group": "Flows",
+          "pages": [
+            "guides/flow-payouts",
+            "guides/flow-style"
+          ]
+        },
         "guides/white-labeled-payouts"
       ]
     },
