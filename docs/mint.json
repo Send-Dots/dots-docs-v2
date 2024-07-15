@@ -68,6 +68,7 @@
       "group": "Overview",
       "pages": [
         "overview/introduction",
+        "overview/how-dots-works",
         "overview/concepts",
         "overview/environments",
         "overview/authentication"
