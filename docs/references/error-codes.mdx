@@ -1,0 +1,61 @@
+---
+title: "Error Codes"
+# description: "Error codes returned by the Dots API."
+---
+
+This document provides a detailed list of error codes returned by the Dots API, including descriptions to help you troubleshoot issues effectively. The errors are divided into the following types:
+
+<CardGroup cols={3}>
+  <Card title="Authentication" href="#authentication-errors" />
+  <Card title="Invoice" href="#invoice-errors" />
+  <Card title="Transaction " href="#transaction-errors" />
+  <Card title="User Information" href="#user-information-errors" />
+  <Card title="Service" href="#service-errors" />
+</CardGroup>
+
+## Authentication Errors
+
+| Code                                  | Description                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `auth-email-already-exists`           | The provided email address is already in use.                                                                                  |
+| `auth-username-already-exists`        | The provided username is already in use.                                                                                       |
+| `invalid-input`                       | The input provided is invalid.                                                                                                 |
+| `invalid-ssn`                         | The provided Social Security Number (SSN) is invalid.                                                                          |
+| `invalid-username`                    | The username is invalid. Usernames may only contain letters, digits, and hyphens (`-`). They must not contain swear words or protected words. |
+| `invalid-phone-number`                | The phone number provided is invalid.                                                                                          |
+| `invalid-email`                       | The email address provided is invalid.                                                                                         |
+| `invalid-phone-number-voip`           | VOIP phone numbers are not allowed.                                                                                            |
+|`invalid-phone-number-landline`| Landline phone number not allowed.|
+
+## Invoice Errors
+
+| Code                                  | Description                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `invalid-invoice-requested-information` | The value for requested information in the invoice is invalid.                                                                  |
+| `invalid-invoice-breakdown`           | The breakdown of the invoice is invalid.                                                                                       |
+| `invalid-invoice-item`                | The invoice item is invalid.                                                                                                   |
+| `invalid-invoice-item-total`          | The totals of the invoice items are incorrect.                                                                                 |
+
+## Transaction Errors
+
+| Code                                  | Description                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `invalid-transaction`                 | The transaction is invalid.                                                                                                    |
+| `transaction-insufficient-funds`      | There are insufficient funds in the wallet.                                                                                    |
+
+## User Information Errors
+
+| Code                                  | Description                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `user-info-missing`                   | The user has missing or invalid information.                                                                                   |
+| `user-info-missing-cash-app`          | The user is missing Cash App account information.                                                                              |
+| `user-info-missing-contact`           | The user is missing contact information.                                                                                       |
+| `user-info-missing-card`              | The user is missing credit card information.                                                                                   |
+| `app-info-missing`                    | The app has missing or invalid information.                                                                                    |
+
+## Service Errors
+
+| Code                                  | Description                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `service-unavailable`                 | A service was unavailable.                                                                                                     |
+| `resource-busy`                       | The resource is unavailable because one or more previous requests are still being processed.                                   |
