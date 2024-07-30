@@ -13,7 +13,7 @@ Before creating a payout using Dots API, you must have:
 
 If you still need to complete one of these steps, access the [Getting Started](/guides/getting-started) before continuing.
 
-## 1. Capture User Information and Create a User
+## 1. Create a User
 
 The first step to create a payout is to create a user in Dots. To create a user, you must first capture user information through your system. This will include details such as first name, last name, email, country code, and phone number.
 
@@ -83,71 +83,198 @@ Next, you need to verify the user. First, send a verification code to the user's
 
 After sending the verification code, you have to provide a UI for the user to enter the verification code they receive. Capture the code and use the code shared by the user to verify their account using the [Verify a User](/api-reference/users/verify-a-user) endpoint. Successful requests will return a 200 HTTP response.
 
-## 4. Transfer Funds to User Account
+## 4. Add a Default Payout Method
 
-Now that the user has a verified account, you can transfer funds to their account using the [Create a Transfer](/api-reference/users/verify-a-user) endpoint.   You must provide at least the following information:
+To enable users to withdraw their transferred funds, they should set a default payout method. However, Dots doesn't provide a way to tell you what payout methods are available for a user via the API. Therefore, before performing the first payout, you should use a Flow to enable the user to set a default payout method. Then you can use the API to execute a payout using the default payout method chosen by the user.
 
-- `amount` in cents, using a negative value to transfer funds to the user.
-- `user_id`
-
-The following code block presents request and response examples of transferring funds to a user's account.
+To add a default payout method to your user account, use the [Create a Flow](/api-reference/flows/create-a-flow) endpoint to create a Flow with the `manage-payouts` step. In addition, you must inform the `user_id` you received in [Step 1](#1-capture-user-information-and-create-a-user). The following code block presents request and response examples of creating a Flow with the described configurations.
 
 <CodeGroup>
-```sh Request
-curl --request POST \
-  --url https://api.dots.dev/api/v2/transfers \
-  --header 'Authorization: Basic cGtfZGV2X3lpYXF0aXkwOGdIb3gzR3pvUEo2RlFsaURkSDRnOnNrX2Rldl9nUDBHQjZCd1FmZmt3S2FEVkh0UmdTd0NPT2RNVA==' \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "amount": -1000,
-  "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4"
-}'
-```
-```json Response
-{
-  "amount": "-1000",
-  "created": "2024-07-12T11:07:42.842008",
-  "external_data": {},
-  "id": "c9ce3235-2a9d-474d-a6ac-0ebd95d66aa0",
-  "metadata": null,
-  "status": "completed",
-  "status_history": [
+  ```sh Request
+    curl --request POST \
+      --url https://pls.senddotssandbox.com/api/v2/flows/ \
+      --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
+      --header 'Content-Type: application/json' \
+      --data '{
+      "steps": [
+        "manage-payouts"
+      ],
+      "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4"
+    }'
+  ```
+
+  ```json Response
     {
-      "status": "completed",
-      "timestamp": "Fri, 12 Jul 2024 11:07:42 GMT"
-    }
-  ],
-  "transactions": [
-    {
-      "amount": "1000.0000000000",
-      "created": "2024-07-12T11:07:42.828513",
-      "destination_name": "enamored-education",
-      "id": 767408,
+      "completed_steps": [],
+      "created": "2024-07-30T13:19:09.438268",
+      "id": "17f357c1-7f4d-4101-a2c0-8cb9c9947ac8",
+      "link": "https://my-sandbox.dots.dev/flow/17f357c1-7f4d-4101-a2c0-8cb9c9947ac8",
       "metadata": null,
-      "source_name": "TestWriteChoiceApp",
-      "type": "balance"
+      "payout_link_id": null,
+      "steps": [
+        "manage-payouts"
+      ],
+      "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4"
     }
-  ],
-  "type": "balance",
-  "user_id": "f33919ae-6793-41bd-b512-1ad3c19f4ecb"
-}
-```
+    ```
 </CodeGroup>
 
-Once completed, the funds will be available in the user’s account.
+From the response, use the `link` to embed the Flow into an iframe within your application or redirect the user. 
 
-## 5. Add a Payout Method
+<Note>
 
-To enable users to withdraw their transferred funds, follow these steps:
+To start the Flow, Dots will send a verification code to the user's phone to confirm their identity. Once verified, all available payout methods will be displayed. The user can then select their preferred payout method and provide the necessary information. At the end of the process, there is an option to set this as the default payment method, which is selected by default. If the user has a default payout method in their account, funds can be transferred automatically using this method.
 
+</Note>
 
-1. Present the available payout methods so users can choose their preferred one. All available payout methods by country are available on the [Supported Countries](/references/supported-countries) page. Present these options to the user and capture their selection.
-2. Capture the payout method information based on the user's selection and gather all necessary information for the chosen payout method.
-3. Register the payout method using the [Add a Payout Method](/api-reference/users/add-a-payout-method) endpoint to add it to the user’s account. Provide the `user_id` and the required payout method information, which varies depending on the selected method.
+After the user has defined a default payout method, you can proceed to the next step. 
 
-## 6. Create a Payout
+## 5. Create a Payout
 
-As the final step, with the payout method added, you can now create the payout to enable the user to withdraw their funds. Use the [Create a Payout](/api-reference/users/verify-a-user) endpoint, providing the `user_id`, the `amount` using the same as the one used in the transfer in step 4, and the `platform` associated with the payout method. The response will include the transaction data and status, allowing you to verify if the payout was successful.
+As the final step, you can now create the payout. There are two options you can use to execute this action:
+
+- [Two Steps](#two-steps): Create a transfer from the app wallet to a user wallet, and then create a payout from the user wallet using the default payment method.
+- [Single Step](#single-step): Create a payout informing `fund: true` to transfer the funds from the app wallet to the user wallet and automatically create a payout from the user wallet using the default payment method. 
+
+### Two Steps
+
+If you prefer to execute the process in two steps, first you need to use the [Create a Transfer](/api-reference/transfers/create-a-transfer) endpoint to transfer funds from your app wallet to the user app wallet. You need to inform the `amount` and the `user_id`, which you received in [Step 1](#1-capture-user-information-and-create-a-user). The following code block presents request and response examples of creating a transfer. 
+
+<CodeGroup>
+  ```sh Request
+    curl --request POST \
+      --url https://api.dots.dev/api/v2/transfers  \
+      --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
+      --header 'Content-Type: application/json' \
+        --data '{
+        "amount": -1000,
+        "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4"
+      }'
+  ```
+
+  ```json Response
+    {
+      "id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+      "created": "2023-11-07T05:31:56Z",
+      "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4",
+      "status": "created",
+      "type": "refill",
+      "amount": 1000,
+      "external_data": {
+        "account_id": "<string>",
+        "external_id": "<string>",
+        "platform": "ach"
+      },
+      "transactions": [
+        {
+          "id": 123,
+          "amount": 1000,
+          "created": "2023-11-07T05:31:56Z",
+          "source_name": "<string>",
+          "destination_name": "<string>",
+          "type": "balance",
+          "metadata": "<string>"
+        }
+      ],
+    }
+    ```
+</CodeGroup>
+
+After moving the funds to the user's wallet, you can create the payout using the [Create a Payout](/api-reference/payouts/create-a-payout) endpoint. You must inform the `amount`, `user_id`, and `platform`. For the `amount`, you can inform a value different from the one used when creating the transfer, however, if the user doesn't have enough funds the transaction will fail. Regarding the `platform`, if the user has a default payout method, you can set `platform: default`. If the user hasn't defined a default payout method, you must collect their preferences and payout information and include the information in the request to the [Create a Payout](/api-reference/payouts/create-a-payout) endpoint. The following code block presents request and response examples of creating a payout. 
+
+<CodeGroup>
+  ```sh Request
+      curl --request POST \
+        --url https://api.dots.dev/api/v2/payouts \
+        --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
+        --header 'Content-Type: application/json' \
+        --data '{
+        "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4",
+        "amount": 1000,
+        "platform": "default"
+      }'
+  ```
+
+  ```json Response
+    {
+      "id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+      "created": "2023-11-07T05:31:56Z",
+      "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4",
+      "status": "created",
+      "type": "refill",
+      "amount": 1000,
+      "external_data": {
+        "account_id": "<string>",
+        "external_id": "<string>",
+        "platform": "ach"
+      },
+      "transactions": [
+        {
+          "id": 123,
+          "amount": 1000,
+          "created": "2023-11-07T05:31:56Z",
+          "source_name": "<string>",
+          "destination_name": "<string>",
+          "type": "balance",
+          "metadata": "<string>"
+        }
+      ],
+    }
+    ```
+</CodeGroup>
+
+### Single Step
+
+To execute the payout in a single step, you need to use the [Create a Payout](/api-reference/payouts/create-a-payout) endpoint. You must inform:
+
+- `amount`: Inform the payout amount the user will receive.
+- `user_id`: The user identification you received in [Step 1](#1-capture-user-information-and-create-a-user).
+- `platform`: If the user has a default payout method, you can set `platform: default`. If the user hasn't defined a default payout method, you must collect their preferences and payout information.
+- `fund`: It must be set equal to `true` to enable Dots to create a transfer for the amount to the user before creating the payout. The funds are returned if the payout does not succeed.
+
+The following code block presents request and response examples of creating a payout. 
+
+<CodeGroup>
+  ```sh Request
+      curl --request POST \
+        --url https://api.dots.dev/api/v2/payouts \
+        --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
+        --header 'Content-Type: application/json' \
+        --data '{
+        "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4",
+        "amount": 1000,
+        "platform": "default"
+        "fund`: "true",
+      }'
+  ```
+
+  ```json Response
+    {
+      "id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+      "created": "2023-11-07T05:31:56Z",
+      "user_id": "fc54b468-bbb2-403f-be36-5627a8e3c7a4",
+      "status": "created",
+      "type": "refill",
+      "amount": 1000,
+      "external_data": {
+        "account_id": "<string>",
+        "external_id": "<string>",
+        "platform": "ach"
+      },
+      "transactions": [
+        {
+          "id": 123,
+          "amount": 1000,
+          "created": "2023-11-07T05:31:56Z",
+          "source_name": "<string>",
+          "destination_name": "<string>",
+          "type": "balance",
+          "metadata": "<string>"
+        }
+      ],
+    }
+    ```
+</CodeGroup>
 
 ## What's Next?
 
