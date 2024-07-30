@@ -1055,6 +1055,13 @@ paths:
                       - manage-payouts
                       - payout
                       - redirect
+                accounting_data:
+                  type: object
+                  properties:
+                    quickbooks_account_id:
+                      type: integer
+                      description: Source/destination account ID to use
+                        when syncing the transaction to Quickbooks.
               required:
                 - amount
       description: Create a Payout Link.
@@ -1345,6 +1352,13 @@ paths:
                     - user
                     - platform
                   description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
+                accounting_data:
+                  type: object
+                  properties:
+                    quickbooks_account_id:
+                      type: integer
+                      description: Source/destination account ID to use
+                        when syncing the transaction to Quickbooks.
               required:
                 - amount
       description: "Send a payout to a person when you know their phone number or user id. If the user has a Dots acconut, the funds will delivered according to their saved prefernces. Otherwise, they will be sent a Payout Link to onboard and recieve funds."
