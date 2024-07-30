@@ -21,6 +21,77 @@ If you haven't completed one of these steps, access the [Getting Started](/guide
 You can create a Payout Link using the Dashboard or the API. Below you will find the steps to create a Payout Link using each of these options:
 
 <Tabs>
+  <Tab title="API">
+      To create the Payout Link using the API, you will need to use the **App API Key** and **Client ID**. You can find this information by accessing the Dashboard, selecting the desired App, and then selecting **API Management** on the sidebar. 
+      
+      With your credentials, you can create the Payout Link using the [Create a Payout Link](/api-reference/payout-links/create-a-payout-link) endpoint. The only required parameter is the `amount` value. However, you have several other options available, which are described in the following table:
+
+      | Parameter                                 | Description                                                                                                                                                                              |
+      |-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+      | `user_id`                                 | The user's id.                                                                                                                                                                            |
+      | `payee`                                   | The payee.                                                                                                                                                                                |
+      | `amount`                                  | **REQUIRED**. Amount to be paid in cents.                                                                                                                                                 |
+      | `delivery`                                | Delivery information.                                                                                                                                                                     |
+      | `delivery.message`                        | Message to send in the SMS message that is sent to the payee.                                                                                                                                                    |
+      | `delivery.method`                         | Delivery method. Options: `sms`, `link`, `email`, `all`.                                                                                                          |
+      | `force_collect_compliance_information`    | Force the collection of 1099 or W-8 information.                                                                                                                                          |
+      | `tax_exempt`                              | Payout links marked as `tax_exempt` will not be counted towards the 1099 threshold.                                                                                                        |
+      | `metadata`                                | Set of key-value pairs that you can attach to an object. It is useful for storing additional information about the object in a structured format.                                           |
+      | `memo`                                    | Add a memo to the top of the Payout Link.                                                                                                                                                  |
+      | `idempotency_key`                         | Unique UUID key that prevents duplicate requests from being processed.                                                                                                                     |
+      | `payout_fee_party`                        | Overrides the setting for which party will pay fees on this payout.                                                                                                                        |
+      | `additional_steps`                        | Array of steps in the onboarding process. Options: `compliance`, `id-verification`, `background-check`, `manage-payments`, `manage-payouts`, `payout`, `redirect`.                                   |
+
+      The following code block presents request and response examples of creating a Payout Link using the [Create a Payout Link](/api-reference/payout-links/create-a-payout-link) endpoint. 
+
+      <CodeGroup>
+      ```sh Request
+      curl --request POST \
+      --url https://pls.senddotssandbox.com/api/v2/payout-links \
+      --header 'Authorization: Basic <token>' \
+      --header 'Content-Type: application/json' \
+      --data '{
+      "amount": 123,
+      "idempotency_key": "3c90c3cc-0d44-4b50-8888-8dd25736052a"
+      }'
+      ```
+
+      ```json Response
+      {
+        "accounting_data": {
+          "quickbooks_account_id": null
+        },
+        "amount": 123,
+        "claimed_user_id": null,
+        "created": "2024-07-11T12:31:33.479437",
+        "delivery": {
+          "country_code": null,
+          "email": null,
+          "method": "link",
+          "phone_number": null
+        },
+        "description": null,
+        "flow_id": "7c22fd05-147e-48bb-b008-f48f24b76ea4",
+        "id": "e5d5863a-498d-4551-a3dc-e31012503f23",
+        "link": "https://my-sandbox.dots.dev/flow/7c22fd05-147e-48bb-b008-f48f24b76ea4",
+        "memo": null,
+        "metadata": null,
+        "payee": {
+          "country_code": null,
+          "email": null,
+          "first_name": null,
+          "last_name": null,
+          "phone_number": null
+        },
+        "status": "delivered",
+        "tax_exempt": false,
+        "transfer_id": "c1d3ec40-e05e-4385-acd6-c587372c4c3a"
+      }
+      ```
+      </CodeGroup>
+
+      The `link` parameter in the response will provide the Payout Link you can share with the payee.
+    </Tab>
   <Tab title="Dashboard">
     1. Access and log in to the [Dashboard](https://dashboard.dots.dev/).
     2. Select the desired App from the sidebar selector. 
@@ -32,77 +103,6 @@ You can create a Payout Link using the Dashboard or the API. Below you will find
     5. Click **Submit**. 
 
     If you choose Link, the Payout Link will appear below the Submit button. If you choose SMS or Email, the link will be automatically shared.
-  </Tab>
-  <Tab title="API">
-    To create the Payout Link using the API, you will need to use the **App API Key** and **Client ID**. You can find this information by accessing the Dashboard, selecting the desired App, and then selecting **API Management** on the sidebar. 
-    
-    With your credentials, you can create the Payout Link using the [Create a Payout Link](/api-reference/payout-links/create-a-payout-link) endpoint. The only required parameter is the `amount` value. However, you have several other options available, which are described in the following table:
-
-    | Parameter                                 | Description                                                                                                                                                                              |
-    |-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-    | `user_id`                                 | The user's id.                                                                                                                                                                            |
-    | `payee`                                   | The payee.                                                                                                                                                                                |
-    | `amount`                                  | **REQUIRED**. Amount to be paid in cents.                                                                                                                                                 |
-    | `delivery`                                | Delivery information.                                                                                                                                                                     |
-    | `delivery.message`                        | Message to send in the SMS message that is sent to the payee.                                                                                                                                                    |
-    | `delivery.method`                         | Delivery method. Options: `sms`, `link`, `email`, `all`.                                                                                                          |
-    | `force_collect_compliance_information`    | Force the collection of 1099 or W-8 information.                                                                                                                                          |
-    | `tax_exempt`                              | Payout links marked as `tax_exempt` will not be counted towards the 1099 threshold.                                                                                                        |
-    | `metadata`                                | Set of key-value pairs that you can attach to an object. It is useful for storing additional information about the object in a structured format.                                           |
-    | `memo`                                    | Add a memo to the top of the Payout Link.                                                                                                                                                  |
-    | `idempotency_key`                         | Unique UUID key that prevents duplicate requests from being processed.                                                                                                                     |
-    | `payout_fee_party`                        | Overrides the setting for which party will pay fees on this payout.                                                                                                                        |
-    | `additional_steps`                        | Array of steps in the onboarding process. Options: `compliance`, `id-verification`, `background-check`, `manage-payments`, `manage-payouts`, `payout`, `redirect`.                                   |
-
-    The following code block presents request and response examples of creating a Payout Link using the [Create a Payout Link](/api-reference/payout-links/create-a-payout-link) endpoint. 
-
-    <CodeGroup>
-    ```sh Request
-    curl --request POST \
-    --url https://pls.senddotssandbox.com/api/v2/payout-links \
-    --header 'Authorization: Basic <token>' \
-    --header 'Content-Type: application/json' \
-    --data '{
-    "amount": 123,
-    "idempotency_key": "3c90c3cc-0d44-4b50-8888-8dd25736052a"
-    }'
-    ```
-
-    ```json Response
-    {
-      "accounting_data": {
-        "quickbooks_account_id": null
-      },
-      "amount": 123,
-      "claimed_user_id": null,
-      "created": "2024-07-11T12:31:33.479437",
-      "delivery": {
-        "country_code": null,
-        "email": null,
-        "method": "link",
-        "phone_number": null
-      },
-      "description": null,
-      "flow_id": "7c22fd05-147e-48bb-b008-f48f24b76ea4",
-      "id": "e5d5863a-498d-4551-a3dc-e31012503f23",
-      "link": "https://my-sandbox.dots.dev/flow/7c22fd05-147e-48bb-b008-f48f24b76ea4",
-      "memo": null,
-      "metadata": null,
-      "payee": {
-        "country_code": null,
-        "email": null,
-        "first_name": null,
-        "last_name": null,
-        "phone_number": null
-      },
-      "status": "delivered",
-      "tax_exempt": false,
-      "transfer_id": "c1d3ec40-e05e-4385-acd6-c587372c4c3a"
-    }
-    ```
-    </CodeGroup>
-
-    The `link` parameter in the response will provide the Payout Link you can share with the payee.
   </Tab>
 </Tabs>
 
