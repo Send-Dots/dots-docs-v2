@@ -19,6 +19,8 @@ tags:
     description: App Routes
   - name: checkout-sessions
     description: Checkout Session Routes
+  - name: accounts-payable
+    description: Accounts Payable Routes
   - name: disputes
     description: Disputes Routes
   - name: flows
@@ -2109,6 +2111,134 @@ paths:
                 $ref: "#/components/schemas/checkout-session"
       operationId: get-checkout-session
       description: Retrieve a checkout session by an ID
+  /v2/accounts-payable/vendors:
+    get:
+      summary: List all vendors
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    description: "`true` if there are more objects."
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/vendor"
+      operationId: get-vendors
+      description: List all vendors
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+    post:
+      summary: Create a vendor
+      description: Create a vendor in your app for accounts payable
+      operationId: create-vendor
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                contact_email:
+                  type: string
+                  format: email
+                external_id:
+                  type: string
+                address:
+                  type: object
+                  properties:
+                    country:
+                      type: string
+                      enum: ['US']  # Only allow US for now
+                    city:
+                      type: string
+                    state:
+                      type: string
+                      enum: ['AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY']
+                    line_1:
+                      type: string
+                    line_2:
+                      type: string
+                    postcode:
+                      type: string
+                  required:
+                    - line_1
+                    - country
+                    - state
+                    - city
+                    - postcode
+              required:
+                - name
+                - address
+              
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vendor"
+  "/v2/accounts-payable/vendors/{vendor_id}":
+    get:
+      summary: Get vendor details
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vendor"
+      operationId: get-vendor
+      description: Get details of vendor
+    delete:
+      summary: Delete a vendor
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                    description: "`true` if the vendor was deleted."
+                  id:
+                    type: string
+                    description: ID of the vendor that was deleted.
+                  object:
+                    type: string
+                    description: Type of the object that was deleted.
+      operationId: delete-vendor
+      description: Delete a vendor
   /v2/apps:
     get:
       summary: List all Apps
@@ -3477,6 +3607,75 @@ components:
           format: email
         amount_total:
           type: integer
+    vendor:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the `vendor`.
+        name:
+          type: string
+          description: Name of the `vendor`.
+        description:
+          type: string
+        active:
+          type: boolean
+          description: Indicates if the vendor is active.
+        address:
+          type: object
+          properties:
+            city:
+              type: string
+            country:
+              type: string
+            line_1:
+              type: string
+            line_2:
+              type: string
+            postcode:
+              type: string
+            state:
+              type: string
+          required:
+            - line_1
+            - country
+            - state
+            - city
+            - postcode
+        api_app_id:
+          type: string
+          format: uuid
+        contact_email:
+          type: string
+          format: email
+        created:
+          type: string
+          format: date-time
+        external_id:
+          type: string
+          nullable: true
+      required:
+        - name
+        - address
+    vendor-payment-method:
+      type: object
+      properties:
+        name:
+          type: string
+        ach_account_number:
+          type: string
+        ach_routing_number:
+          type: string
+        ach_account_type:
+          type: string
+          enum:
+            - checking
+            - savings
+      required:
+        - name
+        - ach_account_number
+        - ach_routing_number
+        - ach_account_type
     app:
       type: object
       properties:
