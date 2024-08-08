@@ -19,12 +19,12 @@ tags:
     description: App Routes
   - name: checkout-sessions
     description: Checkout Session Routes
-  - name: accounts-payable
-    description: Accounts Payable Routes
   - name: disputes
     description: Disputes Routes
   - name: flows
     description: Flow routes
+  - name: invoices
+    description: Invoice Routes (accounts payable)
   - name: payment-customers
     description: Payment Customer Routes
   - name: payment-intents
@@ -49,6 +49,8 @@ tags:
     description: Transfer routes
   - name: users
     description: User routes
+  - name: vendors
+    description: Vendor Routes (accounts payable)
 paths:
   /v2/users:
     get:
@@ -2115,7 +2117,7 @@ paths:
     get:
       summary: List all vendors
       tags:
-        - accounts-payable
+        - vendors
       responses:
         "200":
           description: OK
@@ -2154,7 +2156,7 @@ paths:
       description: Create a vendor in your app for accounts payable
       operationId: create-vendor
       tags:
-        - accounts-payable
+        - vendors
       requestBody:
         content:
           application/json:
@@ -2206,7 +2208,7 @@ paths:
     get:
       summary: Get vendor details
       tags:
-        - accounts-payable
+        - vendors
       responses:
         "200":
           description: OK
@@ -2219,7 +2221,7 @@ paths:
     delete:
       summary: Delete a vendor
       tags:
-        - accounts-payable
+        - vendors
       responses:
         "200":
           description: OK
@@ -2243,7 +2245,7 @@ paths:
     get:
       summary: List all payment methods for a vendor
       tags:
-        - accounts-payable
+        - vendors
       responses:
         "200":
           description: OK
@@ -2260,7 +2262,7 @@ paths:
       description: Create a payment method for a vendor to pay to
       operationId: create-vendor-payment-method
       tags:
-        - accounts-payable
+        - vendors
       requestBody:
         content:
           application/json:
@@ -2294,7 +2296,7 @@ paths:
     get:
       summary: Get vendor payment method details
       tags:
-        - accounts-payable
+        - vendors
       responses:
         "200":
           description: OK
@@ -2307,7 +2309,7 @@ paths:
     delete:
       summary: Delete a vendor payment method
       tags:
-        - accounts-payable
+        - vendors
       responses:
         "200":
           description: OK
@@ -2331,7 +2333,7 @@ paths:
     get:
       summary: List all invoices
       tags:
-        - accounts-payable
+        - invoices
       responses:
         "200":
           description: OK
@@ -2370,7 +2372,7 @@ paths:
       description: Create an invoice in your app for accounts payable. The minimum required details to create an invoice is the invoice number. Remaining fields can be added later by updating the invoice before submission.
       operationId: create-invoice
       tags:
-        - accounts-payable
+        - invoices
       requestBody:
         content:
           application/json:
@@ -2436,7 +2438,7 @@ paths:
     get:
       summary: Get invoice details
       tags:
-        - accounts-payable
+        - invoices
       responses:
         "200":
           description: OK
@@ -2451,7 +2453,7 @@ paths:
       description: Update an invoice that has not been submitted for approval
       operationId: update-invoice
       tags:
-        - accounts-payable
+        - invoices
       requestBody:
         content:
           application/json:
@@ -2517,7 +2519,7 @@ paths:
       description: Cancel an invoice that has not been submitted for approval
       operationId: cancel-invoice
       tags:
-        - accounts-payable
+        - invoices
       requestBody:
         content:
           application/json:
@@ -2544,7 +2546,7 @@ paths:
       description: Submit an invoice for approval
       operationId: submit-invoice-for-approval
       tags:
-        - accounts-payable
+        - invoices
       requestBody:
         content:
           application/json:
@@ -2565,13 +2567,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/invoice"
-  "/v2/accounts-payable/invoices/{invoice_id}/  ":
+  "/v2/accounts-payable/invoices/{invoice_id}/approve":
     post:
       summary: Approve an invoice
       description: Approve an invoice
       operationId: approve-invoice
       tags:
-        - accounts-payable
+        - invoices
       requestBody:
         content:
           application/json:
@@ -2598,7 +2600,7 @@ paths:
       description: Reject an invoice
       operationId: reject-invoice
       tags:
-        - accounts-payable
+        - invoices
       requestBody:
         content:
           application/json:
@@ -2625,7 +2627,7 @@ paths:
       description: Pay an invoice that has been approve
       operationId: pay-invoice
       tags:
-        - accounts-payable
+        - invoices
       requestBody:
         content:
           application/json:
