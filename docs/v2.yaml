@@ -2239,6 +2239,94 @@ paths:
                     description: Type of the object that was deleted.
       operationId: delete-vendor
       description: Delete a vendor
+  "/v2/accounts-payable/vendors/{vendor_id}/payment-methods":
+    get:
+      summary: List all payment methods for a vendor
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/vendor"
+      operationId: get-vendor-payment-methods
+      description: List all payment methods for a vendor
+    post:
+      summary: Create a payment method for a vendor
+      description: Create a payment method for a vendor to pay to
+      operationId: create-vendor-payment-method
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                ach_account_number:
+                  type: string
+                ach_routing_number:
+                  type: string
+                ach_account_type:
+                  type: string
+                  enum:
+                    - checking
+                    - savings
+              required:
+                - name
+                - ach_account_number
+                - ach_routing_number
+                - ach_account_type
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vendor-payment-method"
+  "/v2/accounts-payable/vendors/{vendor_id}/payment-methods/{payment_method_id}":
+    get:
+      summary: Get vendor payment method details
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vendor-payment-method"
+      operationId: get-vendor-payment-method
+      description: Get details of vendor payment method
+    delete:
+      summary: Delete a vendor payment method
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                    description: "`true` if the vendor payment method was deleted."
+                  id:
+                    type: string
+                    description: ID of the vendor payment method that was deleted.
+                  object:
+                    type: string
+                    description: Type of the object that was deleted.
+      operationId: delete-vendor-payment-method
+      description: Delete a vendor payment method
   /v2/apps:
     get:
       summary: List all Apps
@@ -3636,12 +3724,6 @@ components:
               type: string
             state:
               type: string
-          required:
-            - line_1
-            - country
-            - state
-            - city
-            - postcode
         api_app_id:
           type: string
           format: uuid
@@ -3654,9 +3736,6 @@ components:
         external_id:
           type: string
           nullable: true
-      required:
-        - name
-        - address
     vendor-payment-method:
       type: object
       properties:
@@ -3671,11 +3750,6 @@ components:
           enum:
             - checking
             - savings
-      required:
-        - name
-        - ach_account_number
-        - ach_routing_number
-        - ach_account_type
     app:
       type: object
       properties:
