@@ -2327,6 +2327,323 @@ paths:
                     description: Type of the object that was deleted.
       operationId: delete-vendor-payment-method
       description: Delete a vendor payment method
+  /v2/accounts-payable/invoices:
+    get:
+      summary: List all invoices
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    description: "`true` if there are more objects."
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/invoice"
+      operationId: get-invoices
+      description: List all invoices
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+    post:
+      summary: Create an invoice
+      description: Create an invoice in your app for accounts payable. The minimum required details to create an invoice is the invoice number. Remaining fields can be added later by updating the invoice before submission.
+      operationId: create-invoice
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                number:
+                  type: string
+                description:
+                  type: string
+                external_id:
+                  type: string
+                ap_vendor_id:
+                  type: string
+                  format: uuid
+                ap_payment_method_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                  minimum: 1
+                  description: Total invoice amount in cents.
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        minLength: 1
+                      unit_price:
+                        type: number
+                        minimum: 1
+                        description: Item unit price in cents.
+                      quantity:
+                        type: number
+                        minimum: 1
+                      amount:
+                        type: number
+                        minimum: 1
+                        description: Total line item amount in cents. This should be the unit price multiplied by the quantity.
+                      description:
+                        type: string
+                    required:
+                      - name
+                      - unit_price
+                      - quantity
+                      - amount
+              required:
+                - acting_user_id
+                - number
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoice"
+  "/v2/accounts-payable/invoices/{invoice_id}":
+    get:
+      summary: Get invoice details
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoice"
+      operationId: get-invoice
+      description: Get details of an invoice
+    patch:
+      summary: Update an invoice
+      description: Update an invoice that has not been submitted for approval
+      operationId: update-invoice
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                number:
+                  type: string
+                description:
+                  type: string
+                ap_vendor_id:
+                  type: string
+                  format: uuid
+                ap_payment_method_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                  minimum: 1
+                  description: Total invoice amount in cents.
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        minLength: 1
+                      unit_price:
+                        type: number
+                        minimum: 1
+                        description: Item unit price in cents.
+                      quantity:
+                        type: number
+                        minimum: 1
+                      amount:
+                        type: number
+                        minimum: 1
+                        description: Total line item amount in cents. This should be the unit price multiplied by the quantity.
+                      description:
+                        type: string
+                    required:
+                      - name
+                      - unit_price
+                      - quantity
+                      - amount
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoice"
+
+  "/v2/accounts-payable/invoices/{invoice_id}/cancel":
+    post:
+      summary: Cancel an invoice
+      description: Cancel an invoice that has not been submitted for approval
+      operationId: cancel-invoice
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                comment:
+                  type: string
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoice"
+  "/v2/accounts-payable/invoices/{invoice_id}/submit-for-approval":
+    post:
+      summary: Submit an invoice for approval
+      description: Submit an invoice for approval
+      operationId: submit-invoice-for-approval
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                comment:
+                  type: string
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoice"
+  "/v2/accounts-payable/invoices/{invoice_id}/  ":
+    post:
+      summary: Approve an invoice
+      description: Approve an invoice
+      operationId: approve-invoice
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                comment:
+                  type: string
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoice"
+  "/v2/accounts-payable/invoices/{invoice_id}/reject":
+    post:
+      summary: Reject an invoice
+      description: Reject an invoice
+      operationId: reject-invoice
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                comment:
+                  type: string
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoice"
+  "/v2/accounts-payable/invoices/{invoice_id}/pay":
+    post:
+      summary: Pay an invoice
+      description: Pay an invoice that has been approve
+      operationId: pay-invoice
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoice"
   /v2/apps:
     get:
       summary: List all Apps
@@ -3750,6 +4067,165 @@ components:
           enum:
             - checking
             - savings
+    invoice:
+      type: object
+      properties:
+        action_history:
+          type: array
+          items:
+            type: object
+            properties:
+              action:
+                type: string
+                enum:
+                  - create
+                  - cancel
+                  - submit_for_approval
+                  - approve
+                  - reject
+                  - initiate_payment
+                  - retry_payment
+              comment:
+                type: string
+                nullable: true
+              timestamp:
+                type: string
+                format: date-time
+              user_id:
+                type: integer
+              user_name:
+                type: string
+              user_role:
+                type: string
+                enum:
+                  - admin
+                  - viewer
+                  - payer
+                  - ap_approver
+                  - ap_creator
+        amount:
+          type: number
+          description: Total invoice amount in cents.
+        ap_payment_method_id:
+          type: string
+          format: uuid
+        ap_payment_method_name:
+          type: string
+        ap_vendor_id:
+          type: string
+          format: uuid
+        ap_vendor_name:
+          type: string
+        api_app_id:
+          type: string
+          format: uuid
+        approval_steps:
+          type: array
+          items:
+            type: object
+            properties:
+              completed:
+                type: boolean
+              completed_timestamp:
+                type: string
+                format: date-time
+              num_approvals_required:
+                type: integer
+              user_approvals:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    approval_comment:
+                      type: string
+                      nullable: true
+                    approval_given:
+                      type: boolean
+                    approval_timestamp:
+                      type: string
+                      format: date-time
+                    name:
+                      type: string
+                    user_id:
+                      type: integer
+        created:
+          type: string
+          format: date-time
+        currency:
+          type: string
+        description:
+          type: string
+          nullable: true
+        external_id:
+          type: string
+          nullable: true
+        id:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              amount:
+                type: number
+                description: Total line item amount in cents. This should be the unit price multiplied by the quantity.
+                minimum: 1
+              description:
+                type: string
+              name:
+                type: string
+                minLength: 1
+              quantity:
+                type: number
+                minimum: 1
+              unit_price:
+                type: number
+                description: Item unit price in cents.
+                minimum: 1
+        number:
+          type: string
+        status:
+          type: string
+        status_history:
+          type: array
+          items:
+            type: object
+            properties:
+              status:
+                type: string
+                enum:
+                  - created
+                  - canceled
+                  - submitted_for_approval
+                  - rejected
+                  - approved
+                  - payment_initiated
+                  - payment_failed
+                  - payment_completed
+              timestamp:
+                type: string
+                format: date-time
+        transfer_history:
+          type: array
+          items:
+            type: object
+            properties:
+              created_timestamp:
+                type: string
+                format: date-time
+              idempotency_key:
+                type: string
+                format: uuid
+              transfer_id:
+                type: string
+                format: uuid
+        transfer_id:
+          type: string
+          format: uuid
+        updated:
+          type: string
+          format: date-time
     app:
       type: object
       properties:
