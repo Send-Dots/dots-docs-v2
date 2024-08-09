@@ -2646,6 +2646,175 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/invoice"
+  /v2/accounts-payable/approval-policies:
+    get:
+      summary: List all approval policies
+      tags:
+        - approval-policies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/approval-policy"
+      operationId: get-approval-policies
+      description: List all approval policies
+    post:
+      summary: Create an approval policy
+      description: Create an approval policy that will apply approval steps to invoices in your app. It will only apply to policies that match the `approval_conditions` and are in state `submitted_for_approval`. Policies that already have approval steps will not be overwritten.
+      operationId: create-approval-policy
+      tags:
+        - approval-policies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                invoice_conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - amount
+                          - vendor_id
+                    oneOf:
+                      - if:
+                          properties:
+                            type:
+                              const: amount
+                        then:
+                          properties:
+                            value:
+                              type: number
+                              description: Value for amount condition
+                            comparator:
+                              type: string
+                              enum:
+                                - '<='
+                                - '=='
+                                - '>='
+                          required:
+                            - value
+                            - comparator
+                      - if:
+                          properties:
+                            type:
+                              const: vendor_id
+                        then:
+                          properties:
+                            value:
+                              type: string
+                              description: Value for vendor_id condition
+                          required:
+                            - value
+                    required:
+                      - type
+                      - value
+                  minItems: 1
+                  uniqueItems: true
+                approval_conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      approver_list:
+                        type: array
+                        items:
+                          type: number
+                        minItems: 1
+                        uniqueItems: true
+                      num_approvals_required:
+                        type: number
+                        minimum: 1
+                    required:
+                      - approver_list
+                      - num_approvals_required
+                  minItems: 1
+                  uniqueItems: true
+              required:
+                - invoice_conditions
+                - approval_conditions
+                
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/approval-policy"
+  "/v2/accounts-payable/approval-policies/{approval_policy_id}":
+    patch:
+      summary: Update priority of an approval policy
+      description: Update the priority of an approval policy by its ID
+      operationId: update-approval-policy-priority
+      tags:
+        - approval-policies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                priority:
+                  type: integer
+                  description: The priority of the approval policy.
+              required:
+                - priority
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/approval-policy"
+    delete:
+      summary: Delete an approval policy
+      description: Delete an approval policy by its ID
+      operationId: delete-approval-policy
+      tags:
+        - approval-policies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                    description: "`true` if the approval policy was deleted."
+                  id:
+                    type: string
+                    description: ID of the approval policy that was deleted.
+                  object:
+                    type: string
+                    description: Type of the object that was deleted.
+  /v2/accounts-payable/approvers:
+    get:
+      summary: List all approvers for api app
+      tags:
+        - approval-policies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/approver"
+      operationId: get-approvers
+      description: List all approvers for api app
   /v2/apps:
     get:
       summary: List all Apps
@@ -4228,6 +4397,84 @@ components:
         updated:
           type: string
           format: date-time
+    approval-policy:
+      type: object
+      properties:
+        active:
+          type: boolean
+        api_app_id:
+          type: string
+          format: uuid
+        approval_conditions:
+          type: array
+          items:
+            type: object
+            properties:
+              approver_list:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+              num_approvals_required:
+                type: integer
+        invoice_conditions:
+          type: array
+          items:
+            type: object
+            properties:
+              comparator:
+                type: string
+              type:
+                type:
+                  enum:
+                    - amount
+                    - vendor_id
+              value:
+                type: number
+        created:
+          type: string
+          format: date-time
+        description:
+          type: string
+          nullable: true
+        id:
+          type: string
+          format: uuid
+        priority:
+          type: integer
+    approver:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        id:
+          type: integer
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        role:
+          type: string
+          enum:
+            - admin
+            - viewer
+            - payer
+            - ap_approver
+            - ap_creator
+        scope:
+          type: string
+          enum:
+            - organization
+            - app
+        username:
+          type: string
     app:
       type: object
       properties:
