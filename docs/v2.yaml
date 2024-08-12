@@ -2398,6 +2398,10 @@ paths:
                   type: number
                   minimum: 1
                   description: Total invoice amount in cents.
+                file:
+                  type: string
+                  format: base64
+                  description: Base64 encoded pdf file to attach to invoice.
                 items:
                   type: array
                   items:
@@ -2434,6 +2438,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/invoice"
+  "/v2/accounts-payable/invoices/upload-from-file":
+    post:
+      summary: Create an invoice from a file
+      description: Create an invoice from a file. The contents of the file will be processed and the invoice will be created.
+      operationId: create-invoice-from-file
+      tags:
+        - invoices
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                file:
+                  type: string
+                  format: binary
+                  description: PDF file to be uploaded
+              required:
+                - acting_user_id
+                - file
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoice"
   "/v2/accounts-payable/invoices/{invoice_id}":
     get:
       summary: Get invoice details
@@ -2450,7 +2484,7 @@ paths:
       description: Get details of an invoice
     patch:
       summary: Update an invoice
-      description: Update an invoice that has not been submitted for approval
+      description: Update an invoice that has not been submitted for approval. To upload/delete the file, use the `/file` endpoint.
       operationId: update-invoice
       tags:
         - invoices
@@ -2460,9 +2494,6 @@ paths:
             schema:
               type: object
               properties:
-                acting_user_id:
-                  type: integer
-                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
                 number:
                   type: string
                 description:
@@ -2503,8 +2534,6 @@ paths:
                       - unit_price
                       - quantity
                       - amount
-              required:
-                - acting_user_id
       responses:
         "200":
           description: Updated
@@ -2512,6 +2541,64 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/invoice"
+  "/v2/accounts-payable/invoices/{invoice_id}/file":
+    post:
+      summary: Upload file to the invoice    
+      description: Upload a file to be attached to the invoice
+      operationId: upload-invoice-file
+      tags:
+        - invoices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: base64
+              required:
+                - file
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the invoice that was updated with the file.
+                  updated:
+                    type: boolean
+                    description: "`true` if the invoice was updated."
+                  object:
+                    type: string
+                    description: Type of the object that was updated.
+    delete:
+      summary: Delete file from the invoice    
+      description: Delete a file from the invoice
+      operationId: delete-invoice-file
+      tags:
+        - invoices
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the invoice that has the file deleted.
+                  deleted:
+                    type: boolean
+                    description: "`true` if the file was deleted."
+                  object:
+                    type: string
+                    description: Type of the object that was deleted.
 
   "/v2/accounts-payable/invoices/{invoice_id}/cancel":
     post:
@@ -4329,6 +4416,10 @@ components:
           nullable: true
         external_id:
           type: string
+          nullable: true
+        file_url:
+          type: string
+          format: uri
           nullable: true
         id:
           type: string
