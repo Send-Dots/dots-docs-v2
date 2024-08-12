@@ -44,9 +44,25 @@ When working with Dots, you have access to organization and App keys, which you 
 
 <Note>Your organization and App keys change when you toggle between the Sandbox and Production environments. See the [Environments](/overview/environments) page for more information. Therefore, if you're changing from the Sandbox to the Production environment, remember to change the keys in your code.</Note>
 
+### App Keys
+
+Dots enables you to create and use [applications (Apps)](/overview/concepts#applications-apps), which is helpful for multi-tenancy applications where you want to logically separate funds and users on your platform. 
+
+Every new App has its own App Keys, which you can use to authenticate all operations related to that App.
+<Tip>
+See [Basic Token Format](#basic-token-format) to learn how to generate the token before sending your requests.
+</Tip>
+
+To access your App key, access the [Dots dashboard](https://dashboard.dots.dev/), select the desired App through the sidebar selector, and then select **API Management**. Your APP Key will be shown like exemplified below:
+
+<Frame>
+![App keys](../images/app-keys.png)
+</Frame>
+
+
 ### Organization Keys
 
-Organization keys are used to authenticate all your Dots operations. You can use them to create, update, and delete apps and act on behalf of Apps. When using organization keys to execute App operations, you must inform the organization key and the `Api-App-Id` to identify the App. The following code block presents how to use the organization key to create an App and send a payout. 
+Organization keys are used to authenticate Dots operations across all the applications in your organization. You can use them to create, update, and delete apps and act on behalf of Apps. When using organization keys to execute App operations, you must inform the organization key and the `Api-App-Id` to identify the App. The following code block presents how to use the organization key to create an App and send a payout. 
 
 <Tip>
   You will always inform your authentication key in a token format when using the Dots API. See [Basic Token Format](#basic-token-format) on this page to learn how to generate the token before sending your requests.
@@ -90,19 +106,3 @@ To access your organization keys, you can email info@dots.dev, or you can access
 </Frame>
 
 If you're using the organization key to authenticate actions on an App's behalf, you have to inform the App Id, which you receive when you create the App. However, you can use the [List All Apps](/api-reference/users/list-all-users) endpoint or the [Dashboard](https://dashboard.dots.dev/) to access to recover the App Id.
-
-### App Keys
-
-Dots enables you to create and use [applications (Apps)](/overview/concepts#applications-apps), which is helpful for multi-tenancy applications where you want to logically separate funds and users on your platform. 
-
-Every new App has its own App Keys, which you can use to authenticate all operations related to that App. As with the organization key, you will always inform your App key in a token format when using the Dots API. 
-
-<Tip>
-See [Basic Token Format](#basic-token-format) to learn how to generate the token before sending your requests.
-</Tip>
-
-To access your App key, access the [Dots dashboard](https://dashboard.dots.dev/), select the desired App through the sidebar selector, and then select **API Management**. Your APP Key will be shown like exemplified below:
-
-<Frame>
-![App keys](../images/app-keys.png)
-</Frame>
