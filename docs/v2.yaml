@@ -51,6 +51,8 @@ tags:
     description: User routes
   - name: vendors
     description: Vendor Routes (accounts payable)
+  - name: approval-policies
+    description: Approval Policy Routes (accounts payable)
 paths:
   /v2/users:
     get:
