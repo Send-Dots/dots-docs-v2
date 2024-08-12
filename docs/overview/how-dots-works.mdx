@@ -1,0 +1,72 @@
+---
+title: 'How Dots Works'
+---
+
+Dots simplifies the payout process by offering you and your users various payout options. The basic payout process always follows the same sequence of steps. This introductory page explains how the Dots process works, covering the overall process and specific concepts to help you get started.
+
+## Creating an Application (App)
+
+Before starting the payout process, you need to create an [application (App)](/overview/concepts#applications-apps) within the Dots dashboard. You can create multiple Apps to organize your operations according to your business structure. Access the [Getting Started](/guides/getting-started) for additional information.
+
+## Payouts Solutions
+
+Once you have created an App, you can start creating payouts. Dots offers three options for creating payouts:
+
+- **[Payout Link](/guides/payout-links)**: It's the easiest method to send a payout, generating a URL allowing users to onboard onto Dots and withdraw their funds through their preferred method. You can create a Payout Link using the Dots dashboard and send it to the recipient via email or SMS.
+
+- **[Flow Payouts](/guides/flow-payouts)**: Dots provides UI components called Flows that guide users through the payout process. You can specify the steps the user should perform to complete the payouts. Dots delivers the user experience, which you can integrate into your application using iframes.
+
+- **[API Payouts (White-label Payout)](/guides/white-labeled-payouts)**: All Dots operations are available through the Dots API. You create the UI and use the Dots API to perform payouts to your customers. This white-label solution offers maximum customization and control over the process and UX.
+
+## Payout Process
+
+Regardless of the payout method chosen, the overall process follows these steps:
+
+### Step 1: Create the Payout
+
+To create a payout, you typically need to specify:
+- The amount to be paid out.
+- The recipient's information (such as phone number or user ID).
+- Any additional steps or compliance information required.
+
+### Step 2: User Onboarding and Verification
+
+If the user doesn't have a Dots account, you need to create one and verify the user's identity. This process usually involves sending verification codes to the user's phone.
+
+- **Payout Link or Flow Payouts**: Dots handles onboarding and user verification.
+- **API Payouts**: You are responsible for creating the user account and verifying the user identity.
+
+### Step 3: Fund Transfer to User Account
+
+Once the user account is created and verified, you can transfer funds from your account to the user's account on Dots.
+
+### Step 4: User Chooses Payout Method
+
+With the funds available in the user's account, the user must choose their preferred payout method and provide the necessary information to register the payout method to their account.
+
+### Step 5: Completion of Payout
+
+To complete the process, the funds in the user's Dots account can be transferred to their bank account or another preferred payout method.
+
+- **Payout Link or Flow Payouts**: Dots manages the transfer of funds to the user's chosen payout method.
+- **API Payouts**: You handle the user interface and capture the payout information, then perform the fund transfer.
+
+## Additional Solutions
+
+In addition to the payout operations, Dots offers several other solutions:
+
+- **Payments to Your Account**: Enable your customers to perform payments to your account.
+- **Payments with Installments**: Create payments with or without installments.
+- **Disputes and Refunds**: Manage disputes and perform refunds.
+
+## What's Next?
+
+To enhance your understanding of the payout process, visit the [Concepts](/overview/concepts) page for a comprehensive overview.
+
+If you are new to Dots solutions, explore the [Environments](/overview/environments) documentation to learn about the Sandbox and Production environments available when using Dots. Additionally, review how [API Authentication Works](/overview/authentication) to securely access the Dots API.
+
+For detailed instructions on creating payouts with Dots, refer to the following guides:
+
+- [Payout Links](/guides/payout-links)
+- [Flow Payouts](/guides/flow-payouts)
+- [White-labeled Payouts](/guides/white-labeled-payouts)
