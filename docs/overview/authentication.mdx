@@ -53,7 +53,7 @@ Every new App has its own App Keys, which you can use to authenticate all operat
 See [Basic Token Format](#basic-token-format) to learn how to generate the token before sending your requests.
 </Tip>
 
-To access your App key, access the [Dots dashboard](https://dashboard.dots.dev/), select the desired App through the sidebar selector, and then select **API Management**. Your APP Key will be shown like exemplified below:
+To access your App key, access the [Dots dashboard](https://dashboard.dots.dev/), select the desired App through the sidebar selector, and then select **API Management**. Your App Key will be shown like exemplified below:
 
 <Frame>
 ![App keys](../images/app-keys.png)
@@ -105,4 +105,4 @@ To access your organization keys, you can email info@dots.dev, or you can access
 ![Organization keys](../images/organization-keys.png)
 </Frame>
 
-If you're using the organization key to authenticate actions on an App's behalf, you have to inform the App Id, which you receive when you create the App. However, you can use the [List All Apps](/api-reference/users/list-all-users) endpoint or the [Dashboard](https://dashboard.dots.dev/) to access to recover the App Id.
+If you're using the organization key to authenticate actions on an App's behalf, you need to include the App's ID with the `Api-App-Id` header in the request. The ID can be retrieved using the [List All Apps](/api-reference/users/list-all-users) endpoint or the [Dashboard](https://dashboard.dots.dev/).
