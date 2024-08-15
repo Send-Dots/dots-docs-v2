@@ -23,8 +23,8 @@ tags:
     description: Disputes Routes
   - name: flows
     description: Flow routes
-  - name: invoices
-    description: Invoice Routes (accounts payable)
+  - name: payables
+    description: Payable Routes (accounts payable)
   - name: payment-customers
     description: Payment Customer Routes
   - name: payment-intents
@@ -2331,11 +2331,11 @@ paths:
                     description: Type of the object that was deleted.
       operationId: delete-vendor-payment-method
       description: Delete a vendor payment method
-  /v2/accounts-payable/invoices:
+  /v2/accounts-payable/payables:
     get:
-      summary: List all invoices
+      summary: List all payables
       tags:
-        - invoices
+        - payables
       responses:
         "200":
           description: OK
@@ -2350,9 +2350,9 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/invoice"
-      operationId: get-invoices
-      description: List all invoices
+                      $ref: "#/components/schemas/payable"
+      operationId: get-payables
+      description: List all payables
       parameters:
         - schema:
             type: string
@@ -2370,11 +2370,11 @@ paths:
           name: ending_before
           description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
     post:
-      summary: Create an invoice
-      description: Create an invoice in your app for accounts payable. The minimum required details to create an invoice is the invoice number. Remaining fields can be added later by updating the invoice before submission.
-      operationId: create-invoice
+      summary: Create a payable
+      description: Create a payable in your app for accounts payable. The minimum required details to create a payable is the payable number. Remaining fields can be added later by updating the payable before submission.
+      operationId: create-payable
       tags:
-        - invoices
+        - payables
       requestBody:
         content:
           application/json:
@@ -2399,11 +2399,11 @@ paths:
                 amount:
                   type: number
                   minimum: 1
-                  description: Total invoice amount in cents.
+                  description: Total payable amount in cents.
                 file:
                   type: string
                   format: base64
-                  description: Base64 encoded pdf file to attach to invoice.
+                  description: Base64 encoded pdf file to attach to payable.
                 items:
                   type: array
                   items:
@@ -2439,14 +2439,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/invoice"
-  "/v2/accounts-payable/invoices/upload-from-file":
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/upload-from-file":
     post:
-      summary: Create an invoice from a file
-      description: Create an invoice from a file. The contents of the file will be processed and the invoice will be created.
-      operationId: create-invoice-from-file
+      summary: Create a payable from a file
+      description: Create a payable from a file. The contents of the file will be processed and the payable will be created.
+      operationId: create-payable-from-file
       tags:
-        - invoices
+        - payables
       requestBody:
         content:
           multipart/form-data:
@@ -2469,27 +2469,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/invoice"
-  "/v2/accounts-payable/invoices/{invoice_id}":
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}":
     get:
-      summary: Get invoice details
+      summary: Get payable details
       tags:
-        - invoices
+        - payables
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/invoice"
-      operationId: get-invoice
-      description: Get details of an invoice
+                $ref: "#/components/schemas/payable"
+      operationId: get-payable
+      description: Get details of a payable
     patch:
-      summary: Update an invoice
-      description: Update an invoice that has not been submitted for approval. To upload/delete the file, use the `/file` endpoint.
-      operationId: update-invoice
+      summary: Update a payable
+      description: Update a payable that has not been submitted for approval. To upload/delete the file, use the `/file` endpoint.
+      operationId: update-payable
       tags:
-        - invoices
+        - payables
       requestBody:
         content:
           application/json:
@@ -2509,7 +2509,7 @@ paths:
                 amount:
                   type: number
                   minimum: 1
-                  description: Total invoice amount in cents.
+                  description: Total payable amount in cents.
                 items:
                   type: array
                   items:
@@ -2542,14 +2542,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/invoice"
-  "/v2/accounts-payable/invoices/{invoice_id}/file":
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/file":
     post:
-      summary: Upload file to the invoice    
-      description: Upload a file to be attached to the invoice
-      operationId: upload-invoice-file
+      summary: Upload file to the payable    
+      description: Upload a file to be attached to the payable
+      operationId: upload-payable-file
       tags:
-        - invoices
+        - payables
       requestBody:
         content:
           application/json:
@@ -2571,19 +2571,19 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: ID of the invoice that was updated with the file.
+                    description: ID of the payable that was updated with the file.
                   updated:
                     type: boolean
-                    description: "`true` if the invoice was updated."
+                    description: "`true` if the payable was updated."
                   object:
                     type: string
                     description: Type of the object that was updated.
     delete:
-      summary: Delete file from the invoice    
-      description: Delete a file from the invoice
-      operationId: delete-invoice-file
+      summary: Delete file from the payable    
+      description: Delete a file from the payable
+      operationId: delete-payable-file
       tags:
-        - invoices
+        - payables
       responses:
         "200":
           description: OK
@@ -2594,7 +2594,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: ID of the invoice that has the file deleted.
+                    description: ID of the payable that has the file deleted.
                   deleted:
                     type: boolean
                     description: "`true` if the file was deleted."
@@ -2602,13 +2602,13 @@ paths:
                     type: string
                     description: Type of the object that was deleted.
 
-  "/v2/accounts-payable/invoices/{invoice_id}/cancel":
+  "/v2/accounts-payable/payables/{payable_id}/cancel":
     post:
-      summary: Cancel an invoice
-      description: Cancel an invoice that has not been submitted for approval
-      operationId: cancel-invoice
+      summary: Cancel a payable
+      description: Cancel a payable that has not been submitted for approval
+      operationId: cancel-payable
       tags:
-        - invoices
+        - payables
       requestBody:
         content:
           application/json:
@@ -2628,14 +2628,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/invoice"
-  "/v2/accounts-payable/invoices/{invoice_id}/submit-for-approval":
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/submit-for-approval":
     post:
-      summary: Submit an invoice for approval
-      description: Submit an invoice for approval
-      operationId: submit-invoice-for-approval
+      summary: Submit a payable for approval
+      description: Submit a payable for approval
+      operationId: submit-payable-for-approval
       tags:
-        - invoices
+        - payables
       requestBody:
         content:
           application/json:
@@ -2655,14 +2655,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/invoice"
-  "/v2/accounts-payable/invoices/{invoice_id}/approve":
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/approve":
     post:
-      summary: Approve an invoice
-      description: Approve an invoice
-      operationId: approve-invoice
+      summary: Approve a payable
+      description: Approve a payable
+      operationId: approve-payable
       tags:
-        - invoices
+        - payables
       requestBody:
         content:
           application/json:
@@ -2682,14 +2682,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/invoice"
-  "/v2/accounts-payable/invoices/{invoice_id}/reject":
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/reject":
     post:
-      summary: Reject an invoice
-      description: Reject an invoice
-      operationId: reject-invoice
+      summary: Reject a payable
+      description: Reject a payable
+      operationId: reject-payable
       tags:
-        - invoices
+        - payables
       requestBody:
         content:
           application/json:
@@ -2709,14 +2709,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/invoice"
-  "/v2/accounts-payable/invoices/{invoice_id}/pay":
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/pay":
     post:
-      summary: Pay an invoice
-      description: Pay an invoice that has been approve
-      operationId: pay-invoice
+      summary: Pay a payable
+      description: Pay a payable that has been approve
+      operationId: pay-payable
       tags:
-        - invoices
+        - payables
       requestBody:
         content:
           application/json:
@@ -2734,7 +2734,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/invoice"
+                $ref: "#/components/schemas/payable"
   /v2/accounts-payable/approval-policies:
     get:
       summary: List all approval policies
@@ -2753,7 +2753,7 @@ paths:
       description: List all approval policies
     post:
       summary: Create an approval policy
-      description: Create an approval policy that will apply approval steps to invoices in your app. It will only apply to policies that match the `approval_conditions` and are in state `submitted_for_approval`. Policies that already have approval steps will not be overwritten.
+      description: Create an approval policy that will apply approval steps to payables in your app. It will only apply to policies that match the `approval_conditions` and are in state `submitted_for_approval`. Policies that already have approval steps will not be overwritten.
       operationId: create-approval-policy
       tags:
         - approval-policies
@@ -2765,7 +2765,7 @@ paths:
               properties:
                 description:
                   type: string
-                invoice_conditions:
+                payable_conditions:
                   type: array
                   items:
                     type: object
@@ -2830,7 +2830,7 @@ paths:
                   minItems: 1
                   uniqueItems: true
               required:
-                - invoice_conditions
+                - payable_conditions
                 - approval_conditions
                 
       responses:
@@ -4327,7 +4327,7 @@ components:
           enum:
             - checking
             - savings
-    invoice:
+    payable:
       type: object
       properties:
         action_history:
@@ -4365,7 +4365,7 @@ components:
                   - ap_creator
         amount:
           type: number
-          description: Total invoice amount in cents.
+          description: Total payable amount in cents.
         ap_payment_method_id:
           type: string
           format: uuid
@@ -4514,7 +4514,7 @@ components:
                       type: string
               num_approvals_required:
                 type: integer
-        invoice_conditions:
+        payable_conditions:
           type: array
           items:
             type: object
