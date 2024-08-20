@@ -549,6 +549,9 @@ paths:
                     type: string
                     enum: [checking, savings]
                     description: ACH account type, either "checking" or "savings".
+                  rtp_enabled:
+                    type: boolean
+                    description: Indicates if RTP is enabled for the payment method (applies to ach only).
                 required:
                   - platform
       requestBody:
@@ -3021,6 +3024,9 @@ components:
         currency:
           type: string
           format: iso4217
+        rtp_enabled:
+          type: boolean
+          description: Indicates if RTP is enabled for the payment method (applies to ach only).
       required:
         - platform
     payout-link:
