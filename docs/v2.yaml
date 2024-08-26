@@ -2877,7 +2877,7 @@ paths:
         required: true
         description: ID of the transfer to retrieve
     get:
-      summary: Get a Transfer
+      summary: Get an Organization Transfer
       tags:
         - transfers
       responses:
@@ -2889,7 +2889,7 @@ paths:
                 $ref: "#/components/schemas/transfer"
                 description: The `transfer` object.
       operationId: get-organization-transfer
-      description: Get a transfer by its id.
+      description: Get an organization transfer by its id.
   "/v2/users/{user_id}/addresses":
     parameters:
       - schema:
