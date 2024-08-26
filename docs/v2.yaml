@@ -1065,6 +1065,10 @@ paths:
                       type: integer
                       description: Source/destination account ID to use
                         when syncing the transaction to Quickbooks.
+                    quickbooks_class_id:
+                      type: integer
+                      description: Class ID to use for classification
+                        when syncing the transaction to Quickbooks.
               required:
                 - amount
       description: Create a Payout Link.
@@ -1361,6 +1365,10 @@ paths:
                     quickbooks_account_id:
                       type: integer
                       description: Source/destination account ID to use
+                        when syncing the transaction to Quickbooks.
+                    quickbooks_class_id:
+                      type: integer
+                      description: Class ID to use for classification
                         when syncing the transaction to Quickbooks.
               required:
                 - amount
