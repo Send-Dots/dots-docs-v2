@@ -1691,6 +1691,8 @@ paths:
         description: The ID if the Payment Intent to confirm.
     post:
       summary: Confirm a Payment Intent
+      tags:
+        - payment-intents
       operationId: confirm-payment-intent
       responses:
         "200":
