@@ -3290,6 +3290,15 @@ components:
               type: boolean
             id_verified:
               type: boolean
+            has_criminal_activity:
+              type: boolean
+            flags:
+              type: object
+              properties:
+                ofac:
+                  type: boolean
+                payout_method:
+                  type: boolean
         metadata:
           type:
             - string
