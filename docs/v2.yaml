@@ -3284,22 +3284,52 @@ components:
           properties:
             tax_id_collected:
               type: boolean
+              description: Deprecated. Use `w9.tax_id_collected` instead.
+              depcrecated: true
             address_collected:
               type: boolean
+              description: Deprecated. Use `w9.address_collected` instead.
+              deprecated: true
             date_of_birth_collected:
               type: boolean
+              description: The user's date of birth was collected.
             must_collect_1099:
               type: boolean
+              description: The user's 1099 information needs to be collected to resume payouts.
             1099_collected:
               type: boolean
+              description: The user's 1099 information was collected.
             w8_ben_collected:
               type: boolean
+              description: The user's W8-BEN information was collected.
             flagged:
               type: boolean
+              description: The user is flagged for review. For more information, see the `flags` object.
             id_verified:
               type: boolean
+              description: The user's id was verified.
             has_criminal_activity:
               type: boolean
+              description: The user has criminal activity based on a background check.
+            w9:
+              type:
+                - object
+                - null
+              description: Information about the user's W9 form. null if the user is not a US individual or business.
+              properties:
+                entity_type:
+                  type: string
+                  enum:
+                    - individual
+                    - business
+                business_name:
+                  type:
+                    - string
+                    - null
+                tax_id_collected:
+                  type: boolean
+                address_collected:
+                  type: boolean
             flags:
               type: object
               properties:
