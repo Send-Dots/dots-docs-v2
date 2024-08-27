@@ -99,7 +99,8 @@
         "references/idempotency",
         "references/metadata",
         "references/supported-countries",
-        "references/webhooks"
+        "references/webhooks",
+        "references/ip-address-tracking"
       ]
     }
   ],
