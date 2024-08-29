@@ -882,7 +882,15 @@ paths:
                 user_id:
                   type: string
                   format: uuid
-                  description: The user's id.
+                  description: The user's id. If the user's ID is provided, the flow will be created in the authenticated state with a 15 minute expiration time unless the `require_auth` option is set to `true`.
+                hide_go_to_dashboard_on_complete:
+                  type: boolean
+                  description: Hide the "Go to dashboard" button on the flow UI. Defaults to `false`.
+                  default: false
+                require_auth:
+                  type: boolean
+                  description: Require the user to be authenticated to complete the flow. Defaults to `false`.
+                  default: false
                 metadata:
                   type:
                     - string
