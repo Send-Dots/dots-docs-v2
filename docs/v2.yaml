@@ -3347,6 +3347,8 @@ components:
                   type: boolean
                 payout_method:
                   type: boolean
+                payout_method_cycle:
+                  type: boolean
         metadata:
           type:
             - string
