@@ -3345,8 +3345,13 @@ components:
               properties:
                 ofac:
                   type: boolean
+                  description: True when the user is flagged for potential OFAC compliance issues.
                 payout_method:
                   type: boolean
+                  description: True when two or more users share the same payout method.
+                payout_method_cycle:
+                  type: boolean
+                  description: True when the user has connected or disconnected payout methods repeatedly over a short period of time.
         metadata:
           type:
             - string
