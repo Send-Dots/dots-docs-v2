@@ -78,23 +78,29 @@ When creating an endpoint on Svix, you can subscribe to a wide list of events to
 
   ```json
   {
-  "amount": 1000,
-  "delivery": {
-    "email": "info@dots.dev",
-    "method": "email"
-  },
-  "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-  "link": "https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf",
-  "original_amount": 1000,
-  "payee": {
-    "country_code": "1",
-    "first_name": "John",
-    "last_name": "Doe",
-    "phone_number": "5555555555"
-  },
-  "status": "delivered"
+    "id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    "created": "2023-11-07T05:31:56Z",
+    "link": "<string>",
+    "amount": 123,
+    "status": "created",
+    "payee": {
+      "first_name": "<string>",
+      "last_name": "<string>",
+      "email": "jsmith@example.com",
+      "country_code": "<string>",
+      "phone_number": "<string>"
+    },
+    "delivery": {
+      "method": "link",
+      "email": "jsmith@example.com",
+      "country_code": "<string>",
+      "phone_number": "<string>"
+    },
+    "tax_exempt": true,
+    "claimed_user_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    "flow_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    "metadata": "<string>"
   }
-
   ```
   </Accordion>
 
@@ -102,23 +108,28 @@ When creating an endpoint on Svix, you can subscribe to a wide list of events to
   Occurs when a user completes a payout through a payout link, either in full or partially.          
   ```json
   {
-    "amount": 1000,
-    "delivery": {
-    "email": "info@dots.dev",
-    "method": "email"
-    },
-    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-    "link": "https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf",
-    "method": "paypal",
-    "original_amount": 1000,
+    "id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    "created": "2023-11-07T05:31:56Z",
+    "link": "<string>",
+    "amount": 123,
+    "status": "created",
     "payee": {
-    "country_code": "1",
-    "first_name": "John",
-    "last_name": "Doe",
-    "phone_number": "5555555555"
+      "first_name": "<string>",
+      "last_name": "<string>",
+      "email": "jsmith@example.com",
+      "country_code": "<string>",
+      "phone_number": "<string>"
     },
-    "status": "delivered",
-    "withdrew_amount": 800
+    "delivery": {
+      "method": "link",
+      "email": "jsmith@example.com",
+      "country_code": "<string>",
+      "phone_number": "<string>"
+    },
+    "tax_exempt": true,
+    "claimed_user_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    "flow_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    "metadata": "<string>"
   }
   ```
 
@@ -129,21 +140,28 @@ When creating an endpoint on Svix, you can subscribe to a wide list of events to
 
   ```json
   {
-    "amount": 1000,
-    "delivery": {
-    "email": "info@dots.dev",
-    "method": "email"
-    },
-    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-    "link": "https://senddotssandbox.com/payout_link/dsfvytoehf3745bfm2k3244543fdf",
-    "original_amount": 1000,
+    "id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    "created": "2023-11-07T05:31:56Z",
+    "link": "<string>",
+    "amount": 123,
+    "status": "created",
     "payee": {
-    "country_code": "1",
-    "first_name": "John",
-    "last_name": "Doe",
-    "phone_number": "5555555555"
+      "first_name": "<string>",
+      "last_name": "<string>",
+      "email": "jsmith@example.com",
+      "country_code": "<string>",
+      "phone_number": "<string>"
     },
-    "status": "delivered"
+    "delivery": {
+      "method": "link",
+      "email": "jsmith@example.com",
+      "country_code": "<string>",
+      "phone_number": "<string>"
+    },
+    "tax_exempt": true,
+    "claimed_user_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    "flow_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    "metadata": "<string>"
   }
   ```
   </Accordion>
