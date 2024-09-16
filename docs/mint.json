@@ -95,6 +95,7 @@
       "version": "v2",
       "group": "References",
       "pages": [
+        "references/users",
         "references/error-codes",
         "references/idempotency",
         "references/metadata",
