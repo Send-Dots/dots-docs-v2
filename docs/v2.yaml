@@ -3296,6 +3296,15 @@ components:
               type: boolean
               description: Deprecated. Use `w9.tax_id_collected` instead.
               depcrecated: true
+            tax_id_verification:
+              type: string
+              enum:
+                - unsubmitted
+                - pending
+                - matched
+                - mismatched
+              description: Tax ID verification status. A mismatched tax
+                ID may be corrected and resubmitted.
             address_collected:
               type: boolean
               description: Deprecated. Use `w9.address_collected` instead.
@@ -3345,10 +3354,13 @@ components:
               properties:
                 ofac:
                   type: boolean
+                  description: True when the user is flagged for potential OFAC compliance issues.
                 payout_method:
                   type: boolean
+                  description: True when two or more users share the same payout method.
                 payout_method_cycle:
                   type: boolean
+                  description: True when the user has connected or disconnected payout methods repeatedly over a short period of time.
         metadata:
           type:
             - string

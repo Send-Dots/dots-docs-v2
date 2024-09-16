@@ -1,0 +1,34 @@
+---
+title: "Users"
+description: "How to work with the users API"
+---
+
+A `user` is a representation of a person or entity in the Dots system. A `user` can be created by a platform or by the `user` themselves but can be connected to any platform.
+
+The platform can add additional data to a `user` such as an SSN and address for tax purposes and add bank accounts and other payment methods.
+
+## Creating a user
+
+Creating users happens through the [/v2/users](/api-reference/v2/users/create-user) endpoint. Once hit, a dots user will be created if one does not exist based on phone number. This user must then be verified through a one-time code sent over text-message. This code can be requested through the [/v2/users/\{user_id\}/send-verification-token](/api-reference/v2/users/send-verification-token) endpoint and then verified through the [/v2/users/\{user_id\}/verify](/api-reference/v2/users/verify-user) endpoint.
+
+## TIN submission and verification
+
+A user's Tax Identification Number (TIN) is either their United States
+Social Security Number (SSN), Employer Identification Number (EIN), or
+their Individual Tax Identification Number (ITIN). A user's TIN may be
+submitted through a [payout link](/guides/payout-links), a
+[compliance flow](/guides/flow-payouts), or through
+[POST /users/:id/compliance](/apireference/users/submit-compliance-information)
+API endpoint.
+
+Once submitted, a user's TIN will automatically be verified. This
+usually takes a few seconds, or rarely up to a day. You can check the
+status of the TIN verification in the `compliance.w9.tax_id_verification`
+field returned the [GET /user/:id](apireference/users/retrieve-a-user) endpoint.
+The possible statuses are:
+- `unsubmitted`: The user's TIN has not been submitted yet.
+- `pending`: The user's TIN is pending verification.
+- `matched`: The user's TIN was successfully verified and matched their name.
+- `mismatched`: The user's TIN did not match their name.
+
+A mismatched TIN may be corrected by resubmitting the correct TIN.
