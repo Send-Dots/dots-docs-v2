@@ -3355,6 +3355,14 @@ components:
                 ofac:
                   type: boolean
                   description: True when the user is flagged for potential OFAC compliance issues.
+                ofac_status:
+                  type: string
+                  enum:
+                    - unflagged
+                    - id_verification_required
+                    - in_review
+                    - flagged
+                  description: Status of the user's OFAC compliance verification.
                 payout_method:
                   type: boolean
                   description: True when two or more users share the same payout method.
