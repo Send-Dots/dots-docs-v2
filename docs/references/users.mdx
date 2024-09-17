@@ -24,7 +24,7 @@ API endpoint.
 Once submitted, a user's TIN will automatically be verified. This
 usually takes a few seconds, or rarely up to a day. You can check the
 status of the TIN verification in the `compliance.w9.tax_id_verification`
-field returned the [GET /user/:id](apireference/users/retrieve-a-user) endpoint.
+field returned the [GET /user/:id](/apireference/users/retrieve-a-user) endpoint.
 The possible statuses are:
 - `unsubmitted`: The user's TIN has not been submitted yet.
 - `pending`: The user's TIN is pending verification.
@@ -43,7 +43,7 @@ will be cleared when we confirm they are not a sanctioned individual.
 
 You can check a user's OFAC compliance status by reading the
 `compliance.flags.ofac_status` field returned by the
-[GET /user/:id](apireference/users/retrieve-a-user) endpoint. The
+[GET /user/:id](/apireference/users/retrieve-a-user) endpoint. The
 possible statuses are:
 - `unflagged`: The user is unflagged.
 - `id_verification_required`: The user must complete ID verification.
