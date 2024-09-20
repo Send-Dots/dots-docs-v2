@@ -3289,6 +3289,13 @@ components:
           $ref: "#/components/schemas/payment-method"
         wallet:
           $ref: "#/components/schemas/wallet"
+        status:
+          type: string
+          enum:
+            - verified
+            - unverified
+            - disabled
+            - in_review
         compliance:
           type: object
           properties:
