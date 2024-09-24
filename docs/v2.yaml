@@ -2848,7 +2848,7 @@ paths:
               properties:
                 amount:
                   type: integer
-                  description: The amount in cents to transfer. Negative amount transfers money from the `app` to the `user`.
+                  description: The amount in cents to transfer. Negative amount transfers money from the `organization` to the `api_app`.
                 api_app_id:
                   type: string
                   format: uuid
