@@ -1182,7 +1182,7 @@ paths:
                   description: The bank account ID you are paying to. Required for `ach` and `intl_bank`.
                 fund:
                   type: boolean
-                  description: Creates a transfer for the amount to the user before creating the payout. The funds are returned if the payout does not succeed.
+                  description: Creates a transfer for the amount to the user before creating the payout. The funds are returned to the App Wallet if the payout does not succeed. Please ensure that you are handling transfer failure webhooks when using this option.
                 tax_exempt:
                   type: boolean
                   description: Payouts marked as `tax_exempt` will not be counted towards the 1099 threshold. Can be `true` only if `fund` is `true`.
