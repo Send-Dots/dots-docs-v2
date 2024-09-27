@@ -73,6 +73,16 @@ paths:
       parameters:
         - schema:
             type: string
+            enum:
+              - verified
+              - unverified
+              - in_review
+              - disabled
+          in: query
+          name: status
+          description: "Filter users by status. Users that are `in_review` are users that have been flagged for fraud risk and is pending review."
+        - schema:
+            type: string
             format: uuid
           in: query
           name: starting_after
