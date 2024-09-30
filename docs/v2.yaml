@@ -603,11 +603,11 @@ paths:
                   type: string
                   description: Cash App Cash Tag. Required if `platform` = `cash_app`.
                 is_default:
-                  type: [boolean, 'null']
+                  type: [boolean, "null"]
                   description: When true, the newly added payment method will
                     be set as the user's default payout method.
                 auto_payout_enabled:
-                  type: [boolean, 'null']
+                  type: [boolean, "null"]
                   description: When specified, enables or disables auto payout
                     for this user.
               required:
@@ -754,9 +754,9 @@ paths:
                 value:
                   amount: -1000
                   user_id: a169451c-8525-4352-b8ca-070dd449a1a5
-              Debi Funds from User:
+              Debit Funds from User:
                 value:
-                  amount: -1000
+                  amount: 1000
                   user_id: a169451c-8525-4352-b8ca-070dd449a1a5
         description: ""
       description: Create a transfer.
