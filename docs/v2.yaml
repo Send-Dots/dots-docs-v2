@@ -3739,6 +3739,7 @@ components:
               - dob
               - ownership_percentage
               - address
+              - ssn
             properties:
               address:
                 type: object
@@ -3747,6 +3748,7 @@ components:
                   - city
                   - zip
                   - country
+                  - state
                 properties:
                   city:
                     maxLength: 100
@@ -3776,6 +3778,10 @@ components:
                 format: date
                 type: string
                 description: Date of birth
+              ssn:
+                type: string
+                pattern: '[0-9]{9}'
+                description: Social security number
               email:
                 format: email
                 maxLength: 100
