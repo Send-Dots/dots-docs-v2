@@ -59,9 +59,7 @@
       "openapi": "/v2.yaml"
     }
   ],
-  "versions": [
-    "v2"
-  ],
+  "versions": ["v2"],
   "navigation": [
     {
       "version": "v2",
@@ -85,7 +83,8 @@
           "group": "Flows",
           "pages": [
             "guides/flow-payouts",
-            "guides/flow-style"
+            "guides/flow-style",
+            "guides/flow-advanced-features"
           ]
         },
         "guides/white-labeled-payouts"
