@@ -3747,6 +3747,7 @@ components:
                   - city
                   - zip
                   - country
+                  - state
                 properties:
                   city:
                     maxLength: 100
@@ -3776,6 +3777,10 @@ components:
                 format: date
                 type: string
                 description: Date of birth
+              ssn:
+                type: string
+                pattern: '[0-9]{9}'
+                description: Social security number
               email:
                 format: email
                 maxLength: 100
@@ -3804,6 +3809,14 @@ components:
                 minLength: 3
                 type: string
                 description: Employee title or ownership role
+            if:
+              properties:
+                address:
+                  properties:
+                    country:
+                      const: US
+            then:
+              required: [ssn]
           type: array
         flow_of_funds:
           type: object

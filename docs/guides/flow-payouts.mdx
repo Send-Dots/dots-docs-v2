@@ -54,11 +54,11 @@ When using Flows, you can customize the user journey. This guide will use two Fl
 
 ### 1. Onboarding Users
 
-To onboard the user, you have to create the Flow that will create a Dots user, verify their phone number, and collect their tax information. To create the Flow, you'll use the [Create a Flow](/api-reference/flows/create-a-flow). For this guide, only the `compliance` step will be added to the onboard flow.
+To onboard the user, you have to create the Flow that will create a Dots user, verify their phone number, and collect their tax information. To create the Flow, you'll use the [Create a Flow](/apireference/flows/create-a-flow). For this guide, only the `compliance` step will be added to the onboard flow.
 
-<Note>To use the [Create a Flow](/api-reference/flows/create-a-flow) endpoint, you have to provide your App credentials for the authentication. Access [API Authentication](/overview/authentication) for additional information.</Note>
+<Note>To use the [Create a Flow](/apireference/flows/create-a-flow) endpoint, you have to provide your App credentials for the authentication. Access [API Authentication](/overview/authentication) for additional information.</Note>
 
-The following code block presents request and response examples of creating a Flow using the [Create a Flow](/api-reference/flows/create-a-flow) endpoint. 
+The following code block presents request and response examples of creating a Flow using the [Create a Flow](/apireference/flows/create-a-flow) endpoint. 
 
 <CodeGroup>
   ```sh Request
@@ -101,7 +101,7 @@ The GIF below presents the user interface provided by Dots, which is completely 
 
 After the user completes the onboard Flow, you can create the payout. You should use webhooks to avoid checking multiple times to see if your customer has completed the onboarding. When the user completes each Flow step, a webhook will be triggered with the Flow’s `id` received in the previous step. See the [Webhooks](/references/webhooks) documentation page to learn how to configure your webhooks in Dots.
 
-After receiving the confirmation, you can use the [Retrieve Flow Information](/api-reference/flows/retrieve-a-flow) endpoint to have access to the new `user_id`. The following code block presents request and response examples of retrieving Flow information. 
+After receiving the confirmation, you can use the [Retrieve Flow Information](/apireference/flows/retrieve-a-flow) endpoint to have access to the new `user_id`. The following code block presents request and response examples of retrieving Flow information. 
 
 <CodeGroup>
 ```sh Request
@@ -132,7 +132,7 @@ From the response, you have access to the `user_id`, which you'll use to create 
 
 ### 3. Transfering Funds
 
-Now that you have access to the user account information (`user_id`), you can transfer the funds related to the payout to their account. To perform this action, you'll use the [Create a Transfer](/api-reference/transfers/create-a-transfer) endpoint, informing the `amount` to transfer and the receiver `user_id`. 
+Now that you have access to the user account information (`user_id`), you can transfer the funds related to the payout to their account. To perform this action, you'll use the [Create a Transfer](/apireference/transfers/create-a-transfer) endpoint, informing the `amount` to transfer and the receiver `user_id`. 
 
 The following code block presents request and response examples of creating a transfer using the `user_id` received in the previous step. 
 
@@ -187,7 +187,7 @@ By checking the response `status`, you can see that the transfer was `completed`
 
 To complete the payout process, you need to enable the user to withdraw the transferred funds using their preferred payment method. To accomplish this, you can create a new Flow, selecting the `payout` step and informing the `user_id` retrieve in Step 2. Since you provide the `user_id`, the onboarding steps won't be presented to your user.
 
-The following code block presents request and response examples of creating a Flow using the [Create a Flow](/api-reference/flows/create-a-flow) endpoint with only the `payout` step. 
+The following code block presents request and response examples of creating a Flow using the [Create a Flow](/apireference/flows/create-a-flow) endpoint with only the `payout` step. 
 
 <Note>The link will stay authenticated for 15 minutes. If the user takes longer than 15 minutes to complete the Flow, they will need to re-authenticate through an SMS verification code.</Note>
 
