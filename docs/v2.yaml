@@ -1549,6 +1549,11 @@ paths:
           in: query
           name: ending_before
           description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+        - schema:
+            type: boolean
+          in: query
+          name: include_transfer
+          description: "Include transfers in the response."
       description: List all transactions.
   "/v2/transactions/{transaction_id}":
     parameters:
@@ -3214,6 +3219,13 @@ components:
             - object
             - "null"
           description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        transfer_id:
+          type: string
+          format: uuid
+          description: ID of the `transfer` that the transaction belongs to.
+        transfer:
+          $ref: "#/components/schemas/transfer"
+          description: The `transfer` that the transaction belongs to. This is only present if `include_transfer` is true.
     transfer:
       type: object
       properties:
@@ -3267,6 +3279,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/transaction"
+        payout_link_id:
+          type: string
+          format: uuid
+          description: ID of the `payout-link` that the transfer belongs to.
         metadata:
           type:
             - string
@@ -3779,7 +3795,7 @@ components:
                 description: Date of birth
               ssn:
                 type: string
-                pattern: '[0-9]{9}'
+                pattern: "[0-9]{9}"
                 description: Social security number
               email:
                 format: email
