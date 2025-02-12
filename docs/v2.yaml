@@ -47,6 +47,8 @@ tags:
     description: Transfer routes
   - name: users
     description: User routes
+  - name: organizations
+    description: Organization Routes
 paths:
   /v2/users:
     get:
@@ -2960,6 +2962,29 @@ paths:
                   type: string
                 line_3:
                   type: string
+  /v2/organizations:
+    get:
+      summary: Retrieve Organization Details
+      tags:
+        - organizations
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: The organization's unique identifier.
+                  balance:
+                    type: integer
+                    description: The organization's current balance in cents.
+                description: The organization object.
+      operationId: get-organization
+      description: Get details about the authenticated organization, including its current balance.
 components:
   schemas:
     rail:
