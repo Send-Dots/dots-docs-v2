@@ -15,6 +15,8 @@ servers:
   - url: "https://api.dots.dev/api"
     description: Production
 tags:
+  - name: accounts-payable
+    description: Accounts Payable Routes
   - name: apps
     description: App Routes
   - name: checkout-sessions
@@ -23,6 +25,8 @@ tags:
     description: Disputes Routes
   - name: flows
     description: Flow routes
+  - name: organizations
+    description: Organization Routes
   - name: payment-customers
     description: Payment Customer Routes
   - name: payment-intents
@@ -47,8 +51,6 @@ tags:
     description: Transfer routes
   - name: users
     description: User routes
-  - name: organizations
-    description: Organization Routes
 paths:
   /v2/users:
     get:
@@ -1265,7 +1267,7 @@ paths:
                 account_id:
                   type:
                     - string
-                    - null
+                    - 'null'
                   description: The user's ACH account ID.
                 metadata: {}
               required:
@@ -2147,6 +2149,878 @@ paths:
                 $ref: "#/components/schemas/checkout-session"
       operationId: get-checkout-session
       description: Retrieve a checkout session by an ID
+  /v2/accounts-payable/vendors:
+    get:
+      summary: List all vendors
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    description: "`true` if there are more objects."
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/vendor"
+      operationId: get-vendors
+      description: List all vendors
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+    post:
+      summary: Create a vendor
+      description: Create a vendor in your app for accounts payable
+      operationId: create-vendor
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                contact_email:
+                  type: string
+                  format: email
+                external_id:
+                  type: string
+                address:
+                  type: object
+                  properties:
+                    country:
+                      type: string
+                      enum: ['US']  # Only allow US for now
+                    city:
+                      type: string
+                    state:
+                      type: string
+                      enum: ['AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY']
+                    line_1:
+                      type: string
+                    line_2:
+                      type: string
+                    postcode:
+                      type: string
+                  required:
+                    - line_1
+                    - country
+                    - state
+                    - city
+                    - postcode
+              required:
+                - name
+                - address
+              
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vendor"
+  "/v2/accounts-payable/vendors/{vendor_id}":
+    parameters:
+      - schema:
+          type: string
+        name: vendor_id
+        in: path
+        required: true
+        description: The ID of the Vendor
+    get:
+      summary: Get vendor details
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vendor"
+      operationId: get-vendor
+      description: Get details of vendor
+    delete:
+      summary: Delete a vendor
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                    description: "`true` if the vendor was deleted."
+                  id:
+                    type: string
+                    description: ID of the vendor that was deleted.
+                  object:
+                    type: string
+                    description: Type of the object that was deleted.
+      operationId: delete-vendor
+      description: Delete a vendor
+  "/v2/accounts-payable/vendors/{vendor_id}/payment-methods":
+    parameters:
+      - schema:
+          type: string
+        name: vendor_id
+        in: path
+        required: true
+        description: The ID of the Vendor
+    get:
+      summary: List all payment methods for a vendor
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/vendor"
+      operationId: get-vendor-payment-methods
+      description: List all payment methods for a vendor
+    post:
+      summary: Create a payment method for a vendor
+      description: Create a payment method for a vendor to pay to
+      operationId: create-vendor-payment-method
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                ach_account_number:
+                  type: string
+                ach_routing_number:
+                  type: string
+                ach_account_type:
+                  type: string
+                  enum:
+                    - checking
+                    - savings
+              required:
+                - name
+                - ach_account_number
+                - ach_routing_number
+                - ach_account_type
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vendor-payment-method"
+  "/v2/accounts-payable/vendors/{vendor_id}/payment-methods/{payment_method_id}":
+    parameters:
+      - schema:
+          type: string
+        name: vendor_id
+        in: path
+        required: true
+        description: The ID of the Vendor
+      - schema:
+          type: string
+        name: payment_method_id
+        in: path
+        required: true
+        description: The ID of the Vendor's Payment Method
+    get:
+      summary: Get vendor payment method details
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vendor-payment-method"
+      operationId: get-vendor-payment-method
+      description: Get details of vendor payment method
+    delete:
+      summary: Delete a vendor payment method
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                    description: "`true` if the vendor payment method was deleted."
+                  id:
+                    type: string
+                    description: ID of the vendor payment method that was deleted.
+                  object:
+                    type: string
+                    description: Type of the object that was deleted.
+      operationId: delete-vendor-payment-method
+      description: Delete a vendor payment method
+  /v2/accounts-payable/payables:
+    get:
+      summary: List all payables
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    description: "`true` if there are more objects."
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/payable"
+      operationId: get-payables
+      description: List all payables
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+    post:
+      summary: Create a payable
+      description: Create a payable in your app for accounts payable. The minimum required details to create a payable is the payable number. Remaining fields can be added later by updating the payable before submission.
+      operationId: create-payable
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                number:
+                  type: string
+                description:
+                  type: string
+                external_id:
+                  type: string
+                ap_vendor_id:
+                  type: string
+                  format: uuid
+                ap_payment_method_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                  minimum: 1
+                  description: Total payable amount in cents.
+                file:
+                  type: string
+                  format: base64
+                  description: Base64 encoded pdf file to attach to payable.
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        minLength: 1
+                      unit_price:
+                        type: number
+                        minimum: 1
+                        description: Item unit price in cents.
+                      quantity:
+                        type: number
+                        minimum: 1
+                      amount:
+                        type: number
+                        minimum: 1
+                        description: Total line item amount in cents. This should be the unit price multiplied by the quantity.
+                      description:
+                        type: string
+                    required:
+                      - name
+                      - unit_price
+                      - quantity
+                      - amount
+              required:
+                - acting_user_id
+                - number
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/upload-from-file":
+    post:
+      summary: Create a payable from a file
+      description: Create a payable from a file. The contents of the file will be processed and the payable will be created.
+      operationId: create-payable-from-file
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                file:
+                  type: string
+                  format: binary
+                  description: PDF file to be uploaded
+              required:
+                - acting_user_id
+                - file
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}":
+    parameters:
+      - schema:
+          type: string
+        name: payable_id
+        in: path
+        required: true
+        description: The ID of the Payable
+    get:
+      summary: Get payable details
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payable"
+      operationId: get-payable
+      description: Get details of a payable
+    patch:
+      summary: Update a payable
+      description: Update a payable that has not been submitted for approval. To upload/delete the file, use the `/file` endpoint.
+      operationId: update-payable
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                number:
+                  type: string
+                description:
+                  type: string
+                ap_vendor_id:
+                  type: string
+                  format: uuid
+                ap_payment_method_id:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                  minimum: 1
+                  description: Total payable amount in cents.
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        minLength: 1
+                      unit_price:
+                        type: number
+                        minimum: 1
+                        description: Item unit price in cents.
+                      quantity:
+                        type: number
+                        minimum: 1
+                      amount:
+                        type: number
+                        minimum: 1
+                        description: Total line item amount in cents. This should be the unit price multiplied by the quantity.
+                      description:
+                        type: string
+                    required:
+                      - name
+                      - unit_price
+                      - quantity
+                      - amount
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/file":
+    parameters:
+      - schema:
+          type: string
+        name: payable_id
+        in: path
+        required: true
+        description: The ID of the Payable
+    post:
+      summary: Upload file to the payable    
+      description: Upload a file to be attached to the payable
+      operationId: upload-payable-file
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: base64
+              required:
+                - file
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the payable that was updated with the file.
+                  updated:
+                    type: boolean
+                    description: "`true` if the payable was updated."
+                  object:
+                    type: string
+                    description: Type of the object that was updated.
+    delete:
+      summary: Delete file from the payable    
+      description: Delete a file from the payable
+      operationId: delete-payable-file
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the payable that has the file deleted.
+                  deleted:
+                    type: boolean
+                    description: "`true` if the file was deleted."
+                  object:
+                    type: string
+                    description: Type of the object that was deleted.
+
+  "/v2/accounts-payable/payables/{payable_id}/cancel":
+    parameters:
+      - schema:
+          type: string
+        name: payable_id
+        in: path
+        required: true
+        description: The ID of the Payable
+    post:
+      summary: Cancel a payable
+      description: Cancel a payable that has not been submitted for approval
+      operationId: cancel-payable
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                comment:
+                  type: string
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/submit-for-approval":
+    parameters:
+      - schema:
+          type: string
+        name: payable_id
+        in: path
+        required: true
+        description: The ID of the Payable    
+    post:
+      summary: Submit a payable for approval
+      description: Submit a payable for approval
+      operationId: submit-payable-for-approval
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                comment:
+                  type: string
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/approve":
+    parameters:
+      - schema:
+          type: string
+        name: payable_id
+        in: path
+        required: true
+        description: The ID of the Payable
+    post:
+      summary: Approve a payable
+      description: Approve a payable
+      operationId: approve-payable
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                comment:
+                  type: string
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/reject":
+    parameters:
+      - schema:
+          type: string
+        name: payable_id
+        in: path
+        required: true
+        description: The ID of the Payable
+    post:
+      summary: Reject a payable
+      description: Reject a payable
+      operationId: reject-payable
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+                comment:
+                  type: string
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payable"
+  "/v2/accounts-payable/payables/{payable_id}/pay":
+    parameters:
+      - schema:
+          type: string
+        name: payable_id
+        in: path
+        required: true
+        description: The ID of the Payable
+    post:
+      summary: Pay a payable
+      description: Pay a payable that has been approve
+      operationId: pay-payable
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acting_user_id:
+                  type: integer
+                  description: The ID of the user performing this action. This will be displayed in the developer dashboard.
+              required:
+                - acting_user_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payable"
+  /v2/accounts-payable/approval-policies:
+    get:
+      summary: List all approval policies
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/approval-policy"
+      operationId: get-approval-policies
+      description: List all approval policies
+    post:
+      summary: Create an approval policy
+      description: Create an approval policy that will apply approval steps to payables in your app. It will only apply to policies that match the `approval_conditions` and are in state `submitted_for_approval`. Policies that already have approval steps will not be overwritten.
+      operationId: create-approval-policy
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                payable_conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - amount
+                          - vendor_id
+                    oneOf:
+                      - if:
+                          properties:
+                            type:
+                              const: amount
+                        then:
+                          properties:
+                            value:
+                              type: number
+                              description: Value for amount condition
+                            comparator:
+                              type: string
+                              enum:
+                                - '<='
+                                - '=='
+                                - '>='
+                          required:
+                            - value
+                            - comparator
+                      - if:
+                          properties:
+                            type:
+                              const: vendor_id
+                        then:
+                          properties:
+                            value:
+                              type: string
+                              description: Value for vendor_id condition
+                          required:
+                            - value
+                    required:
+                      - type
+                      - value
+                  minItems: 1
+                  uniqueItems: true
+                approval_conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      approver_list:
+                        type: array
+                        items:
+                          type: number
+                        minItems: 1
+                        uniqueItems: true
+                      num_approvals_required:
+                        type: number
+                        minimum: 1
+                    required:
+                      - approver_list
+                      - num_approvals_required
+                  minItems: 1
+                  uniqueItems: true
+              required:
+                - payable_conditions
+                - approval_conditions
+                
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/approval-policy"
+  "/v2/accounts-payable/approval-policies/{approval_policy_id}":
+    parameters:
+      - schema:
+          type: string
+        name: approval_policy_id
+        in: path
+        required: true
+        description: The ID of the Approval Policy
+    patch:
+      summary: Update priority of an approval policy
+      description: Update the priority of an approval policy by its ID
+      operationId: update-approval-policy-priority
+      tags:
+        - accounts-payable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                priority:
+                  type: integer
+                  description: The priority of the approval policy.
+              required:
+                - priority
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/approval-policy"
+    delete:
+      summary: Delete an approval policy
+      description: Delete an approval policy by its ID
+      operationId: delete-approval-policy
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                    description: "`true` if the approval policy was deleted."
+                  id:
+                    type: string
+                    description: ID of the approval policy that was deleted.
+                  object:
+                    type: string
+                    description: Type of the object that was deleted.
+  /v2/accounts-payable/approvers:
+    get:
+      summary: List all approvers for api app
+      tags:
+        - accounts-payable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/approver"
+      operationId: get-approvers
+      description: List all approvers for api app
   /v2/apps:
     get:
       summary: List all Apps
@@ -3620,6 +4494,302 @@ components:
           format: email
         amount_total:
           type: integer
+    vendor:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the `vendor`.
+        name:
+          type: string
+          description: Name of the `vendor`.
+        description:
+          type: string
+        active:
+          type: boolean
+          description: Indicates if the vendor is active.
+        address:
+          type: object
+          properties:
+            city:
+              type: string
+            country:
+              type: string
+            line_1:
+              type: string
+            line_2:
+              type: string
+            postcode:
+              type: string
+            state:
+              type: string
+        api_app_id:
+          type: string
+          format: uuid
+        contact_email:
+          type: string
+          format: email
+        created:
+          type: string
+          format: date-time
+        external_id:
+          type: string
+          nullable: true
+    vendor-payment-method:
+      type: object
+      properties:
+        name:
+          type: string
+        ach_account_number:
+          type: string
+        ach_routing_number:
+          type: string
+        ach_account_type:
+          type: string
+          enum:
+            - checking
+            - savings
+    payable:
+      type: object
+      properties:
+        action_history:
+          type: array
+          items:
+            type: object
+            properties:
+              action:
+                type: string
+                enum:
+                  - create
+                  - cancel
+                  - submit_for_approval
+                  - approve
+                  - reject
+                  - initiate_payment
+                  - retry_payment
+              comment:
+                type: string
+                nullable: true
+              timestamp:
+                type: string
+                format: date-time
+              user_id:
+                type: integer
+              user_name:
+                type: string
+              user_role:
+                type: string
+                enum:
+                  - admin
+                  - viewer
+                  - payer
+                  - ap_approver
+                  - ap_creator
+        amount:
+          type: number
+          description: Total payable amount in cents.
+        ap_payment_method_id:
+          type: string
+          format: uuid
+        ap_payment_method_name:
+          type: string
+        ap_vendor_id:
+          type: string
+          format: uuid
+        ap_vendor_name:
+          type: string
+        api_app_id:
+          type: string
+          format: uuid
+        approval_steps:
+          type: array
+          items:
+            type: object
+            properties:
+              completed:
+                type: boolean
+              completed_timestamp:
+                type: string
+                format: date-time
+              num_approvals_required:
+                type: integer
+              user_approvals:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    approval_comment:
+                      type: string
+                      nullable: true
+                    approval_given:
+                      type: boolean
+                    approval_timestamp:
+                      type: string
+                      format: date-time
+                    name:
+                      type: string
+                    user_id:
+                      type: integer
+        created:
+          type: string
+          format: date-time
+        currency:
+          type: string
+        description:
+          type: string
+          nullable: true
+        external_id:
+          type: string
+          nullable: true
+        file_url:
+          type: string
+          format: uri
+          nullable: true
+        id:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              amount:
+                type: number
+                description: Total line item amount in cents. This should be the unit price multiplied by the quantity.
+                minimum: 1
+              description:
+                type: string
+              name:
+                type: string
+                minLength: 1
+              quantity:
+                type: number
+                minimum: 1
+              unit_price:
+                type: number
+                description: Item unit price in cents.
+                minimum: 1
+        number:
+          type: string
+        status:
+          type: string
+        status_history:
+          type: array
+          items:
+            type: object
+            properties:
+              status:
+                type: string
+                enum:
+                  - created
+                  - canceled
+                  - submitted_for_approval
+                  - rejected
+                  - approved
+                  - payment_initiated
+                  - payment_failed
+                  - payment_completed
+              timestamp:
+                type: string
+                format: date-time
+        transfer_history:
+          type: array
+          items:
+            type: object
+            properties:
+              created_timestamp:
+                type: string
+                format: date-time
+              idempotency_key:
+                type: string
+                format: uuid
+              transfer_id:
+                type: string
+                format: uuid
+        transfer_id:
+          type: string
+          format: uuid
+        updated:
+          type: string
+          format: date-time
+    approval-policy:
+      type: object
+      properties:
+        active:
+          type: boolean
+        api_app_id:
+          type: string
+          format: uuid
+        approval_conditions:
+          type: array
+          items:
+            type: object
+            properties:
+              approver_list:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+              num_approvals_required:
+                type: integer
+        payable_conditions:
+          type: array
+          items:
+            type: object
+            properties:
+              comparator:
+                type: string
+              type:
+                type:
+                  enum:
+                    - amount
+                    - vendor_id
+              value:
+                type: number
+        created:
+          type: string
+          format: date-time
+        description:
+          type: string
+          nullable: true
+        id:
+          type: string
+          format: uuid
+        priority:
+          type: integer
+    approver:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        id:
+          type: integer
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        role:
+          type: string
+          enum:
+            - admin
+            - viewer
+            - payer
+            - ap_approver
+            - ap_creator
+        scope:
+          type: string
+          enum:
+            - organization
+            - app
+        username:
+          type: string
     app:
       type: object
       properties:
