@@ -3328,6 +3328,63 @@ paths:
 
         The flow URL will expire after 72 hours. Refreshing the flow
         will also expire the old URL.
+  "/v2/apps/{app_id}/change_settings":
+    parameters:
+      - schema:
+          type: string
+          format: UUID
+        name: app_id
+        in: path
+        required: true
+        description: ID of the app to update.
+    post:
+      summary: Update an application's settings
+      operationId: post-app-change-settings
+      tags:
+        - apps
+      description: Update an application's payout and refill settings.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payout_options_exclude_list:
+                  type: array
+                  items:
+                    type: string
+                  description: List of payout options to exclude
+                auto_refill_active:
+                  type: boolean
+                  description: Enable or disable auto refill
+                refill_amount:
+                  type: integer
+                  minimum: 1000
+                  maximum: 1000000
+                  description: Amount to refill when the threshold is reached
+                refill_threshold:
+                  type: integer
+                  minimum: 1000
+                  maximum: 1000000
+                  description: Threshold for triggering a refill
+      responses:
+        "200":
+          description: Successfully updated settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payout_options_exclude_list:
+                    type: array
+                    items:
+                      type: string
+                  auto_refill_active:
+                    type: boolean
+                  refill_amount:
+                    type: integer
+                  refill_threshold:
+                    type: integer 
   /v2/payment-methods:
     get:
       summary: List all Payment Methods for a Payment Customer
