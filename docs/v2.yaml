@@ -2823,7 +2823,7 @@ paths:
         description: The ID of the Payable
     post:
       summary: Pay a payable
-      description: Pay a payable that has been approve
+      description: Pay a payable that has been approved
       operationId: pay-payable
       tags:
         - accounts-payable
