@@ -32,7 +32,6 @@ Flow steps can be used individually or chained together. The following table pre
 
 | **Step**           | **Description**                                                                                  | **Options Available** |
 |--------------------|--------------------|--------------------------------------------------------------------------------------------------|
-| `authorization`       | Creates a Dots user and verifies their phone number.                                   | <ul><li>`hide_continue_button` (boolean): Hides the continue button after the flow is completed.</li></ul> |
 | `compliance`       | Collects tax information for the user based on their current location. This step will collect the user’s SSN, date of birth, and address if the user is based in the US.                 | <ul><li>`hide_continue_button` (boolean): Hides the continue button after the flow is completed.</li></ul> |
 |`id-verification` | Collects and verifies a user’s government-issued ID and matches their facial scan to that ID. | <ul><li>`hide_continue_button` (boolean): Hides the continue button after the flow is completed.</li></ul> |
 |`background-check` | Collects the user’s SSN, date of birth, and address to run a background check. If the background check fails, it will trigger an email notification to the app and `user.has_criminal_activity` will be `true`.   | <ul><li>`hide_continue_button` (boolean): Hides the continue button after the flow is completed.</li></ul>|
