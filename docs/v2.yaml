@@ -4651,6 +4651,11 @@ components:
         amount:
           type: number
           description: Total payable amount in cents.
+        funding_source:
+          type: string
+          enum:
+            - dots_balance
+            - ach
         ap_payment_method_id:
           type: string
           format: uuid
