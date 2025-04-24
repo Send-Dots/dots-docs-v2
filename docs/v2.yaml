@@ -2461,6 +2461,12 @@ paths:
                   type: number
                   minimum: 1
                   description: Total payable amount in cents.
+                funding_source:
+                  type: string
+                  enum:
+                    - dots_balance
+                    - ach
+                  description: "The funding source for the payable. \n\n If `dots_balance` is specified, uses the app's Dots wallet balance to pay the payable. \n\n If `ach` is specified, uses a bank transfer from the app's linked bank account to pay the payable. \n\n If not specified, defaults to `ach`."
                 file:
                   type: string
                   format: base64
