@@ -3922,6 +3922,116 @@ paths:
                 description: The organization object.
       operationId: get-organization
       description: Get details about the authenticated organization, including its current balance.
+  "/v2/organizations/copy-compliance-information-between-apps":
+      put:
+        summary: Copy compliance information between applications
+        tags:
+          - organizations
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - source_app_id
+                  - destination_app_id
+                properties:
+                  source_app_id:
+                    type: string
+                    format: uuid
+                    description: UUID of the source application
+                  destination_app_id:
+                    type: string
+                    format: uuid
+                    description: UUID of the destination application
+        responses:
+          "200":
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                    message:
+                      type: string
+                      example: "Business compliance information successfully copied"
+          "400":
+            description: Invalid request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+          "403":
+            description: Resource not found or unauthorized
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                    message:
+                      type: string
+  "/v2/organizations/copy-organization-compliance-to-app/{api_app_id}":
+      put:
+        summary: Copy organization compliance information to an application
+        tags:
+          - organizations
+        parameters:
+          - name: api_app_id
+            in: path
+            required: true
+            schema:
+              type: string
+              format: uuid
+            description: UUID of the destination application
+        responses:
+          "200":
+            description: Compliance information successfully copied
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Business compliance information successfully copied"
+          "400":
+            description: Invalid request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+          "403":
+            description: Resource not found or unauthorized
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
 components:
   schemas:
     rail:
