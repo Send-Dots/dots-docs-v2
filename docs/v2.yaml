@@ -428,12 +428,18 @@ paths:
                     - date_of_birth
                     - address
                     - signature
-                    - foreign_tax_id
-                    - tax_treaty_country
-                    - tax_treaty_citation
-                    - tax_treaty_rate
-                    - tax_treaty_income_type
-                    - tax_treaty_explanation
+                  if:
+                    properties:
+                      citizenship_country:
+                        not:
+                          enum: ['AU', 'BM', 'VG', 'KY', 'JP']
+                  then:
+                    required:
+                      - tax_treaty_country
+                      - tax_treaty_citation
+                      - tax_treaty_rate
+                      - tax_treaty_income_type
+                      - tax_treaty_explanation
       tags:
         - users
   "/v2/users/{user_id}/send-verification-token":
