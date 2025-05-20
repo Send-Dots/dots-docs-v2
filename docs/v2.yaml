@@ -348,11 +348,6 @@ paths:
                       type: string
                       format: date
                       description: Date of birth of the user.
-                    tin:
-                      type: string
-                      minLength: 9
-                      maxLength: 9
-                      description: SSN
                     foreign_tax_id:
                       type: string
                       description: The tax identification number associated with the beneficial owner's country of residence.
