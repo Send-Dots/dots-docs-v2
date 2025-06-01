@@ -388,7 +388,6 @@ paths:
                       required:
                         - line_1
                         - city
-                        - state
                         - country
                         - postcode
                       description: Address of the user or their business.
