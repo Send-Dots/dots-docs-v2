@@ -348,14 +348,9 @@ paths:
                       type: string
                       format: date
                       description: Date of birth of the user.
-                    tin:
-                      type: string
-                      minLength: 9
-                      maxLength: 9
-                      description: SSN
                     foreign_tax_id:
                       type: string
-                      description: The tax identification number associated with the beneficial owner's country of residence.
+                      description: The tax identification number associated with the beneficial owner's country of residence. This is required for non-exempt countries.
                     tax_treaty_country:
                       type: string
                       description: The two-letter ISO country code of the country for tax treaty purposes.
@@ -365,7 +360,7 @@ paths:
                     tax_treaty_rate:
                       type: number
                       format: decimal
-                      description: "The withholding rate claimed for tax treaty purposes. For example, a 15% rate would be represented as 0.15."
+                      description: The withholding rate claimed for tax treaty purposes. For example, a 15% rate would be represented as 0.15.
                     tax_treaty_income_type:
                       type: string
                       enum:
