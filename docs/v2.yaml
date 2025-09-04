@@ -35,6 +35,8 @@ tags:
     description: Payment Method Routes
   - name: payments
     description: Payment Routes
+  - name: payout-batches
+    description: Payout Batch Routes
   - name: payout-links
     description: Payout Link Routes
   - name: payout-requests
@@ -1166,52 +1168,202 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                user_id:
-                  type: string
-                  format: uuid
-                  description: ID of the `user` who you are creating the payout for.
-                amount:
-                  type: integer
-                  exclusiveMinimum: 0
-                  description: Amount in cents to payout the user.
-                platform:
-                  type: string
-                  enum:
-                    - paypal
-                    - venmo
-                    - ach
-                    - bank_transfer
-                    - cash_app
-                    - default
-                  description: "Platform that you are paying out the `user` through,"
-                account_id:
-                  type: string
-                  description: The bank account ID you are paying to. Required for `ach` and `intl_bank`.
-                fund:
-                  type: boolean
-                  description: Creates a transfer for the amount to the user before creating the payout. The funds are returned to the App Wallet if the payout does not succeed. Please ensure that you are handling transfer failure webhooks when using this option.
-                tax_exempt:
-                  type: boolean
-                  description: Payouts marked as `tax_exempt` will not be counted towards the 1099 threshold. Can be `true` only if `fund` is `true`.
-                idempotency_key:
-                  type: string
-                  format: uuid
-                  description: UUID that will be used to idempotently handle requests. Transfers with existing idempotency keys will be rejected.
-                metadata:
-                  type:
-                    - string
-                    - object
-                  description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-              required:
-                - user_id
-                - amount
-                - platform
+              $ref: "#/components/schemas/payout-create-request"
         description: ""
       description: Create a payout for an existing user that has a payout method saved to their account.
       tags:
         - payouts
+  /v2/payout-batches:
+    post:
+      summary: Create a Payout Batch
+      operationId: create-payout-batch
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payout-batch-response"
+                description: The created payout batch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request to create a batch of payouts
+              properties:
+                items:
+                  type: array
+                  description: List of individual payouts to create in the batch.
+                  minItems: 1
+                  maxItems: 5000
+                  items:
+                    $ref: "#/components/schemas/payout-batch-request-item"
+                idempotency_key:
+                  type: string
+                  format: uuid
+                  description: UUID that will be used to idempotently handle the batch request. Batches with existing idempotency keys will be rejected.
+                metadata:
+                  type:
+                    - string
+                    - object
+                  description: Set of key-value pairs that you can attach to the batch. This can be useful for storing additional information about the batch in a structured format.
+              required:
+                - items
+            examples:
+              Example:
+                value:
+                  items:
+                    - user_id: "a169451c-8525-4352-b8ca-070dd449a1a5"
+                      amount: 1000
+                      platform: "paypal"
+                      idempotency_key: "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7"
+                      fund: true
+                      tax_exempt: false
+                      metadata:
+                        invoice_id: "INV-123"
+                    - user_id: "b269451c-9625-5452-c9db-171ee559b2b6"
+                      amount: 2500
+                      platform: "ach"
+                      account_id: "c369451c-a725-6552-d0ec-272ff669c3c7"
+                      idempotency_key: "c3d4e5f6-g7h8-i9j0-k1l2-m3n4o5p6q7r8"
+                      fund: true
+                      tax_exempt: false
+                  metadata:
+                    batch_type: "weekly_payouts"
+                    week: "2024-01"
+        required: true
+      description: Create a batch of payouts to multiple users. Each payout in the batch is processed independently with its own idempotency key. The batch itself can also have an idempotency key to prevent duplicate batch submissions. All payouts in a batch must have `fund=true`.
+      tags:
+        - payout-batches
+    get:
+      summary: List all Payout Batches
+      tags:
+        - payout-batches
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    description: "`true` if there are more payout batches."
+                  data:
+                    type: array
+                    description: Array of payout batch objects.
+                    items:
+                      $ref: "#/components/schemas/payout-batch-response"
+      operationId: get-payout-batches
+      parameters:
+        - schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+      description: List all payout batches created by your application.
+  "/v2/payout-batches/{payout_batch_id}":
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: payout_batch_id
+        in: path
+        required: true
+        description: Id of the payout batch to fetch
+    get:
+      summary: Retrieve a Payout Batch
+      tags:
+        - payout-batches
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/payout-batch-response"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        description: Results for each item in the batch.
+                        items:
+                          type: object
+                          description: Result for an individual item in a payout batch
+                          properties:
+                            user_id:
+                              type: string
+                              format: uuid
+                              description: ID of the user for this payout.
+                            idempotency_key:
+                              type: string
+                              format: uuid
+                              description: The idempotency key for this specific item.
+                            metadata:
+                              type:
+                                - string
+                                - object
+                              description: The metadata attached to this item.
+                            transfer:
+                              type: object
+                              description: Transfer information if the payout was successful.
+                              properties:
+                                id:
+                                  type: string
+                                  format: uuid
+                                  description: ID of the transfer created for this batch item.
+                                status:
+                                  type: string
+                                  enum:
+                                    - created
+                                    - pending
+                                    - processing
+                                    - settled
+                                    - failed
+                                    - canceled
+                                    - reversed
+                                  description: Current status of the transfer.
+                              required:
+                                - id
+                                - status
+                            error:
+                              type: string
+                              description: Error message if the payout failed.
+                            request:
+                              $ref: "#/components/schemas/payout-batch-request-item"
+                              description: Original request for this item (only included when include_request=true).
+                          required:
+                            - user_id
+                            - idempotency_key
+                    required:
+                      - items
+                description: The payout batch with detailed results for each item.
+      operationId: get-payout-batch
+      parameters:
+        - schema:
+            type: boolean
+            default: false
+          in: query
+          name: include_request
+          description: "Include the original request data for each item in the response. This can be useful for debugging or reconciliation."
+      description: Get a payout batch by its id. Returns detailed results for each item in the batch, including transfer information for successful payouts and error messages for failed ones.
   /v2/payments:
     post:
       summary: Create a Payment
@@ -5273,6 +5425,110 @@ components:
         id:
           type: string
           format: uuid
+    payout-create-request:
+      title: payout-create-request
+      type: object
+      description: Base schema for creating a payout
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          description: ID of the `user` who you are creating the payout for.
+        amount:
+          type: integer
+          exclusiveMinimum: 0
+          description: Amount in cents to payout the user.
+        platform:
+          type: string
+          enum:
+            - paypal
+            - venmo
+            - ach
+            - bank_transfer
+            - cash_app
+            - default
+          description: "Platform that you are paying out the `user` through."
+        account_id:
+          type: string
+          format: uuid
+          description: The bank account ID you are paying to. Required for `ach` and `intl_bank`.
+        fund:
+          type: boolean
+          description: Creates a transfer for the amount to the user before creating the payout. The funds are returned to the App Wallet if the payout does not succeed. Please ensure that you are handling transfer failure webhooks when using this option.
+        tax_exempt:
+          type: boolean
+          description: Payouts marked as `tax_exempt` will not be counted towards the 1099 threshold. Can be `true` only if `fund` is `true`.
+        idempotency_key:
+          type: string
+          format: uuid
+          description: UUID that will be used to idempotently handle requests. Transfers with existing idempotency keys will be rejected.
+        metadata:
+          type:
+            - string
+            - object
+          description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        payout_fee_party:
+          type: string
+          enum:
+            - user
+            - platform
+          description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
+      required:
+        - user_id
+        - amount
+        - platform
+    payout-batch-request-item:
+      title: payout-batch-request-item
+      type: object
+      description: Individual payout item in a batch request
+      allOf:
+        - $ref: "#/components/schemas/payout-create-request"
+        - type: object
+          properties:
+            idempotency_key:
+              type: string
+              format: uuid
+              description: UUID that will be used to idempotently handle requests for this specific item. Transfers with existing idempotency keys will be rejected.
+            fund:
+              type: boolean
+              default: true
+              description: Creates a transfer for the amount to the user before creating the payout. The funds are returned to the App Wallet if the payout does not succeed. Currently only `true` is supported for batch payouts.
+          required:
+            - idempotency_key
+            - fund
+    payout-batch-response:
+      title: payout-batch-response
+      type: object
+      description: Basic payout batch response
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the payout batch.
+        created:
+          type: string
+          format: date-time
+          description: Timestamp when the batch was created.
+        idempotency_key:
+          type: string
+          format: uuid
+          description: The idempotency key provided when creating the batch.
+        status:
+          type: string
+          enum:
+            - pending
+            - processing
+            - completed
+          description: Current status of the batch processing.
+        metadata:
+          type:
+            - string
+            - object
+          description: The metadata attached to the batch.
+      required:
+        - id
+        - created
+        - status
   securitySchemes:
     api_key:
       type: http
