@@ -4359,6 +4359,15 @@ components:
           type: string
           format: uuid
           description: ID of the payout flow UI that is sent to the user.
+        transfer_id:
+          type: string
+          format: uuid
+          description: ID of the `transfer` created for this `payout-link`. 
+        memo:
+          type:
+           - string
+           - "null"
+          description: Optional memo added to this `payout-link`
         metadata:
           type:
             - string
