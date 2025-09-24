@@ -4473,6 +4473,17 @@ components:
             - refill
             - payout
             - balance
+            - payment
+            - settlement
+            - payable
+          description: |
+            The type of this transfer.
+             * `refill` - refill of an API App or Organization's Dots Wallet
+             * `payout` - payout to a User
+             * `balance` - balance transfer between Dots Wallets, such as from an API App to a User's Dots Wallet
+             * `payment` - payment from a User to an API App
+             * `settlement` - legacy, currently unused
+             * `payable` - payable for Accounts Payable 
         amount:
           type: number
         external_data:
