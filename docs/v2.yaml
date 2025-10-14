@@ -428,9 +428,20 @@ paths:
                     - name
                     - citizenship_country
                     - date_of_birth
-                    - tin
                     - address
                     - signature
+                  if:
+                    properties:
+                      citizenship_country:
+                        not:
+                          enum: ['AU', 'BM', 'VG', 'KY', 'JP']
+                  then:
+                    required:
+                      - tax_treaty_country
+                      - tax_treaty_citation
+                      - tax_treaty_rate
+                      - tax_treaty_income_type
+                      - tax_treaty_explanation
       tags:
         - users
   "/v2/users/{user_id}/send-verification-token":
