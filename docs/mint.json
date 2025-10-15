@@ -78,6 +78,7 @@
       "pages": [
         "guides/getting-started",
         "guides/payout-links",
+        "guides/batch-payouts",
         {
           "version": "v2",
           "group": "Flows",
