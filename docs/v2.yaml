@@ -574,6 +574,8 @@ paths:
                   rtp_enabled:
                     type: boolean
                     description: Indicates if RTP is enabled for the payment method (applies to ach only).
+                  meta:
+                    description: Optional metadata stored with the payout method. Can be any valid JSON value (object, string, number, boolean, array, or null).
                 required:
                   - platform
       requestBody:
@@ -622,6 +624,8 @@ paths:
                   type: [boolean, "null"]
                   description: When specified, enables or disables auto payout
                     for this user.
+                metadata:
+                  description: Optional metadata to store with the payout method. Can be any valid JSON value (object, string, number, boolean, array, or null).
               required:
                 - platform
             examples:
@@ -645,6 +649,16 @@ paths:
                   routing_number: "123456789"
                   account_number: "123456789"
                   cash_tag: $cash_tag
+              Bank Account with Metadata:
+                value:
+                  platform: ach
+                  routing_number: "123456789"
+                  account_number: "123456789"
+                  account_type: checking
+                  metadata:
+                    internal_id: "customer_123"
+                    notes: "Primary business account"
+                    priority: 1
       description: "Add a payout method to the user. Payout method can be one of `paypal`, `venmo`, `ach`, or `cash_app`. Each method has different required parameters."
       tags:
         - users
@@ -4266,6 +4280,8 @@ components:
         rtp_enabled:
           type: boolean
           description: Indicates if RTP is enabled for the payment method (applies to ach only).
+        meta:
+          description: Optional metadata for the payout method. Can be any valid JSON value (object, string, number, boolean, array, or null).
       required:
         - platform
     payout-link:
