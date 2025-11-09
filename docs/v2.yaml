@@ -1924,9 +1924,6 @@ paths:
                     description: "`true` if there are more objects."
       operationId: get-transfer-batches
       description: Get a transfer batch
-      requestBody:
-        content: {}
-        description: ""
       parameters:
         - schema:
             type: string
@@ -2079,8 +2076,6 @@ paths:
           in: query
           name: ending_before
           description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
-      requestBody:
-        content: {}
       description: List all payment customers
     post:
       summary: Create a Payment Customer
@@ -3559,8 +3554,6 @@ paths:
                   has_more:
                     type: boolean
       operationId: get-payment-methods
-      requestBody:
-        content: {}
       description: Get the payment methods for a payment customer
       parameters:
         - schema:
@@ -3595,8 +3588,6 @@ paths:
                 $ref: "#/components/schemas/payment-method"
       operationId: get-payment-method
       description: Get a payment method by its ID.
-      requestBody:
-        content: {}
   "/v2/payment-methods/{payment_method_id}/attach":
     parameters:
       - schema:
