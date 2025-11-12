@@ -4302,6 +4302,7 @@ components:
             - reversed
             - canceled
             - expired
+            - failed
           description: Status of the `payout-link`.
         payee:
           type: object
