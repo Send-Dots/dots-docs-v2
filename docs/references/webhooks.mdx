@@ -167,12 +167,42 @@ When creating an endpoint on Svix, you can subscribe to a wide list of events to
   </Accordion>
 
   <Accordion title="payout_link.updated">
-  Triggered when there is a change in the status of a payout link.      
+  Triggered when there is a change in the status of a payout link. While the complete payout link object is included in the webhook payload, we recommend retrieving the latest state by calling the [Retrieve a Payout Link](/apireference/payout-links/retrieve-a-payout-link) endpoint using the `id` from the payload to ensure your system receives the most recent payout link state.
 
   ```json
   {
-  "event": "payout_link.updated",
-  "payout_link_id": "1324f3e4-aa5d-45f0-8128-a77a57c51cb3"
+    "event": "payout_link.updated",
+    "api_app_id": "12345678-1234-5678-abcd-123456789abc",
+    "id": "abcd1234-5678-90ab-cdef-1234567890ab",
+    "created": "2023-11-07T05:31:56Z",
+    "link": "https://my.dots.dev/link/...",
+    "amount": 5000.0,
+    "original_amount": 5000.0,
+    "status": "created",
+    "payee": {
+      "first_name": "Yizhuo",
+      "last_name": "Ning",
+      "email": "test@dots.dev",
+      "country_code": "1",
+      "phone_number": "5555555555"
+    },
+    "delivery": {
+      "method": "email",
+      "email": "test@dots.dev",
+      "country_code": null,
+      "phone_number": null
+    },
+    "tax_exempt": false,
+    "claimed_user_id": null,
+    "metadata": {},
+    "memo": null,
+    "flow_id": "def01234-5678-90ab-cdef-234567890abc",
+    "transfer_id": "fed09876-5432-10ab-cdef-098765432100",
+    "description": null,
+    "accounting_data": {
+      "quickbooks_account_id": null,
+      "quickbooks_class_id": null
+    }
   }
   ```
 
