@@ -1,5 +1,6 @@
 {
   "name": "Dots",
+  "description": "Dots: The most scalable and flexible end-to-end global payouts API. Integrate Dots in minutes and send payouts to your users globally in any currency.",
   "openapi": "/v2.yaml",
   "logo": {
     "light": "/logo/light.png",
@@ -28,6 +29,11 @@
     "background": {
       "light": "#FEFDFB",
       "dark": "#18181B"
+    }
+  },
+  "seo": {
+    "metatags": {
+      "canonical": "https://docs.dots.dev"
     }
   },
   "topbarLinks": [
