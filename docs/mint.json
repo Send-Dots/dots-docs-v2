@@ -15,7 +15,7 @@
       "name": "client_id:api_key"
     },
     "playground": {
-      "mode": "hide"
+      "display": "simple"
     }
   },
   "favicon": "/favicon.png",
