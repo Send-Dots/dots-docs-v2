@@ -346,5 +346,20 @@ Triggered when a user's payout method is updated.
 
   </Accordion>
 
+ <Accordion title="user.updated.user_merged">
+
+  Triggered when two users are merged. 
+  The "new_user_id" is the one that 
+  should be used going forward after a merge.              
+
+  ```json
+  {
+   "old_user_id": OLD_EXTERNAL_ID,
+   "new_user_id": NEW_EXTERNAL_ID
+  }
+  ```
+
+  </Accordion>
+
 
 </AccordionGroup>

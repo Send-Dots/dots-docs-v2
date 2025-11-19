@@ -1,0 +1,199 @@
+---
+title: "Batch Payouts"
+description: "Issue payouts to many users in a single API request and reconcile the results."
+---
+
+Batch Payouts let you create up to 5,000 payouts for different users with one request. The batch executes each payout independently, giving every item its own transfer, status, and idempotency guarantees while still letting you manage the workflow as a unit.
+
+## Requirements
+
+- A Dots account with an App and API credentials.
+- Each user in the batch must already exist in your workspace and be allowed to receive payouts on the selected rail.
+- Every batch item must set `fund=true`, which moves funds before the payout is issued.
+- Plan to handle partial failures by inspecting each item's `error_code` and `error_message`.
+
+## 1. Build the batch payload
+
+Each batch contains a shared `metadata` object and a list of payout items. Every item must use a unique `idempotency_key`; duplicates are rejected during validation.
+
+### Batch-level fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `items` | ✅ | Array of payout requests. Min 1, max 5,000 items. |
+| `idempotency_key` | Optional | UUID to prevent duplicate batch submissions. |
+| `metadata` | Optional | Attach custom context (string or key/value object) to the batch. |
+
+### Item fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `user_id` | ✅ | Target user's ID. |
+| `amount` | ✅ | Amount in cents to pay the user. |
+| `platform` | ✅ | Rail to use (for example `ach`, `paypal`, `venmo`, `default`). |
+| `account_id` | Optional | ACH / bank account to use when a user has multiple accounts on the same rail. |
+| `idempotency_key` | ✅ | UUID to deduplicate this specific payout. Must be unique within the batch. |
+| `fund` | ✅ (`true`) | Batch payouts currently require `true`. Transfers funds before issuing the payout. |
+| `tax_exempt` | Optional | Exclude the payout from 1099 calculations. |
+| `payout_fee_party` | Optional | Override who pays fees (`user` or `platform`). |
+| `metadata` | Optional | Custom context specific to the item. Returned in results for easy reconciliation. |
+
+## 2. Create the batch
+
+Use [`POST /v2/payout-batches`](/apireference/payout-batches/create-a-payout-batch) with your App credentials. Reuse the same `idempotency_key` to safely retry the request.
+
+<CodeGroup>
+```sh Request
+curl --request POST \
+  --url https://api.senddotssandbox.com/api/v2/payout-batches \
+  --header 'Authorization: Basic <client_id:api_key>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "idempotency_key": "a7bb54d2-7342-4d13-a8aa-9d999753128b",
+    "metadata": {
+      "batch_type": "weekly_payouts",
+      "week": "2024-08"
+    },
+    "items": [
+      {
+        "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+        "amount": 1000,
+        "platform": "paypal",
+        "idempotency_key": "c3d4e5f6-g7h8-i9j0-k1l2-m3n4o5p6q7r8",
+        "fund": true,
+        "tax_exempt": false,
+        "metadata": {
+          "invoice_id": "INV-123"
+        }
+      },
+      {
+        "user_id": "b269451c-9625-5452-c9db-171ee559b2b6",
+        "amount": 2500,
+        "platform": "ach",
+        "account_id": "c369451c-a725-6552-d0ec-272ff669c3c7",
+        "idempotency_key": "d4e5f6g7-h8i9-j0k1-l2m3-n4o5p6q7r8s9",
+        "fund": true,
+        "tax_exempt": false
+      }
+    ]
+  }'
+```
+
+```json Response
+{
+  "id": "e5d5863a-498d-4551-a3dc-e31012503f23",
+  "created": "2024-08-03T16:02:11.581Z",
+  "status": "created",
+  "idempotency_key": "a7bb54d2-7342-4d13-a8aa-9d999753128b",
+  "metadata": {
+    "batch_type": "weekly_payouts",
+    "week": "2024-08"
+  }
+}
+```
+</CodeGroup>
+
+The batch is queued for execution immediately. Statuses progress from `created` → `processing` → `paying_out` → `completed` as transfers are issued.
+
+## 3. Track batch processing
+
+### Check the batch summary
+
+Poll [`GET /v2/payout-batches/{payout_batch_id}`](/apireference/payout-batches/retrieve-a-payout-batch) to monitor the batch-level status and metadata.
+
+```sh
+curl --request GET \
+  --url https://api.senddotssandbox.com/api/v2/payout-batches/e5d5863a-498d-4551-a3dc-e31012503f23 \
+  --header 'Authorization: Basic <client_id:api_key>'
+```
+
+### Retrieve per-item results
+
+Call `GET /v2/payout-batches/{payout_batch_id}/results` for detailed outcomes. Set `include_request=true` to echo the original request payload for each item.
+
+<CodeGroup>
+```sh Request
+curl --request GET \
+  --url "https://api.senddotssandbox.com/api/v2/payout-batches/e5d5863a-498d-4551-a3dc-e31012503f23/results?include_request=true" \
+  --header 'Authorization: Basic <client_id:api_key>'
+```
+
+```json Response
+{
+  "id": "e5d5863a-498d-4551-a3dc-e31012503f23",
+  "created": "2024-08-03T16:02:11.581Z",
+  "status": "completed",
+  "items": [
+    {
+      "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+      "idempotency_key": "c3d4e5f6-g7h8-i9j0-k1l2-m3n4o5p6q7r8",
+      "transfer": {
+        "id": "ad83f472-0505-4a4c-82c6-46686034a6d2",
+        "status": "settled"
+      },
+      "metadata": {
+        "invoice_id": "INV-123"
+      },
+      "error_code": null,
+      "error_message": null,
+      "request": {
+        "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5",
+        "amount": 1000,
+        "platform": "paypal",
+        "idempotency_key": "c3d4e5f6-g7h8-i9j0-k1l2-m3n4o5p6q7r8",
+        "fund": true,
+        "tax_exempt": false,
+        "metadata": {
+          "invoice_id": "INV-123"
+        }
+      }
+    },
+    {
+      "user_id": "b269451c-9625-5452-c9db-171ee559b2b6",
+      "idempotency_key": "d4e5f6g7-h8i9-j0k1-l2m3-n4o5p6q7r8s9",
+      "transfer": null,
+      "metadata": null,
+      "error_code": "no_such_resource",
+      "error_message": "User not found: b269451c-9625-5452-c9db-171ee559b2b6",
+      "request": {
+        "user_id": "b269451c-9625-5452-c9db-171ee559b2b6",
+        "amount": 2500,
+        "platform": "ach",
+        "account_id": "c369451c-a725-6552-d0ec-272ff669c3c7",
+        "idempotency_key": "d4e5f6g7-h8i9-j0k1-l2m3-n4o5p6q7r8s9",
+        "fund": true,
+        "tax_exempt": false
+      }
+    }
+  ],
+  "metadata": {
+    "batch_type": "weekly_payouts",
+    "week": "2024-08"
+  }
+}
+```
+</CodeGroup>
+
+Use the per-item `transfer.status` to reconcile payouts that succeeded (`settled` / `processing`) versus those that require follow-up. Items that fail keep their `error_code` and can be retried with a new idempotency key once the underlying issue is resolved.
+
+## 4. List historical batches
+
+[`GET /v2/payout-batches`](/apireference/payout-batches/list-all-payout-batches) returns paginated batches created by your App. Use `limit`, `starting_after`, and `ending_before` to page through older entries.
+
+```sh
+curl --request GET \
+  --url "https://api.senddotssandbox.com/api/v2/payout-batches?limit=10" \
+  --header 'Authorization: Basic <client_id:api_key>'
+```
+
+## Best practices
+
+- **Use idempotency everywhere:** Provide both batch- and item-level keys so you can safely retry without creating duplicate payouts.
+- **Handle partial failures:** Inspect each item's `error_code`/`error_message` and requeue only the failed items with new idempotency keys.
+- **Monitor transfers:** Subscribe to payout and transfer webhooks to track asynchronous status changes beyond the initial batch response.
+- **Respect rate limits:** Large batches may take time to execute; poll no more than once every few seconds and back off when the batch is still `processing`.
+
+## What's next?
+
+- Configure [webhooks](/references/webhooks) to receive live updates as payouts are processed.
+- Review [idempotency guidance](/references/idempotency) to design safe retry logic.
