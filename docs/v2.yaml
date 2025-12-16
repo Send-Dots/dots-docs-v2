@@ -4636,6 +4636,9 @@ components:
                 payout_method_cycle:
                   type: boolean
                   description: True when the user has connected or disconnected payout methods repeatedly over a short period of time.
+                name_mismatch:
+                  type: boolean
+                  description: True when the user's name does not match a name submitted during IDV or through a payout method.
         metadata:
           type:
             - string
