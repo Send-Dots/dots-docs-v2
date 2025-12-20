@@ -1,0 +1,136 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Dots",
+  "colors": {
+    "primary": "#F4BC24",
+    "light": "#ffebac",
+    "dark": "#c39500"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "versions": [
+      {
+        "version": "v2",
+        "tabs": [
+          {
+            "tab": "Documentation",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "overview/introduction",
+                  "overview/how-dots-works",
+                  "overview/concepts",
+                  "overview/environments",
+                  "overview/authentication"
+                ]
+              },
+              {
+                "group": "Guides",
+                "pages": [
+                  "guides/getting-started",
+                  "guides/payout-links",
+                  "guides/batch-payouts",
+                  {
+                    "group": "Flows",
+                    "pages": [
+                      "guides/flow-payouts",
+                      "guides/flow-style",
+                      "guides/flow-advanced-features"
+                    ]
+                  },
+                  "guides/white-labeled-payouts"
+                ]
+              },
+              {
+                "group": "References",
+                "pages": [
+                  "references/users",
+                  "references/error-codes",
+                  "references/idempotency",
+                  "references/metadata",
+                  "references/supported-countries",
+                  "references/webhooks",
+                  "references/ip-address-tracking"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API Reference",
+            "openapi": {
+              "source": "/v2.yaml",
+              "directory": "apireference"
+            }
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Dashboard",
+          "href": "https://dashboard.dots.dev/",
+          "icon": "chalkboard"
+        },
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/Send-Dots",
+          "icon": "github"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "api": {
+    "openapi": "v2.yaml",
+    "playground": {
+      "display": "interactive"
+    },
+    "mdx": {
+      "server": [
+        "https://api.senddotssandbox.com/api",
+        "https://api.dots.dev/api"
+      ],
+      "auth": {
+        "method": "basic",
+        "name": "client_id:api_key"
+      }
+    }
+  },
+  "background": {
+    "color": {
+      "light": "#FEFDFB",
+      "dark": "#18181B"
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Log in",
+        "href": "https://dashboard.dots.dev/login"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get Started",
+      "href": "https://dashboard.dots.dev/signup"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/Send-Dots",
+      "twitter": "https://twitter.com/Dots_dev",
+      "linkedin": "https://www.linkedin.com/company/senddots/"
+    }
+  },
+  "integrations": {
+    "koala": {
+      "publicApiKey": "pk_bbccc8882a15b6b2ade6e7e4528b4978f4f5"
+    }
+  }
+}
