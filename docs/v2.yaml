@@ -3512,6 +3512,38 @@ paths:
                   minimum: 1000
                   maximum: 1000000
                   description: Threshold for triggering a refill
+                customer_payout_fee_table:
+                  type: object
+                  nullable: true
+                  description: |
+                    Fee table to configure fee upcharges charged to payees. Contact the Dots team to enable this functionality.
+                    Set to `null` to clear the fee table. Keys can be rail names (e.g., "ach", "paypal") or rail/currency
+                    combinations (e.g., "bank_transfer/eur"). Use "defaults" key for fallback fees.
+                  additionalProperties:
+                    type: object
+                    properties:
+                      fixed:
+                        type: integer
+                        description: Fixed fee in cents
+                      percent:
+                        type: string
+                        description: Percentage fee as a decimal string (e.g., "0.02" for 2%)
+                      min:
+                        type: integer
+                        description: Minimum fee in cents
+                      max:
+                        type: integer
+                        nullable: true
+                        description: Maximum fee cap in cents
+                  example:
+                    ach:
+                      fixed: 100
+                      percent: "0.01"
+                      min: 0
+                    paypal:
+                      fixed: 50
+                      percent: "0.02"
+                      min: 25
       responses:
         "200":
           description: Successfully updated settings
@@ -3529,7 +3561,25 @@ paths:
                   refill_amount:
                     type: integer
                   refill_threshold:
-                    type: integer 
+                    type: integer
+                  customer_payout_fee_table:
+                    type: object
+                    nullable: true
+                    description: Custom fee table for customer payouts
+                    additionalProperties:
+                      type: object
+                      properties:
+                        fixed:
+                          type: integer
+                        percent:
+                          type: string
+                        min:
+                          type: integer
+                        max:
+                          type: integer
+                          nullable: true
+        "403":
+          description: Customer payout fee upcharges not enabled for this app
   /v2/payment-methods:
     get:
       summary: List all Payment Methods for a Payment Customer
