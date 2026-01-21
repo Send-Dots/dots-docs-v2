@@ -242,6 +242,9 @@ paths:
                     - cash_app
                     - ach
                     - intl_bank
+                    - airtm
+                    - payoneer
+                    - crypto
                   description: Configures the user's default payout method. Must be a payout method already configured by the user.
                 auto_payout_enabled:
                   type: boolean
@@ -4179,6 +4182,7 @@ components:
         - intl_bank
         - airtm
         - payoneer
+        - crypto
     flow:
       type: object
       properties:
@@ -4497,14 +4501,18 @@ components:
               type: string
               enum:
                 - ach
+                - rtp
                 - paypal
                 - venmo
                 - visa
                 - amazon
                 - cash_app
                 - intl_bank
-                - intl_transfer
-                - bank_transfer
+                - airtm
+                - payoneer
+                - wire
+                - invoice
+                - crypto
         transactions:
           type: array
           items:
