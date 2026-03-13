@@ -23,6 +23,8 @@ tags:
     description: Flow routes
   - name: organizations
     description: Organization Routes
+  - name: payment-customers
+    description: Payment Customer Routes
   - name: payments
     description: Payment Routes
   - name: payout-batches
@@ -1865,6 +1867,103 @@ paths:
                       $ref: "#/components/schemas/transfer-batch-item"
       operationId: get-transfer-batch
       description: Get a transfer batch by id
+  /v2/payment-customers:
+    get:
+      summary: List all Payment Customers
+      tags:
+        - payment-customers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/payment-customer"
+                  has_more:
+                    type: boolean
+                    description: "`true` if there are more objects."
+      operationId: get-payment-customers
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: limit
+          description: "A limit on the number of objects to be returned, between 1 and 100."
+        - schema:
+            type: string
+          in: query
+          name: starting_after
+          description: "A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `starting_after`=`aaa` in order to fetch the next page of the list."
+        - schema:
+            type: string
+          in: query
+          name: ending_before
+          description: "A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `aaa`, your subsequent call can include `ending_before`=`aaa` in order to fetch the previous page of the list."
+      description: List all payment customers
+    post:
+      summary: Create a Payment Customer
+      operationId: create-payment-customers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  user_id:
+                    type: string
+                    format: uuid
+                  email:
+                    type: string
+                    format: email
+                  country_code:
+                    type: string
+                  phone_number:
+                    type: string
+      description: Create a Payment Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/payment-customer"
+              oneOf:
+                - required:
+                    - first_name
+                    - last_name
+                - required:
+                    - business_name
+      tags:
+        - payment-customers
+  "/v2/payment-customers/{payment_customer_id}":
+    parameters:
+      - schema:
+          type: string
+        name: payment_customer_id
+        in: path
+        required: true
+        description: The ID of the payment customer
+    get:
+      summary: Retrieve a Payment Customer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payment-customer"
+      operationId: get-payment-customer
+      description: Get a payment customer by ID.
+      tags:
+        - payment-customers
   /v2/accounts-payable/vendors:
     get:
       summary: List all vendors
@@ -3954,6 +4053,60 @@ components:
           type: object
         error:
           type: string
+    payment-customer:
+      title: payment-customer
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        country_code:
+          type: string
+        phone_number:
+          type: string
+        first_name:
+          type: string
+        middle_name:
+          type: string
+        last_name:
+          type: string
+        business_name:
+          type: string
+        address:
+          type: object
+          properties:
+            country:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            postcode:
+              type: string
+            line_1:
+              type: string
+            line_2:
+              type: string
+          required:
+            - country
+            - city
+            - state
+            - postcode
+            - line_1
+        metadata:
+          type: object
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
     vendor:
       type: object
       properties:
