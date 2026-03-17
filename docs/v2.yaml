@@ -881,6 +881,7 @@ paths:
                           - payout
                           - background-check
                           - redirect
+                          - pdf-form-fill
                         description: The `step` name.
                       - type: object
                         title: Step With Options
@@ -895,6 +896,7 @@ paths:
                               - payout
                               - background-check
                               - redirect
+                              - pdf-form-fill
                             description: The `step` name.
                           auto_payout_enabled:
                             type: boolean
@@ -905,6 +907,9 @@ paths:
                             pattern: 'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'
                             description: URL to redirect for the `redirect` step.
                             format: uri
+                          template_id:
+                            type: string
+                            description: The ID of the PDF template to use for the `pdf-form-fill` step.
                           hide_continue_button:
                             type: boolean
                             description: Hide the continue button on the flow UI. Defaults to `false`.
@@ -1098,6 +1103,7 @@ paths:
                       - manage-payouts
                       - payout
                       - redirect
+                      - pdf-form-fill
                 accounting_data:
                   type: object
                   properties:
@@ -1499,6 +1505,7 @@ paths:
                       - manage-payouts
                       - payout
                       - redirect
+                      - pdf-form-fill
                 tax_exempt:
                   type: boolean
                   description: Payouts marked as `tax_exempt` will not be counted towards the 1099 threshold.
@@ -4209,6 +4216,7 @@ components:
               - manage-payouts
               - payout
               - redirect
+              - pdf-form-fill
         completed_steps:
           type: array
           description: Array of steps that have been completed in the flow.
@@ -4222,6 +4230,7 @@ components:
               - manage-payouts
               - payout
               - redirect
+              - pdf-form-fill
         link:
           type: string
           format: uri
