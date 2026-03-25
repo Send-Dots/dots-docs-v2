@@ -1981,8 +1981,6 @@ paths:
                         format: uuid
                       tax_exempt:
                         type: boolean
-                      allow_debit:
-                        type: boolean
                       idempotency_key:
                         type: string
                         format: uuid
@@ -4711,8 +4709,6 @@ components:
           type: string
           format: uuid
         tax_exempt:
-          type: boolean
-        allow_debit:
           type: boolean
         metadata:
           type: object
