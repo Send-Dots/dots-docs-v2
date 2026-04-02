@@ -62,6 +62,17 @@ The `redirect` step lets you redirect the user to a URL of your choice. The `red
 }
 ```
 
+### PDF Form Fill
+
+The `pdf-form-fill` step presents the user with a PDF form to fill out. You must provide a `template_id` to specify which PDF template to use:
+
+```json
+{
+  "name": "pdf-form-fill",
+  "template_id": "<template_id>"
+}
+```
+
 ## Example Flow
 
 This example flow onboards a user, collects compliance information, and then lets them manage their payment methods.
