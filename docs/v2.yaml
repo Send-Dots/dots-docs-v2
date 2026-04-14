@@ -5220,6 +5220,7 @@ components:
                 - llc
                 - c_corporation
                 - s_corporation
+                - non_profit
               type: string
               description: The legal classification of the company's incorporation
             name:
