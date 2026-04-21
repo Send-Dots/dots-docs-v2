@@ -76,6 +76,7 @@ Make a `POST` request to the [/v2/users](/apireference/v2/users/create-user) end
 | last_name    | string             | ✔️       | User's last name as a string                                                                                 |
 | username     | string             |          | User's username on your platform. If the username is taken or left blank a random username will be generated |
 | metadata     | string/object/null |          | Optional metadata to be stored with the user                                                                 |
+| payout_options_exclude_list | array |          | List of payout methods to hide from this user (e.g. `["venmo", "paypal"]`).                                  |
 
 ## Verifying the created User
 

@@ -156,6 +156,12 @@ paths:
                     - string
                     - object
                   description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+                payout_options_exclude_list:
+                  type: array
+                  uniqueItems: true
+                  items:
+                    $ref: "#/components/schemas/rail"
+                  description: List of payout rails to hide from this user in the Dots iframe and block on payout creation. Empty or omitted means no restriction.
               required:
                 - first_name
                 - last_name
@@ -256,6 +262,12 @@ paths:
                   description: Income paid outside of the Dots platform in 2024.
                 metadata:
                   description: Arbitrary metadata
+                payout_options_exclude_list:
+                  type: array
+                  uniqueItems: true
+                  items:
+                    $ref: "#/components/schemas/rail"
+                  description: Replace the user's payout exclude list. Pass [] to clear.
   "/v2/users/{user_id}/compliance":
     parameters:
       - schema:
@@ -4650,6 +4662,11 @@ components:
             - object
             - "null"
           description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        payout_options_exclude_list:
+          type: array
+          items:
+            $ref: "#/components/schemas/rail"
+          description: Payout rails hidden from this user. Stacks with app-level exclusions.
     wallet:
       type: object
       properties:
