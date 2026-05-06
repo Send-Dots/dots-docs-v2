@@ -547,14 +547,19 @@ paths:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: string
+                    description: ID of the payout method. Returned for `ach`, `crypto`, `payoneer`, and `intl_bank` payout methods.
                   platform:
                     enum:
                       - ach
+                      - crypto
                       - paypal
                       - venmo
                       - cash_app
                       - airtm
                       - payoneer
+                      - intl_bank
                     type: string
                     description: The type of account to add.
                   handle:
@@ -586,6 +591,27 @@ paths:
                     description: Optional metadata stored with the payout method. Can be any valid JSON value (object, string, number, boolean, array, or null).
                 required:
                   - platform
+              examples:
+                ACH:
+                  value:
+                    id: acc_dfsf983kkjdsf
+                    platform: ach
+                    account_number: "123456789"
+                    routing_number: "123456789"
+                    account_type: checking
+                Crypto:
+                  value:
+                    id: crypto_dfsf983kkjdsf
+                    platform: crypto
+                Payoneer:
+                  value:
+                    id: payoneer_dfsf983kkjdsf
+                    platform: payoneer
+                    email: bob.loblaw@gmail.com
+                International Bank:
+                  value:
+                    id: intl_bank_dfsf983kkjdsf
+                    platform: intl_bank
       requestBody:
         content:
           application/json:
