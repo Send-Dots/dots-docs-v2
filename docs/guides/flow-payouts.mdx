@@ -64,7 +64,7 @@ The following code block presents request and response examples of creating a Fl
 <CodeGroup>
   ```sh Request
     curl --request POST \
-      --url https://pls.senddotssandbox.com/api/v2/flows/ \
+      --url https://api.senddotssandbox.com/api/v2/flows/ \
       --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
       --header 'Content-Type: application/json' \
       --data '{
@@ -107,7 +107,7 @@ After receiving the confirmation, you can use the [Retrieve Flow Information](/a
 <CodeGroup>
 ```sh Request
   curl --request GET \
-    --url https://pls.senddotssandbox.com/api/v2/flows/b3293101-35ef-451a-aad4-881da3697c2f \
+    --url https://api.senddotssandbox.com/api/v2/flows/b3293101-35ef-451a-aad4-881da3697c2f \
     --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
 ```
 
@@ -142,7 +142,7 @@ The following code block presents request and response examples of creating a tr
 <CodeGroup>
 ```sh Request
 curl --request POST \
-  --url https://pls.senddotssandbox.com/api/v2/transfers \
+  --url https://api.senddotssandbox.com/api/v2/transfers \
   --header 'Authorization:  Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -195,7 +195,7 @@ The following code block presents request and response examples of creating a Fl
 <CodeGroup>
   ```sh Request
     curl --request POST \
-      --url https://pls.senddotssandbox.com/api/v2/flows/ \
+      --url https://api.senddotssandbox.com/api/v2/flows/ \
       --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
       --header 'Content-Type: application/json' \
       --data '{
@@ -230,4 +230,3 @@ From the response, use the `link` to embed the payout process into an iframe wit
 ## What's Next?
 
 In addition to customizing the user journey, you can customize the Flow appearance. See [Flow Styles](guides/flow-styles) to learn how to change the Flows' appearance to match your branding. 
-

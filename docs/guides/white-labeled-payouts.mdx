@@ -38,7 +38,7 @@ Request and response examples:
 <CodeGroup>
 ```sh Request
 curl --request POST \
-  --url https://pls.senddotssandbox.com/api/v2/users \
+  --url https://api.senddotssandbox.com/api/v2/users \
   --header 'Authorization: Basic cGtfZGV2X3lpYXF0aXkwOGdIb3gzR3pvUEo2RlFsaURkSDRnOnNrX2Rldl9nUDBHQjZCd1FmZmt3S2FEVkh0UmdTd0NPT2RNVA==' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -102,7 +102,7 @@ To add a default payout method to the user's account, use the [Create a Flow](/a
 <CodeGroup>
   ```sh Request
     curl --request POST \
-      --url https://pls.senddotssandbox.com/api/v2/flows/ \
+      --url https://api.senddotssandbox.com/api/v2/flows/ \
       --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
       --header 'Content-Type: application/json' \
       --data '{
@@ -157,7 +157,7 @@ For a two-step process, first use the [Create a Transfer](/apireference/transfer
 <CodeGroup>
   ```sh Request
     curl --request POST \
-      --url https://api.dots.dev/api/v2/transfers  \
+      --url https://api.senddotssandbox.com/api/v2/transfers  \
       --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
       --header 'Content-Type: application/json' \
         --data '{
@@ -199,7 +199,7 @@ After transferring the funds to the user's wallet, you can create the payout usi
 <CodeGroup>
   ```sh Request
       curl --request POST \
-        --url https://api.dots.dev/api/v2/payouts \
+        --url https://api.senddotssandbox.com/api/v2/payouts \
         --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
         --header 'Content-Type: application/json' \
         --data '{
@@ -251,7 +251,7 @@ Request and response examples:
 <CodeGroup>
   ```sh Request
       curl --request POST \
-        --url https://api.dots.dev/api/v2/payouts \
+        --url https://api.senddotssandbox.com/api/v2/payouts \
         --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
         --header 'Content-Type: application/json' \
         --data '{

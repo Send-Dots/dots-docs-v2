@@ -12,6 +12,8 @@ info:
     name: MIT
     url: "https://opensource.org/license/mit/"
 servers:
+  - url: "https://api.senddotssandbox.com/api"
+    description: Sandbox
   - url: "https://api.dots.dev/api"
     description: Production
 tags:
@@ -1288,7 +1290,7 @@ paths:
                     - user_id: "a169451c-8525-4352-b8ca-070dd449a1a5"
                       amount: 1000
                       platform: "paypal"
-                      idempotency_key: "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7"
+                      idempotency_key: "b2c3d4e5-f6a7-48i9-a0k1-l2m3n4o5p6q7"
                       fund: true
                       tax_exempt: false
                       metadata:
@@ -1297,7 +1299,7 @@ paths:
                       amount: 2500
                       platform: "ach"
                       account_id: "c369451c-a725-6552-d0ec-272ff669c3c7"
-                      idempotency_key: "c3d4e5f6-g7h8-i9j0-k1l2-m3n4o5p6q7r8"
+                      idempotency_key: "c3d4e5f6-a7b8-49c0-b1d2-e3f4a5b6c7d8"
                       fund: true
                       tax_exempt: false
                   metadata:

@@ -20,7 +20,7 @@ When a payment is created, a payment method is generated and saved to the [Payme
 Therefore, to setup future usage, create a [PaymentCustomer](/payment-customers/create-a-payment-customer) object on your server before creating the payment and save the `id` to your database. This will used in the following step. An alternative is to create a [Dots User](/users/overview) which will automatically back populates a payment customer on Dots end and use the `user.id` instead of `payment_customer.id`. 
 
 ```bash cURL
-https://pls.senddotssandbox.com/api/v2/payment-customers/ \
+https://api.senddotssandbox.com/api/v2/payment-customers/ \
 -X POST \
 -u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json" \
@@ -49,7 +49,7 @@ Create a PaymentIntent on your server with an amount and currency. Always decide
 
 <CodeGroup>
 ```bash Single-use payment
-https://pls.senddotssandbox.com/api/v2/payment-intents/ \
+https://api.senddotssandbox.com/api/v2/payment-intents/ \
 -X POST \
 -u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json" \
@@ -69,7 +69,7 @@ https://pls.senddotssandbox.com/api/v2/payment-intents/ \
 }
 ```
 ```bash Reusable payment
-https://pls.senddotssandbox.com/api/v2/payment-intents/ \
+https://api.senddotssandbox.com/api/v2/payment-intents/ \
 -X POST \
 -u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json" \
@@ -390,7 +390,7 @@ When a customer completed the first payment, a payment method will be saved to t
 Follow [step 3](#3-create-a-payment-intent) to create a payment intent. Instead of passing in `customer_id` or `user_id`, pass in the `payment_method_id` and set `confirm` to `True`. This creates and confirm the payments immediately. 
 
 ```bash Off session payment
-https://pls.senddotssandbox.com/api/v2/payment-intents/ \
+https://api.senddotssandbox.com/api/v2/payment-intents/ \
 -X POST \
 -u "CLIENT_ID:API_KEY" \
 -H "Content-Type: application/json" \
