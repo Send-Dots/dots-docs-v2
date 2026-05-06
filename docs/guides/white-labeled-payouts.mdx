@@ -135,6 +135,8 @@ From the response, use the `link` to embed the Flow into an iframe within your a
 
 To start the Flow, Dots will send a verification code to the user's phone to confirm their identity. Once verified, all available payout methods will be displayed. The user can then select their preferred payout method and provide the necessary information. At the end of the process, there is an option to set this as the default payment method, which is selected by default. If the user has a default payout method in their account, funds can be transferred automatically using this method.
 
+Flows created with a `user_id` stay authenticated for 15 minutes. If the user takes longer, they must re-authenticate with an SMS verification code before continuing.
+
 </Note>
 
 After the user has set a default payout method, you can proceed to the next step. 
@@ -148,7 +150,9 @@ You can create the payout using one of two methods:
 
 ### Two Steps
 
-For a two-step process, first use the [Create a Transfer](/apireference/transfers/create-a-transfer) endpoint to transfer funds from your app wallet to the user's wallet. You need to provide the `amount` and the `user_id` you received in [Step 1](#1-create-a-user). Request and response examples: 
+For a two-step process, first use the [Create a Transfer](/apireference/transfers/create-a-transfer) endpoint to transfer funds from your app wallet to the user's wallet. You need to provide the `amount` and the `user_id` you received in [Step 1](#1-create-a-user). Request and response examples:
+
+<Note>Transfer amounts use a signed convention: use a negative `amount` to move funds from your App wallet to the user, and a positive `amount` to debit funds from the user.</Note>
 
 <CodeGroup>
   ```sh Request

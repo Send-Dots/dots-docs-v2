@@ -42,6 +42,8 @@ Each batch contains a shared `metadata` object and a list of payout items. Every
 
 Use [`POST /v2/payout-batches`](/apireference/payout-batches/create-a-payout-batch) with your App credentials. Reuse the same `idempotency_key` to safely retry the request.
 
+<Note>Batch payout `amount` values are always payout amounts in cents. If you use the separate [Create a Transfer](/apireference/transfers/create-a-transfer) endpoint elsewhere in your workflow, remember that transfers use signed amounts: negative sends funds to the user and positive debits the user.</Note>
+
 <CodeGroup>
 ```sh Request
 curl --request POST \

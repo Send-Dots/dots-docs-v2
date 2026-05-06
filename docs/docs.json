@@ -2,6 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Dots",
+  "description": "Dots developer documentation for payouts, flows, users, compliance, and API integrations.",
   "colors": {
     "primary": "#F4BC24",
     "light": "#ffebac",
@@ -82,6 +83,20 @@
       ]
     }
   },
+  "redirects": [
+    {
+      "source": "/overview/dots-concepts",
+      "destination": "/overview/concepts"
+    },
+    {
+      "source": "/overview/api-authentication",
+      "destination": "/overview/authentication"
+    },
+    {
+      "source": "/overview/api-environments",
+      "destination": "/overview/environments"
+    }
+  ],
   "logo": {
     "light": "/logo/light.png",
     "dark": "/logo/dark.png"
@@ -106,6 +121,11 @@
     "color": {
       "light": "#FEFDFB",
       "dark": "#18181B"
+    }
+  },
+  "seo": {
+    "metatags": {
+      "canonical": "https://dotsdev.mintlify.app"
     }
   },
   "navbar": {
