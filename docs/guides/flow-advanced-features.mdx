@@ -3,6 +3,8 @@ title: "Advanced Flow Features"
 # descriptions: 'Guide to implenting Dots Drop-in Components (flows) into your application.'
 ---
 
+<Note>Flows created with a `user_id` start in an authenticated state for 15 minutes. If the user comes back after that window, they must re-authenticate with an SMS verification code before continuing.</Note>
+
 ## Flow Messages
 
 Flows can send messages to your application using the `postMessage` API. Flows send two kinds of messages, the height of the iFrame and the status of the flow. To listen to these messages, you need to set up an event listener in your application.

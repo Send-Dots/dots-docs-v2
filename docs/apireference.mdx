@@ -1,0 +1,31 @@
+---
+title: "API Reference"
+description: "Browse Dots API endpoint groups, integration patterns, and response conventions."
+---
+
+Use the Dots API Reference to explore endpoint groups, request schemas, and example payloads generated from the OpenAPI spec.
+
+<Note>Create-style endpoints may return either `200 OK` or `201 Created`, depending on the route. Treat any documented `2xx` response as success in generated or hand-written clients.</Note>
+
+<CardGroup cols={2}>
+  <Card title="Users" icon="users" href="/apireference/users/create-a-user">
+    Create users, submit compliance information, verify phone numbers, and manage payout methods.
+  </Card>
+  <Card title="Flows" icon="circle-nodes" href="/apireference/flows/create-a-flow">
+    Create embeddable payout and onboarding flows, then retrieve their status.
+  </Card>
+  <Card title="Transfers" icon="arrows-left-right" href="/apireference/transfers/create-a-transfer">
+    Move funds between your App wallet and users with signed transfer amounts.
+  </Card>
+  <Card title="Payouts" icon="money-bill-transfer" href="/apireference/payouts/create-a-payout">
+    Issue payouts directly or send payout links for users to claim.
+  </Card>
+  <Card title="Refunds" icon="rotate-left" href="/apireference/refunds/create-a-refund">
+    Refund payment intents and attach structured metadata when needed.
+  </Card>
+  <Card title="References" icon="book" href="/references/users">
+    Read supporting documentation for webhooks, idempotency, metadata, and users.
+  </Card>
+</CardGroup>
+
+If you are integrating with an AI tool, use the [Documentation Index](/llms.txt) for a route-level summary or [llms-full.txt](/llms-full.txt) for a combined Markdown export of the docs.

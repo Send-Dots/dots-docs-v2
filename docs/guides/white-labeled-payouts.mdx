@@ -38,7 +38,7 @@ Request and response examples:
 <CodeGroup>
 ```sh Request
 curl --request POST \
-  --url https://pls.senddotssandbox.com/api/v2/users \
+  --url https://api.senddotssandbox.com/api/v2/users \
   --header 'Authorization: Basic cGtfZGV2X3lpYXF0aXkwOGdIb3gzR3pvUEo2RlFsaURkSDRnOnNrX2Rldl9nUDBHQjZCd1FmZmt3S2FEVkh0UmdTd0NPT2RNVA==' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -102,7 +102,7 @@ To add a default payout method to the user's account, use the [Create a Flow](/a
 <CodeGroup>
   ```sh Request
     curl --request POST \
-      --url https://pls.senddotssandbox.com/api/v2/flows/ \
+      --url https://api.senddotssandbox.com/api/v2/flows/ \
       --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
       --header 'Content-Type: application/json' \
       --data '{
@@ -135,6 +135,8 @@ From the response, use the `link` to embed the Flow into an iframe within your a
 
 To start the Flow, Dots will send a verification code to the user's phone to confirm their identity. Once verified, all available payout methods will be displayed. The user can then select their preferred payout method and provide the necessary information. At the end of the process, there is an option to set this as the default payment method, which is selected by default. If the user has a default payout method in their account, funds can be transferred automatically using this method.
 
+Flows created with a `user_id` stay authenticated for 15 minutes. If the user takes longer, they must re-authenticate with an SMS verification code before continuing.
+
 </Note>
 
 After the user has set a default payout method, you can proceed to the next step. 
@@ -148,12 +150,14 @@ You can create the payout using one of two methods:
 
 ### Two Steps
 
-For a two-step process, first use the [Create a Transfer](/apireference/transfers/create-a-transfer) endpoint to transfer funds from your app wallet to the user's wallet. You need to provide the `amount` and the `user_id` you received in [Step 1](#1-create-a-user). Request and response examples: 
+For a two-step process, first use the [Create a Transfer](/apireference/transfers/create-a-transfer) endpoint to transfer funds from your app wallet to the user's wallet. You need to provide the `amount` and the `user_id` you received in [Step 1](#1-create-a-user). Request and response examples:
+
+<Note>Transfer amounts use a signed convention: use a negative `amount` to move funds from your App wallet to the user, and a positive `amount` to debit funds from the user.</Note>
 
 <CodeGroup>
   ```sh Request
     curl --request POST \
-      --url https://api.dots.dev/api/v2/transfers  \
+      --url https://api.senddotssandbox.com/api/v2/transfers  \
       --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
       --header 'Content-Type: application/json' \
         --data '{
@@ -195,7 +199,7 @@ After transferring the funds to the user's wallet, you can create the payout usi
 <CodeGroup>
   ```sh Request
       curl --request POST \
-        --url https://api.dots.dev/api/v2/payouts \
+        --url https://api.senddotssandbox.com/api/v2/payouts \
         --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
         --header 'Content-Type: application/json' \
         --data '{
@@ -247,7 +251,7 @@ Request and response examples:
 <CodeGroup>
   ```sh Request
       curl --request POST \
-        --url https://api.dots.dev/api/v2/payouts \
+        --url https://api.senddotssandbox.com/api/v2/payouts \
         --header 'Authorization: Basic cGtfZGV2X0g3V0tFOXlTRGhqeW91dFZBNEk3RkxhVkUzaWg1OnNrX2Rldl9lekFPNXA0WUNJeld6RWgwam5ubHFrODRkQ3ZFOQ==' \
         --header 'Content-Type: application/json' \
         --data '{
