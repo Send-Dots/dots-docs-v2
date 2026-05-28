@@ -1,0 +1,39 @@
+---
+title: "Advanced Flow Features"
+# descriptions: 'Guide to implenting Dots Drop-in Components (flows) into your application.'
+---
+
+## Flow Messages
+
+Flows can send messages to your application using the `postMessage` API. Flows send two kinds of messages, the height of the iFrame and the status of the flow. To listen to these messages, you need to set up an event listener in your application.
+
+```javascript
+window.addEventListener(
+  "message",
+  (event) => {
+    if (!event.origin.startsWith("https://my.dots.dev")) return;
+
+    console.log(event.data);
+  },
+  false
+);
+```
+
+When the flow is loaded for the first time, the height of the iFrame is sent to the parent window. The format of the message is
+
+```JSON
+{
+    "height": number
+}
+```
+
+When each step of the flow is completed, the status of the flow step is sent to the parent window. The format of the message is
+
+```JSON
+    {
+        "step": "background-check",
+        "status": "completed"
+    }
+```
+
+The status is `completed` for every step except for `manage-payouts` where it will be `completed-saved` in the case the user saves the settings without updating any settings.

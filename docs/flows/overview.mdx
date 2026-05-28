@@ -18,13 +18,19 @@ The `authentication` and `onboarding` step are automatically added to the start 
 
 Adding the `compliance` step to your flow will force the collection of a user's SSN, date of birth, and address if based in the US. Otherwise, the `compliance` step will be added automatically based on local tax laws.
 
+**In sandbox**: The compliance step will always be shown even if tax information has already been collected for the user. This allows testing the form without creating a new user.
+
 ### ID Verification
 
 Adding the `id-verification` step to your flow will force the collection and verification of user's government-issued ID and matching of their facial scan to that ID.
 
 ### Background Check
 
-Adding the `background-check` step to your flow will force the collection of a user's SSN, date of birth, and address to run a background check. If background check fails it will trigger an email notification to the app and `user.has_criminal_activity` would be `true`.
+Adding the `background-check` step to your flow will run a background check on U.S.-based users over 18, including criminal history and sex offender registry. The status is available via `background_check.status` with values: `not_started`, `started`, `pending`, `consider`, `pass`, `failed`, `canceled`, or `expired`. If the check fails, `user.has_criminal_activity` will be `true` and an email notification is sent to the app.
+
+<Note>
+For legacy background checks conducted before January 1, 2026, criminal and sex offender checks were separate steps. The `sex_offender_check_status` field may contain data for these older checks. For checks conducted after this date, the single `status` field reflects the combined result.
+</Note>
 
 ### Payment Method Management
 
@@ -53,6 +59,17 @@ The `redirect` step lets you redirect the user to a URL of your choice. The `red
 {
   "name": "redirect",
   "redirect_url": "https://example.com"
+}
+```
+
+### PDF Form Fill
+
+The `pdf-form-fill` step presents the user with a PDF form to fill out. You must provide a `template_id` to specify which PDF template to use:
+
+```json
+{
+  "name": "pdf-form-fill",
+  "template_id": "<template_id>"
 }
 ```
 

@@ -1,0 +1,39 @@
+---
+title: "Idempotency"
+# description: "Learn how Dots API uses idempotency keys."
+---
+
+Dots API uses idempotency keys to ensure the reliability and integrity of your requests. Adopting idempotency keys ensures you can retry API requests without the risk of performing the same operation multiple times, which is especially important when performing funds transfers related to payout operations.
+
+An idempotency key is a unique identifier in your API request to guarantee that it will only be processed once, even if the request is sent multiple times. The Dots API uses this key to recognize and ignore duplicate requests, providing a reliable way to manage retries.
+
+## How to Use Idempotency Keys
+
+When making an API request to the Dots API, you should include an `idempotency_key` in the body request. This key should be a UUID for every request that you generate on your end. The code block below presents an example of using the idempotency key to create a payout.
+
+<Note>
+  If you send multiple requests with different body content using the same idempotency key, Dots API will provide only one response, considering the content from the first received request.
+</Note>
+
+```sh
+curl --request POST \
+  --url https://api.dots.dev/api/v2/payouts \
+  --header 'Authorization: Basic <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "user_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+  "amount": 123,
+  "platform": "paypal",
+  "account_id": "<string>",
+  "fund": true,
+  "tax_exempt": true,
+  "idempotency_key": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+  "metadata": "<string>"
+}'
+```
+
+## Idempotency Keys Persistence
+
+In Dots API, idempotency keys have a 24-hour timeout. Therefore, the Dots team recommends that you store the used idempotency keys and their associated requests in persistent storage to avoid generating duplicates in case of system restarts or failures.
+
+After the 24-hour, you can use an already-used idempotency key to generate a new request. However, the Dots team recommends avoiding reusing idempotency keys.

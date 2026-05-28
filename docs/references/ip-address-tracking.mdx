@@ -1,0 +1,29 @@
+---
+title: "IP Address Tracking"
+---
+
+To improve fraud protection and security, you can now optionally pass in the end user's IP Address to Dots by adding in the Dots-User-IP header to all user related requests like `create-user` and `create-transfer`.
+Dots will log all IP addresses related to a user and flag the user based on fraudulent behavior.
+
+
+## How to Use IP Address Tracking
+
+You can include the `Dots-User-IP` header in your API request. The following example demonstrates a request to create a user where the end user's IP Address is specified.
+
+```sh
+curl --request POST \
+  --url https://api.dots.dev/api/v2/users \
+  --header 'Authorization: <authorization>' \
+  --header 'Dots-User-IP: 192.0.2.0' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "first_name": "Bob",
+  "last_name": "Loblaw",
+  "email": "bob@bobloblaw.com",
+  "country_code": "1",
+  "phone_number": "4154332334",
+  "metadata": {
+    "internal_id": "user_121344"
+  }
+}'
+```

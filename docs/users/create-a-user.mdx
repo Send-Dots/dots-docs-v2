@@ -15,11 +15,11 @@ Create and verify a user to your `application`.
 
 ## Creating a Users
 
-Creating users happens through the [/v2/users](/api-reference/v2/users/create-user) endpoint. Once hit, a dots user will be created if one does not exist based on phone number. This user must then be verified through a one-time code sent over text-message. This code can be requested through the [/v2/users/\{user_id\}/send-verification-token](/api-reference/v2/users/send-verification-token) endpoint and then verified through the [/v2/users/\{user_id\}/verify](/api-reference/v2/users/verify-user) endpoint.
+Creating users happens through the [/v2/users](/apireference/v2/users/create-user) endpoint. Once hit, a dots user will be created if one does not exist based on phone number. This user must then be verified through a one-time code sent over text-message. This code can be requested through the [/v2/users/\{user_id\}/send-verification-token](/apireference/v2/users/send-verification-token) endpoint and then verified through the [/v2/users/\{user_id\}/verify](/apireference/v2/users/verify-user) endpoint.
 
 ### Method
 
-Make a `POST` request to the [/v2/users](/api-reference/v2/users/create-user) endpoint
+Make a `POST` request to the [/v2/users](/apireference/v2/users/create-user) endpoint
 
 <CodeGroup>
 
@@ -76,6 +76,7 @@ Make a `POST` request to the [/v2/users](/api-reference/v2/users/create-user) en
 | last_name    | string             | ✔️       | User's last name as a string                                                                                 |
 | username     | string             |          | User's username on your platform. If the username is taken or left blank a random username will be generated |
 | metadata     | string/object/null |          | Optional metadata to be stored with the user                                                                 |
+| payout_options_exclude_list | array |          | List of payout methods to hide from this user (e.g. `["venmo", "paypal"]`).                                  |
 
 ## Verifying the created User
 
@@ -87,24 +88,24 @@ Dots' pre built components can be used to verify the user. Information on flows 
 
 ### Verify through the API
 
-#### 1. Send a verification token by making a `POST` request to the [/v2/users/\{user_id\}/send-verification-token](/api-reference/v2/users/send-verification-token) endpoint
+#### 1. Send a verification token by making a `POST` request to the [/v2/users/\{user_id\}/send-verification-token](/apireference/v2/users/send-verification-token) endpoint
 
 <CodeGroup>
 
 ```bash cURL
-> curl https://pls.senddotssandbox.com/api/v2/users/\{user_id\}/send-verification-token \
+> curl https://pls.senddotssandbox.com/api/v2/users/{user_id}/send-verification-token \
   -X POST \
   -u "CLIENT_ID:API_KEY" \
 ```
 
 </CodeGroup>
 
-#### 3. Submit the verification token by calling the [/v2/users/\{user_id\}/verify](/api-reference/v2/users/verify) endpoint
+#### 3. Submit the verification token by calling the [/v2/users/\{user_id\}/verify](/apireference/v2/users/verify) endpoint
 
 <CodeGroup>
 
 ```bash cURL
-curl https://pls.senddotssandbox.com/api/v2/users/\{user_id\}/verify \
+curl https://pls.senddotssandbox.com/api/v2/users/{user_id}/verify \
   -X POST \
   -u "CLIENT_ID:API_KEY" \
   -H "Content-Type: application/json" \

@@ -1,38 +1,64 @@
 ---
-title: "Setup and Environments"
-description: "Dots API Environments."
+sidebarTitle: "Environments"
+title: "Dots API Environments"
 ---
 
-The Sandbox environment lets you develop and test your integration without touching live funds.
+The Dots API provides two environments for integration: 
+
+| Environment | Description | Base URL |
+|-------------|-----------|------------------------------------------|
+| [Sandbox](#sandbox-environment)|Allows you to develop and test the integration without affecting live funds.       | `https://pls.senddotssandbox.com/api`  |
+| [Production](#production-environment)| It's used for live transactions after successfully testing the integration.   | `https://api.dots.dev/api`  |
+
+<Note>
+  You must inform the Dots API version when performing a request. Currently, the V2 Dots API is available. Therefore, when performing a request to the Production environment, for example, you must use the following URL:
+
+  - `https://api.dots.dev/api/v2`
+</Note>
 
 ## Sandbox Environment
 
-The Dots sandbox environment is a self-contained environment that simulates the live production environment. The sandbox provides a space where you can initate, experiment and watch transactions without touching live Dots accounts. We highly recommend that you use the sandbox to build out your integration, and only then reach out to upgrade to production keys
+The Sandbox environment simulates the live production environment, enabling you to develop and test your integration safely. Use the Sandbox to build and verify your integration before upgrading to the Production environment. 
 
-The sandbox mirrors all the features of live environment but has some minor differences that make it easy to test flows. For example, duplicate phone numbers are allowed in the sandbox but not in production.
+The Sandbox environment provides the following features:
 
-### Setup
+- Mirrors all production features with minor differences to facilitate testing.
+- Allows you to use duplicate phone numbers, unlike the production environment.
+- Each new account is pre-funded with $100, and additional funds can be added as needed.
 
-The sandbox environment can be enabled on the Dots dashboard ([https://dashboard.dots.dev](https://dashboard.dots.dev)) but clicking the toggle in the upper right corner. You can then create an app and generate API keys. The API URL for the sandbox is similarly `https://pls.senddotssandbox.com/api`. Every new account is funded with a $100 and more funds can always be added in.
+### Sandbox Setup
 
-### Payouts
+To use the Sandbox environment, you should follow the steps presented below:
 
-<Card title="ACH" icon="money-bill-transfer">
-  Live bank accounts can be connected via Plaid but no transactions will go
-  through. Please ensure that the Plaid interface is properly integrated into
-  your application.
-</Card>
+1. Log in to the Dots Dashboard and toggle the **View Sandbox Environment** in the upper left corner. A **SANDBOX MODE** badge appears on the top of the page.
+2. Set up an application and generate API keys.
+3. Use https://pls.senddotssandbox.com/api for Sandbox API requests.
 
-<Card title="PayPal" icon="paypal">
-  Any email can be connected to PayPal and all transactions return a successful
-  response.
-</Card>
+<Frame>
+  <img src="/images/sandbox-setup.gif" />
+</Frame>
 
-<Card title="Venmo" icon="money-bill-1-wave" iconType="solid">
-  Any phone number can be connected to Venmo and all transactions return a
-  successful response.
-</Card>
+### Sandbox Payouts
+
+When using the Sandbox environment, some of the payout methods present specific behavior. Consider the following characteristics when executing a payout with the following methods:
+
+| Method | Description |
+|--------|-------------|
+| **ACH** | Connect live bank accounts via Plaid. Transactions won't go through, but the integration should be verified. |
+| **PayPal** | Any email can be connected, and all transactions will return a successful response. |
+| **Venmo** | Any phone number can be connected, and all transactions will return a successful response. |
+
 
 ## Production Environment
 
-The Dots production environment is the live environment with the api url `https://api.dots.dev/api/`. You can use this environment to send money to your customers. Access to the production environment can be requested by contacting us at [info@dots.dev](mailto:info@dots.dev) or through the Dashboard.
+The Production environment is used for live transactions. 
+
+<Note>Dots team recommends switching to the Production environment only after completing all necessary integration tests.</Note>
+
+To request access to the Production environment, contact us at info@dots.dev or through the Dots Dashboard, following the steps presented below:
+
+1. Log in to the Dots Dashboard and toggle off the **View Sandbox Environment** in the upper left corner. A **PRODUCTION MODE** badge appears on the top of the page.
+2. You need to set up a new application and generate new API keys.
+3. If you're using Dots API, you must update the base API URL to https://api.dots.dev/api/.
+
+
