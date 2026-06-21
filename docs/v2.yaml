@@ -3201,6 +3201,43 @@ paths:
 
         The flow URL will expire after 72 hours. Refreshing the flow
         will also expire the old URL.
+  "/v2/apps/{app_id}/kyb-flow":
+    parameters:
+      - schema:
+          type: string
+        name: app_id
+        in: path
+        required: true
+        description: The ID of the App.
+    post:
+      summary: Create KYB flow
+      operationId: post-app-kyb-flow
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+                  expires_at:
+                    type: string
+                    format: date-time
+                  status:
+                    type: string
+                    enum:
+                      - pending
+      tags:
+        - apps
+      description: Create or refresh the app's Footprint KYB flow. Returns a
+        Dots-hosted URL that can be shared with the app's owners to complete
+        business verification and beneficial owner KYC.
+
+        The flow URL will expire after 72 hours. Refreshing the flow will also
+        expire the old URL.
   "/v2/apps/{app_id}/change_settings":
     parameters:
       - schema:
