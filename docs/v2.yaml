@@ -3987,6 +3987,26 @@ components:
             has_criminal_activity:
               type: boolean
               description: The user has criminal activity based on a background check.
+            background_check:
+              type: object
+              description: Background check result. Only returned when a background check exists for the user.
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - not_started
+                    - started
+                    - pending
+                    - consider
+                    - pass
+                    - failed
+                    - canceled
+                    - expired
+                    - information_mismatch
+                updated:
+                  type: string
+                  format: date-time
+                  description: The time the background check was last updated.
             w9:
               type:
                 - object
