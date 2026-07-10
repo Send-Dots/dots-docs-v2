@@ -3175,7 +3175,7 @@ paths:
                   description: Idempotency key in UUID format.
               required:
                 - amount
-  "/v2/apps/{app_id}/compliance-flow":
+  "/v2/apps/{app_id}/kyb-flow":
     parameters:
       - schema:
           type: string
@@ -3184,23 +3184,44 @@ paths:
         required: true
         description: The ID of the App.
     post:
-      summary: Refresh compliance flow
-      operationId: post-app-compliance-flow
+      summary: Create a KYB flow
+      operationId: post-app-kyb-flow
       responses:
-        "200":
-          description: OK
+        "201":
+          description: KYB flow created
           content:
             application/json:
               schema:
-                type: string
+                type: object
+                required:
+                  - url
+                  - expires_at
+                  - status
+                properties:
+                  url:
+                    type: string
+                    format: uri
+                    description: The hosted KYB flow URL to share with the app's owner.
+                  expires_at:
+                    type: string
+                    format: date-time
+                    description: The time when the hosted KYB flow URL expires.
+                  status:
+                    type: string
+                    enum:
+                      - pending
+                    description: The initial status of the KYB flow.
       tags:
         - apps
-      description: Refresh the app's KYB compliance flow. Returns a URL
-        that can be shared or embedded to allow the app's owners to
-        submit mandatory onboarding information about their business.
+      description: Create a hosted KYB flow for an app in a multi-tenant
+        organization. Share the returned URL with the app's owner so they can
+        submit the business and beneficial-owner information required for
+        verification.
 
-        The flow URL will expire after 72 hours. Refreshing the flow
-        will also expire the old URL.
+        The URL expires after 72 hours. Calling this endpoint again creates a
+        new URL and immediately invalidates the previous one. The endpoint is
+        only available for apps configured for individual business verification
+        that have not already reached a terminal or review state.
   "/v2/apps/{app_id}/change_settings":
     parameters:
       - schema:
