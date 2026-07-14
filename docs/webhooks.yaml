@@ -1,0 +1,1365 @@
+openapi: 3.1.0
+info:
+  title: Dots Webhooks
+  version: 1.0.0
+webhooks:
+  payment_intent.updated:
+    post:
+      operationId: payment_intent.updated
+      summary: payment_intent.updated
+      description: A payment intent object was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentIntentUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  payment_method.updated:
+    post:
+      operationId: payment_method.updated
+      summary: payment_method.updated
+      description: A payment method object was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethodUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  flow.updated:
+    post:
+      operationId: flow.updated
+      summary: flow.updated
+      description: A flow was updated after the user completed additional steps.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlowUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  dispute.updated:
+    post:
+      operationId: dispute.updated
+      summary: dispute.updated
+      description: A dispute was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  payout_request.updated:
+    post:
+      operationId: payout_request.updated
+      summary: payout_request.updated
+      description: A payout request changed status.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutRequestUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  organization.updated:
+    post:
+      operationId: organization.updated
+      summary: organization.updated
+      description: An organization object was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  app.updated:
+    post:
+      operationId: app.updated
+      summary: app.updated
+      description: An app object was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  transfer.updated:
+    post:
+      operationId: transfer.updated
+      summary: transfer.updated
+      description: A transfer was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  transfer.completed:
+    post:
+      operationId: transfer.completed
+      summary: transfer.completed
+      description: A transfer completed. The payload includes the transfer object.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferCompletedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  transfer.failed:
+    post:
+      operationId: transfer.failed
+      summary: transfer.failed
+      description: A transfer failed. The payload includes the transfer object.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferFailedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  transfer.flagged:
+    post:
+      operationId: transfer.flagged
+      summary: transfer.flagged
+      description: A transfer was flagged. The payload includes the transfer object.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferFlaggedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  payout_link.updated:
+    post:
+      operationId: payout_link.updated
+      summary: payout_link.updated
+      description: A payout link was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutLinkUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  payout_link.claimed:
+    post:
+      operationId: payout_link.claimed
+      summary: payout_link.claimed
+      description: A payout link was claimed by a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutLinkClaimedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  payout_link.sent:
+    post:
+      operationId: payout_link.sent
+      summary: payout_link.sent
+      description: A payout link was sent by email, SMS, or direct link.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutLinkSentWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  payout_link.paid_out:
+    post:
+      operationId: payout_link.paid_out
+      summary: payout_link.paid_out
+      description: A user completed a payout through a payout link.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutLinkPaidOutWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  payout_link.failed:
+    post:
+      operationId: payout_link.failed
+      summary: payout_link.failed
+      description: A payout link funding transfer failed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutLinkFailedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  user.updated:
+    post:
+      operationId: user.updated
+      summary: user.updated
+      description: A user was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdatedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  user.updated.background_check:
+    post:
+      operationId: user.updated.background_check
+      summary: user.updated.background_check
+      description: A user's background check was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserBackgroundCheckWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  user.updated.payout_method:
+    post:
+      operationId: user.updated.payout_method
+      summary: user.updated.payout_method
+      description: A user's payout method was updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPayoutMethodWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  user.updated.default_payout_method_changed:
+    post:
+      operationId: user.updated.default_payout_method_changed
+      summary: user.updated.default_payout_method_changed
+      description: A user's default payout method changed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDefaultPayoutMethodChangedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  user.updated.id_verified:
+    post:
+      operationId: user.updated.id_verified
+      summary: user.updated.id_verified
+      description: A user's identity verification completed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserIdVerifiedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  user.updated.user_merged:
+    post:
+      operationId: user.updated.user_merged
+      summary: user.updated.user_merged
+      description: Two user records were merged.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMergedWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  user.updated.manual_debit:
+    post:
+      operationId: user.updated.manual_debit
+      summary: user.updated.manual_debit
+      description: A manual debit transfer was recorded for a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserManualDebitWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  user.updated.manual_credit:
+    post:
+      operationId: user.updated.manual_credit
+      summary: user.updated.manual_credit
+      description: A manual credit transfer was recorded for a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserManualCreditWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+  user.profile_changed_external:
+    post:
+      operationId: user.profile_changed_external
+      summary: user.profile_changed_external
+      description: An external payout provider reported user profile details that
+        differ from Dots.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileChangedExternalWebhook'
+      responses:
+        '200':
+          description: Return any 2xx status code to acknowledge receipt of the webhook
+            event.
+components:
+  schemas:
+    PaymentIntentUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: payment_intent.updated
+          default: payment_intent.updated
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        payment_intent_id:
+          title: Payment Intent Id
+          type: string
+      required:
+      - payment_intent_id
+      title: PaymentIntentUpdatedWebhook
+      type: object
+    PaymentMethodUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: payment_method.updated
+          default: payment_method.updated
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        payment_method_id:
+          title: Payment Method Id
+          type: string
+      required:
+      - payment_method_id
+      title: PaymentMethodUpdatedWebhook
+      type: object
+    FlowUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: flow.updated
+          default: flow.updated
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        flow_id:
+          title: Flow Id
+        metadata:
+          default: null
+          title: Metadata
+      required:
+      - flow_id
+      title: FlowUpdatedWebhook
+      type: object
+    DisputeUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: dispute.updated
+          default: dispute.updated
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        dispute_id:
+          title: Dispute Id
+          type: string
+      required:
+      - dispute_id
+      title: DisputeUpdatedWebhook
+      type: object
+    PayoutRequestUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: payout_request.updated
+          default: payout_request.updated
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        payout_request_id:
+          title: Payout Request Id
+          type: string
+      required:
+      - payout_request_id
+      title: PayoutRequestUpdatedWebhook
+      type: object
+    OrganizationUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: organization.updated
+          default: organization.updated
+          title: Event
+          type: string
+      title: OrganizationUpdatedWebhook
+      type: object
+    AppUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: app.updated
+          default: app.updated
+          title: Event
+          type: string
+        app_id:
+          title: App Id
+          type: string
+      required:
+      - app_id
+      title: AppUpdatedWebhook
+      type: object
+    TransferUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: transfer.updated
+          default: transfer.updated
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        transfer_id:
+          title: Transfer Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+      required:
+      - transfer_id
+      title: TransferUpdatedWebhook
+      type: object
+    TransferCompletedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: transfer.completed
+          default: transfer.completed
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        transfer_id:
+          title: Transfer Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+        transfer:
+          additionalProperties: true
+          title: Transfer
+          type: object
+      required:
+      - transfer_id
+      - transfer
+      title: TransferCompletedWebhook
+      type: object
+    TransferFailedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: transfer.failed
+          default: transfer.failed
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        transfer_id:
+          title: Transfer Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+        transfer:
+          additionalProperties: true
+          title: Transfer
+          type: object
+      required:
+      - transfer_id
+      - transfer
+      title: TransferFailedWebhook
+      type: object
+    TransferFlaggedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: transfer.flagged
+          default: transfer.flagged
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        transfer_id:
+          title: Transfer Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+        transfer:
+          additionalProperties: true
+          title: Transfer
+          type: object
+      required:
+      - transfer_id
+      - transfer
+      title: TransferFlaggedWebhook
+      type: object
+    PayoutLinkUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: payout_link.updated
+          default: payout_link.updated
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        created:
+          title: Created
+          type: string
+        id:
+          title: Id
+          type: string
+        link:
+          title: Link
+          type: string
+        amount:
+          title: Amount
+          type: number
+        status:
+          title: Status
+          type: string
+        payee:
+          additionalProperties: true
+          title: Payee
+          type: object
+        delivery:
+          additionalProperties: true
+          title: Delivery
+          type: object
+        tax_exempt:
+          title: Tax Exempt
+          type: boolean
+        claimed_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Claimed User Id
+        metadata:
+          default: null
+          title: Metadata
+        memo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Memo
+        flow_id:
+          title: Flow Id
+        transfer_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Transfer Id
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Description
+        accounting_data:
+          additionalProperties: true
+          title: Accounting Data
+          type: object
+        created_by_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Created By Email
+        funding_source:
+          title: Funding Source
+          type: string
+        original_amount:
+          title: Original Amount
+          type: number
+      required:
+      - created
+      - id
+      - link
+      - amount
+      - status
+      - payee
+      - delivery
+      - tax_exempt
+      - flow_id
+      - accounting_data
+      - funding_source
+      - original_amount
+      title: PayoutLinkUpdatedWebhook
+      type: object
+    PayoutLinkClaimedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: payout_link.claimed
+          default: payout_link.claimed
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        created:
+          title: Created
+          type: string
+        id:
+          title: Id
+          type: string
+        link:
+          title: Link
+          type: string
+        amount:
+          title: Amount
+          type: number
+        status:
+          title: Status
+          type: string
+        payee:
+          additionalProperties: true
+          title: Payee
+          type: object
+        delivery:
+          additionalProperties: true
+          title: Delivery
+          type: object
+        tax_exempt:
+          title: Tax Exempt
+          type: boolean
+        claimed_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Claimed User Id
+        metadata:
+          default: null
+          title: Metadata
+        memo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Memo
+        flow_id:
+          title: Flow Id
+        transfer_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Transfer Id
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Description
+        accounting_data:
+          additionalProperties: true
+          title: Accounting Data
+          type: object
+        created_by_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Created By Email
+        funding_source:
+          title: Funding Source
+          type: string
+        original_amount:
+          title: Original Amount
+          type: number
+      required:
+      - created
+      - id
+      - link
+      - amount
+      - status
+      - payee
+      - delivery
+      - tax_exempt
+      - flow_id
+      - accounting_data
+      - funding_source
+      - original_amount
+      title: PayoutLinkClaimedWebhook
+      type: object
+    PayoutLinkSentWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: payout_link.sent
+          default: payout_link.sent
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        created:
+          title: Created
+          type: string
+        id:
+          title: Id
+          type: string
+        link:
+          title: Link
+          type: string
+        amount:
+          title: Amount
+          type: number
+        status:
+          title: Status
+          type: string
+        payee:
+          additionalProperties: true
+          title: Payee
+          type: object
+        delivery:
+          additionalProperties: true
+          title: Delivery
+          type: object
+        tax_exempt:
+          title: Tax Exempt
+          type: boolean
+        claimed_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Claimed User Id
+        metadata:
+          default: null
+          title: Metadata
+        memo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Memo
+        flow_id:
+          title: Flow Id
+        transfer_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Transfer Id
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Description
+        accounting_data:
+          additionalProperties: true
+          title: Accounting Data
+          type: object
+        created_by_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Created By Email
+        funding_source:
+          title: Funding Source
+          type: string
+        original_amount:
+          title: Original Amount
+          type: number
+      required:
+      - created
+      - id
+      - link
+      - amount
+      - status
+      - payee
+      - delivery
+      - tax_exempt
+      - flow_id
+      - accounting_data
+      - funding_source
+      - original_amount
+      title: PayoutLinkSentWebhook
+      type: object
+    PayoutLinkPaidOutWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: payout_link.paid_out
+          default: payout_link.paid_out
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        created:
+          title: Created
+          type: string
+        id:
+          title: Id
+          type: string
+        link:
+          title: Link
+          type: string
+        amount:
+          title: Amount
+          type: number
+        status:
+          title: Status
+          type: string
+        payee:
+          additionalProperties: true
+          title: Payee
+          type: object
+        delivery:
+          additionalProperties: true
+          title: Delivery
+          type: object
+        tax_exempt:
+          title: Tax Exempt
+          type: boolean
+        claimed_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Claimed User Id
+        metadata:
+          default: null
+          title: Metadata
+        memo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Memo
+        flow_id:
+          title: Flow Id
+        transfer_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Transfer Id
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Description
+        accounting_data:
+          additionalProperties: true
+          title: Accounting Data
+          type: object
+        created_by_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Created By Email
+        funding_source:
+          title: Funding Source
+          type: string
+        original_amount:
+          title: Original Amount
+          type: number
+        method:
+          title: Method
+          type: string
+        withdrew_amount:
+          title: Withdrew Amount
+          type: number
+      required:
+      - created
+      - id
+      - link
+      - amount
+      - status
+      - payee
+      - delivery
+      - tax_exempt
+      - flow_id
+      - accounting_data
+      - funding_source
+      - original_amount
+      - method
+      - withdrew_amount
+      title: PayoutLinkPaidOutWebhook
+      type: object
+    PayoutLinkFailedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: payout_link.failed
+          default: payout_link.failed
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        payout_link:
+          additionalProperties: true
+          title: Payout Link
+          type: object
+        funding_transfer_id:
+          title: Funding Transfer Id
+          type: string
+        amount:
+          anyOf:
+          - type: integer
+          - type: number
+          title: Amount
+        memo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Memo
+        status:
+          const: failed
+          default: failed
+          title: Status
+          type: string
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Reason
+      required:
+      - payout_link
+      - funding_transfer_id
+      - amount
+      title: PayoutLinkFailedWebhook
+      type: object
+    UserUpdatedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: user.updated
+          default: user.updated
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        user_id:
+          title: User Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+      required:
+      - user_id
+      title: UserUpdatedWebhook
+      type: object
+    UserBackgroundCheckWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: user.updated.background_check
+          default: user.updated.background_check
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        user_id:
+          title: User Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+      required:
+      - user_id
+      title: UserBackgroundCheckWebhook
+      type: object
+    UserPayoutMethodWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: user.updated.payout_method
+          default: user.updated.payout_method
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        user_id:
+          title: User Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+      required:
+      - user_id
+      title: UserPayoutMethodWebhook
+      type: object
+    UserDefaultPayoutMethodChangedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: user.updated.default_payout_method_changed
+          default: user.updated.default_payout_method_changed
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        user_id:
+          title: User Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+      required:
+      - user_id
+      title: UserDefaultPayoutMethodChangedWebhook
+      type: object
+    UserIdVerifiedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: user.updated.id_verified
+          default: user.updated.id_verified
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        user_id:
+          title: User Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+      required:
+      - user_id
+      title: UserIdVerifiedWebhook
+      type: object
+    UserMergedWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: user.updated.user_merged
+          default: user.updated.user_merged
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        user_id:
+          title: User Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+        old_user_id:
+          title: Old User Id
+        new_user_id:
+          title: New User Id
+      required:
+      - user_id
+      - old_user_id
+      - new_user_id
+      title: UserMergedWebhook
+      type: object
+    UserManualDebitWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: user.updated.manual_debit
+          default: user.updated.manual_debit
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        user_id:
+          title: User Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+        transfer_id:
+          title: Transfer Id
+          type: string
+      required:
+      - user_id
+      - transfer_id
+      title: UserManualDebitWebhook
+      type: object
+    UserManualCreditWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: user.updated.manual_credit
+          default: user.updated.manual_credit
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        user_id:
+          title: User Id
+          type: string
+        metadata:
+          default: null
+          title: Metadata
+        transfer_id:
+          title: Transfer Id
+          type: string
+      required:
+      - user_id
+      - transfer_id
+      title: UserManualCreditWebhook
+      type: object
+    UserProfileChangedExternalWebhook:
+      additionalProperties: false
+      properties:
+        event:
+          const: user.profile_changed_external
+          default: user.profile_changed_external
+          title: Event
+          type: string
+        api_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Present on organization-level deliveries when the event originated
+            from a specific app.
+          title: Api App Id
+        user_id:
+          title: User Id
+          type: string
+        external_platform:
+          title: External Platform
+          type: string
+        differences:
+          additionalProperties: true
+          title: Differences
+          type: object
+      required:
+      - user_id
+      - external_platform
+      - differences
+      title: UserProfileChangedExternalWebhook
+      type: object
