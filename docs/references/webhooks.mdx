@@ -31,33 +31,35 @@ The machine-readable OpenAPI webhook catalog is also available at [`/webhooks.ya
 
 Available event types:
 
-| Event | Description |
-| --- | --- |
-| `app.updated` | An app object was updated. |
-| `dispute.updated` | A dispute was updated. |
-| `flow.updated` | A flow was updated after the user completed additional steps. |
-| `organization.updated` | An organization object was updated. |
-| `payment_intent.updated` | A payment intent object was updated. |
-| `payment_method.updated` | A payment method object was updated. |
-| `payout_link.claimed` | A payout link was claimed by a user. |
-| `payout_link.failed` | A payout link funding transfer failed. |
-| `payout_link.paid_out` | A user completed a payout through a payout link. |
-| `payout_link.sent` | A payout link was sent by email, SMS, or direct link. |
-| `payout_link.updated` | A payout link was updated. |
-| `payout_request.updated` | A payout request changed status. |
-| `transfer.completed` | A transfer completed. The payload includes the transfer object. |
-| `transfer.failed` | A transfer failed. The payload includes the transfer object. |
-| `transfer.flagged` | A transfer was flagged. The payload includes the transfer object. |
-| `transfer.updated` | A transfer was updated. |
-| `user.profile_changed_external` | An external payout provider reported user profile details that differ from Dots. |
-| `user.updated` | A user was updated. |
-| `user.updated.background_check` | A user's background check was updated. |
-| `user.updated.default_payout_method_changed` | A user's default payout method changed. |
-| `user.updated.id_verified` | A user's identity verification completed. |
-| `user.updated.manual_credit` | A manual credit transfer was recorded for a user. |
-| `user.updated.manual_debit` | A manual debit transfer was recorded for a user. |
-| `user.updated.payout_method` | A user's payout method was updated. |
-| `user.updated.user_merged` | Two user records were merged. |
+<!-- generated-webhook-events:start -->
+| Event | Description | Schema |
+| --- | --- | --- |
+| `payment_intent.updated` | A payment intent object was updated. | [View schema](/references/webhook-events/payment-intent-updated) |
+| `payment_method.updated` | A payment method object was updated. | [View schema](/references/webhook-events/payment-method-updated) |
+| `flow.updated` | A flow was updated after the user completed additional steps. | [View schema](/references/webhook-events/flow-updated) |
+| `dispute.updated` | A dispute was updated. | [View schema](/references/webhook-events/dispute-updated) |
+| `payout_request.updated` | A payout request changed status. | [View schema](/references/webhook-events/payout-request-updated) |
+| `organization.updated` | An organization object was updated. | [View schema](/references/webhook-events/organization-updated) |
+| `app.updated` | An app object was updated. | [View schema](/references/webhook-events/app-updated) |
+| `transfer.updated` | A transfer was updated. | [View schema](/references/webhook-events/transfer-updated) |
+| `transfer.completed` | A transfer completed. The payload includes the transfer object. | [View schema](/references/webhook-events/transfer-completed) |
+| `transfer.failed` | A transfer failed. The payload includes the transfer object. | [View schema](/references/webhook-events/transfer-failed) |
+| `transfer.flagged` | A transfer was flagged. The payload includes the transfer object. | [View schema](/references/webhook-events/transfer-flagged) |
+| `payout_link.updated` | A payout link was updated. | [View schema](/references/webhook-events/payout-link-updated) |
+| `payout_link.claimed` | A payout link was claimed by a user. | [View schema](/references/webhook-events/payout-link-claimed) |
+| `payout_link.sent` | A payout link was sent by email, SMS, or direct link. | [View schema](/references/webhook-events/payout-link-sent) |
+| `payout_link.paid_out` | A user completed a payout through a payout link. | [View schema](/references/webhook-events/payout-link-paid-out) |
+| `payout_link.failed` | A payout link funding transfer failed. | [View schema](/references/webhook-events/payout-link-failed) |
+| `user.updated` | A user was updated. | [View schema](/references/webhook-events/user-updated) |
+| `user.updated.background_check` | A user's background check was updated. | [View schema](/references/webhook-events/user-updated-background-check) |
+| `user.updated.payout_method` | A user's payout method was updated. | [View schema](/references/webhook-events/user-updated-payout-method) |
+| `user.updated.default_payout_method_changed` | A user's default payout method changed. | [View schema](/references/webhook-events/user-updated-default-payout-method-changed) |
+| `user.updated.id_verified` | A user's identity verification completed. | [View schema](/references/webhook-events/user-updated-id-verified) |
+| `user.updated.user_merged` | Two user records were merged. | [View schema](/references/webhook-events/user-updated-user-merged) |
+| `user.updated.manual_debit` | A manual debit transfer was recorded for a user. | [View schema](/references/webhook-events/user-updated-manual-debit) |
+| `user.updated.manual_credit` | A manual credit transfer was recorded for a user. | [View schema](/references/webhook-events/user-updated-manual-credit) |
+| `user.profile_changed_external` | An external payout provider reported user profile details that differ from Dots. | [View schema](/references/webhook-events/user-profile-changed-external) |
+<!-- generated-webhook-events:end -->
 
 ## Webhook Signing
 
