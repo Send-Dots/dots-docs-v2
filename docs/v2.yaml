@@ -4166,6 +4166,13 @@ components:
           items:
             $ref: "#/components/schemas/rail"
           description: Payout rails hidden from this user. Stacks with app-level exclusions.
+        1099_adjustment:
+          $ref: "#/components/schemas/1099-adjustment"
+          description: >-
+            Current-year 1099 adjustment for the user, if one has been set.
+            Only returned by the retrieve-a-user endpoint (`GET /v2/users/{user_id}`)
+            when the application's configured filing type has a matching adjustment;
+            omitted otherwise and never included in list responses.
     wallet:
       type: object
       properties:
