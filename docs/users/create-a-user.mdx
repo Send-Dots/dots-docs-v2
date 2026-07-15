@@ -13,7 +13,7 @@ Create and verify a user to your `application`.
 
 ---
 
-## Creating a Users
+## Creating a User
 
 Creating users happens through the [/v2/users](/apireference/v2/users/create-user) endpoint. Once hit, a dots user will be created if one does not exist based on phone number. This user must then be verified through a one-time code sent over text-message. This code can be requested through the [/v2/users/\{user_id\}/send-verification-token](/apireference/v2/users/send-verification-token) endpoint and then verified through the [/v2/users/\{user_id\}/verify](/apireference/v2/users/verify-user) endpoint.
 
@@ -34,11 +34,13 @@ Make a `POST` request to the [/v2/users](/apireference/v2/users/create-user) end
         "phone_number": "1234567890",
         "first_name": "Bob",
         "last_name": "Loblaw",
-        "username": <Optional>
+        "username": "bob-loblaw"
       }'
 
-> response = {
+> HTTP/1.1 201 Created
+> {
     "id": "143c7e1c-2295-42c0-9fc9-23756ac26250",
+    "country": "US",
     "first_name": "Bob",
     "last_name": "Loblaw",
     "email": "test@senddots.com",
@@ -46,19 +48,10 @@ Make a `POST` request to the [/v2/users](/apireference/v2/users/create-user) end
       "country_code": "1",
       "phone_number": "1234567890"
     },
-    "wallet": {
-      "amount": 0,
-      "withdrawable_balance": 0,
-      "credit_balance": 0
-    },
-    "compliance": {
-      "tax_id_collected": false,
-      "address_collected": false,
-      "date_of_birth_collected": false,
-      "1099_collected": false,
-      "w8_ben_collected": false,
-      "flagged": false
-    }
+    "metadata": {},
+    "verified": false,
+    "status": "unverified",
+    "payout_options_exclude_list": []
   }
 
 ```
@@ -67,16 +60,18 @@ Make a `POST` request to the [/v2/users](/apireference/v2/users/create-user) end
 
 ##### Parameters
 
-| Name         | Type               | Required | Description                                                                                                  |
-| ------------ | ------------------ | -------- | ------------------------------------------------------------------------------------------------------------ |
-| email        | string             | ✔️       | User's email address                                                                                         |
-| country_code | string             | ✔️       | User's phone number country code without the plus sign ('1' for the US)                                      |
-| phone_number | string             | ✔️       | User's phone number as a string containing only digits                                                       |
-| first_name   | string             | ✔️       | User's first name as a string                                                                                |
-| last_name    | string             | ✔️       | User's last name as a string                                                                                 |
-| username     | string             |          | User's username on your platform. If the username is taken or left blank a random username will be generated |
-| metadata     | string/object/null |          | Optional metadata to be stored with the user                                                                 |
-| payout_options_exclude_list | array |          | List of payout methods to hide from this user (e.g. `["venmo", "paypal"]`).                                  |
+| Name                          | Type               | Required | Description |
+| ----------------------------- | ------------------ | -------- | ----------- |
+| email                         | string             | ✔️       | A valid email address. |
+| country_code                  | string             | ✔️       | The phone country code without the plus sign, containing 1–3 digits (for example, `"1"` for the US). |
+| phone_number                  | string             | ✔️       | The phone number, containing 1–20 digits. |
+| first_name                    | string             | ✔️       | The user's first name, containing 1–50 characters. |
+| last_name                     | string             | ✔️       | The user's last name, containing 1–50 characters. |
+| username                      | string             |          | A username containing 1–50 characters. If omitted, a random username is generated. |
+| date_of_birth                 | string             |          | The user's date of birth in `YYYY-MM-DD` format. |
+| 1099_adjustment               | object             |          | Current-year income paid outside Dots. Use `{"year": 2026, "form": "1099-NEC", "amount": 10000}` for 1099-NEC, or provide all 12 `monthly_amounts` and an optional `transaction_count` for 1099-K. The form must match the application's configured filing type. Amounts are in cents. |
+| metadata                      | string/object/null |          | Optional metadata to store with the user. |
+| payout_options_exclude_list   | array              |          | A unique list of payout methods to hide from this user (for example, `["venmo", "paypal"]`). |
 
 ## Verifying the created User
 

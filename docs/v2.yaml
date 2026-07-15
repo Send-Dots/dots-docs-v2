@@ -99,8 +99,8 @@ paths:
       summary: Create a User
       operationId: create-user
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           content:
             application/json:
               schema:
@@ -114,9 +114,13 @@ paths:
               properties:
                 first_name:
                   type: string
+                  minLength: 1
+                  maxLength: 50
                   description: The user's first name.
                 last_name:
                   type: string
+                  minLength: 1
+                  maxLength: 50
                   description: The user's last name.
                 email:
                   type: string
@@ -124,9 +128,11 @@ paths:
                   description: The user's email address.
                 country_code:
                   type: string
+                  pattern: "^[0-9]{1,3}$"
                   description: The user's phone number country code. e.g. "1"
                 phone_number:
                   type: string
+                  pattern: "^[0-9]{1,20}$"
                   description: The user's phone number. e.g. "4157223331".
                 username:
                   type: string
@@ -137,10 +143,8 @@ paths:
                   type: string
                   format: date
                   description: User's date of birth.
-                1099_adjustment_2024:
-                  type: integer
-                  minimum: 1
-                  description: Income paid outside of the Dots platform in 2024.
+                1099_adjustment:
+                  $ref: "#/components/schemas/1099-adjustment"
                 metadata:
                   type:
                     - string
@@ -249,10 +253,8 @@ paths:
                   type: string
                   format: date
                   description: User's date of birth.
-                1099_adjustment_2024:
-                  type: integer
-                  minimum: 1
-                  description: Income paid outside of the Dots platform in 2024.
+                1099_adjustment:
+                  $ref: "#/components/schemas/1099-adjustment"
                 metadata:
                   description: Arbitrary metadata
                 payout_options_exclude_list:
@@ -3588,6 +3590,89 @@ components:
         - airtm
         - payoneer
         - crypto
+    1099-adjustment:
+      description: >-
+        Income paid outside of the Dots platform in the current calendar year.
+        The form must match the application's configured 1099 filing type.
+      oneOf:
+        - title: 1099-NEC adjustment
+          type: object
+          additionalProperties: false
+          properties:
+            year:
+              type: integer
+              description: The current calendar year.
+            form:
+              type: string
+              const: 1099-NEC
+            amount:
+              type: integer
+              minimum: 1
+              description: The adjustment amount in cents.
+          required:
+            - year
+            - form
+            - amount
+        - title: 1099-K adjustment
+          type: object
+          additionalProperties: false
+          properties:
+            year:
+              type: integer
+              description: The current calendar year.
+            form:
+              type: string
+              const: 1099-K
+            monthly_amounts:
+              type: object
+              additionalProperties: false
+              description: Adjustment amounts in cents for every month of the year.
+              properties:
+                january:
+                  type: integer
+                february:
+                  type: integer
+                march:
+                  type: integer
+                april:
+                  type: integer
+                may:
+                  type: integer
+                june:
+                  type: integer
+                july:
+                  type: integer
+                august:
+                  type: integer
+                september:
+                  type: integer
+                october:
+                  type: integer
+                november:
+                  type: integer
+                december:
+                  type: integer
+              required:
+                - january
+                - february
+                - march
+                - april
+                - may
+                - june
+                - july
+                - august
+                - september
+                - october
+                - november
+                - december
+            transaction_count:
+              type: integer
+              minimum: 1
+              description: Transactions paid outside of Dots during the year.
+          required:
+            - year
+            - form
+            - monthly_amounts
     flow:
       type: object
       properties:
@@ -4081,6 +4166,13 @@ components:
           items:
             $ref: "#/components/schemas/rail"
           description: Payout rails hidden from this user. Stacks with app-level exclusions.
+        1099_adjustment:
+          $ref: "#/components/schemas/1099-adjustment"
+          description: >-
+            Current-year 1099 adjustment for the user, if one has been set.
+            Only returned by the retrieve-a-user endpoint (`GET /v2/users/{user_id}`)
+            when the application's configured filing type has a matching adjustment;
+            omitted otherwise and never included in list responses.
     wallet:
       type: object
       properties:
