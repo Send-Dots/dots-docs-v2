@@ -1045,8 +1045,15 @@ paths:
       summary: Create a Payout Link
       operationId: create-payout-link
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/payout-link"
+                description: The `payout-link` object.
+        "202":
+          description: Accepted. Returned when the payout is pending funding (status `funds_pending`).
           content:
             application/json:
               schema:
@@ -1124,25 +1131,73 @@ paths:
                   type:
                     - string
                     - "null"
-                  format: uuid
                   enum:
                     - user
                     - platform
                   description: Overrides the setting for which party will pay fees on this payout. This takes precedence over the default for your application.
                 additional_steps:
                   type: array
-                  description: Array of steps in the flow.
+                  uniqueItems: true
+                  description: 'Array of steps to add to the payout flow. Each item is either a step-name string or an object with additional step options.'
                   items:
-                    type: string
-                    enum:
-                      - compliance
-                      - id-verification
-                      - background-check
-                      - manage-payments
-                      - manage-payouts
-                      - payout
-                      - redirect
-                      - pdf-form-fill
+                    oneOf:
+                      - type: string
+                        title: Step Name
+                        enum:
+                          - compliance
+                          - id-verification
+                          - background-check
+                          - manage-payments
+                          - manage-payouts
+                          - payout
+                          - redirect
+                          - pdf-form-fill
+                        description: The `step` name.
+                      - type: object
+                        title: Step With Options
+                        properties:
+                          name:
+                            type: string
+                            enum:
+                              - compliance
+                              - id-verification
+                              - background-check
+                              - manage-payments
+                              - manage-payouts
+                              - payout
+                              - redirect
+                              - pdf-form-fill
+                            description: The `step` name.
+                          redirect_url:
+                            type: string
+                            format: uri
+                            description: URL to redirect to for the `redirect` step.
+                          auto_payout_enabled:
+                            type: boolean
+                            description: Enable or disable setting auto payout on the `payout` or `manage-payouts` step.
+                          payment_intent_id:
+                            type: string
+                            description: The ID of the payment intent to associate with the step.
+                          force:
+                            type: boolean
+                            description: Force the step to be shown even if it would otherwise be skipped.
+                          require_default_payout_method:
+                            type: boolean
+                            description: Require the user to set a default payout method.
+                          require_auto_payout_method:
+                            type: boolean
+                            description: Require the user to enable an auto payout method.
+                          hide_continue_button:
+                            type: boolean
+                            description: Hide the continue button on the flow UI.
+                          payout_fee_party:
+                            type: string
+                            enum:
+                              - platform
+                              - user
+                            description: Which party pays the fees for this step's payout.
+                        required:
+                          - name
                 accounting_data:
                   type: object
                   properties:
@@ -1154,6 +1209,19 @@ paths:
                       type: integer
                       description: Class ID to use for classification
                         when syncing the transaction to Quickbooks.
+                funding_source:
+                  type: string
+                  enum:
+                    - dots_balance
+                    - ach
+                  description: "The funding source for the payout. If `dots_balance` is specified, the payout is funded from the app's Dots wallet balance. If `ach` is specified, the payout is funded via a bank transfer from the app's linked bank account. If not specified, defaults to `dots_balance`."
+                hide_go_to_dashboard_on_complete:
+                  type: boolean
+                  default: false
+                  description: Hide the "Go to dashboard" button on the payout flow UI. Defaults to `false`.
+                description:
+                  type: string
+                  description: An internal description for the `payout-link`. Unlike `memo`, it is not shown to the payee.
               required:
                 - amount
       description: Create a Payout Link.
@@ -1212,8 +1280,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/payout-link"
-                description: The `payout-link` object.
+                type: object
+                properties:
+                  payout_link:
+                    $ref: "#/components/schemas/payout-link"
+                    description: The `payout-link` object.
+                  redelivered:
+                    type: boolean
+                    description: Whether the `payout-link` was redelivered.
       description: Redeliver a payout link. Payout links will be delivered
         up to 5 times.
       tags:
@@ -3828,6 +3902,7 @@ components:
                 - link
                 - sms
                 - email
+                - all
             email:
               type: string
               format: email
@@ -3861,6 +3936,29 @@ components:
             - object
             - "null"
           description: Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        description:
+          type:
+            - string
+            - "null"
+          description: An internal description for the `payout-link`. Unlike `memo`, it is not shown to the payee.
+        accounting_data:
+          type: object
+          description: Accounting metadata synced to external accounting systems.
+          properties:
+            quickbooks_account_id:
+              type:
+                - integer
+                - "null"
+            quickbooks_class_id:
+              type:
+                - integer
+                - "null"
+        funding_source:
+          type: string
+          enum:
+            - dots_balance
+            - ach
+          description: The funding source used to fund the payout. One of `dots_balance` or `ach`.
     payout-request:
       type: object
       properties:
