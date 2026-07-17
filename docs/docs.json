@@ -52,6 +52,36 @@
                   "references/metadata",
                   "references/supported-countries",
                   "references/webhooks",
+                  {
+                    "group": "Webhook Events",
+                    "pages": [
+                      "references/webhook-events/payment-intent-updated",
+                      "references/webhook-events/payment-method-updated",
+                      "references/webhook-events/flow-updated",
+                      "references/webhook-events/dispute-updated",
+                      "references/webhook-events/payout-request-updated",
+                      "references/webhook-events/organization-updated",
+                      "references/webhook-events/app-updated",
+                      "references/webhook-events/transfer-updated",
+                      "references/webhook-events/transfer-completed",
+                      "references/webhook-events/transfer-failed",
+                      "references/webhook-events/transfer-flagged",
+                      "references/webhook-events/payout-link-updated",
+                      "references/webhook-events/payout-link-claimed",
+                      "references/webhook-events/payout-link-sent",
+                      "references/webhook-events/payout-link-paid-out",
+                      "references/webhook-events/payout-link-failed",
+                      "references/webhook-events/user-updated",
+                      "references/webhook-events/user-updated-background-check",
+                      "references/webhook-events/user-updated-payout-method",
+                      "references/webhook-events/user-updated-default-payout-method-changed",
+                      "references/webhook-events/user-updated-id-verified",
+                      "references/webhook-events/user-updated-user-merged",
+                      "references/webhook-events/user-updated-manual-debit",
+                      "references/webhook-events/user-updated-manual-credit",
+                      "references/webhook-events/user-profile-changed-external"
+                    ]
+                  },
                   "references/ip-address-tracking"
                 ]
               }
