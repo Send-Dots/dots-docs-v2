@@ -2,6 +2,44 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Dots",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://docs.usedots.com"
+    },
+    {
+      "source": "/overview/introduction",
+      "destination": "https://docs.usedots.com"
+    },
+    {
+      "source": "/overview/:slug*",
+      "destination": "https://docs.usedots.com/overview/:slug*"
+    },
+    {
+      "source": "/guides/:slug*",
+      "destination": "https://docs.usedots.com/guides/:slug*"
+    },
+    {
+      "source": "/references/:slug*",
+      "destination": "https://docs.usedots.com/references/:slug*"
+    },
+    {
+      "source": "/apireference/payout-requests/:slug*",
+      "destination": "https://docs.usedots.com"
+    },
+    {
+      "source": "/apireference/accounts-payable/get-approvers",
+      "destination": "https://docs.usedots.com"
+    },
+    {
+      "source": "/apireference/:slug*",
+      "destination": "https://docs.usedots.com/api-reference/:slug*"
+    },
+    {
+      "source": "/:slug*",
+      "destination": "https://docs.usedots.com"
+    }
+  ],
   "colors": {
     "primary": "#F4BC24",
     "light": "#ffebac",
